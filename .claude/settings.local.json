@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:genesislink.ca)",
+      "Bash(git init)",
+      "Bash(git add -A)",
+      "Bash(git commit -m \"initial: design and implementation plan docs\")"
+    ]
+  }
+}
