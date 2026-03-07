@@ -1,10 +1,11 @@
 import { DisclaimerBanner } from '@/components/assessment/shared'
+import ComingSoon from '@/components/assessment/ComingSoon'
 
 export default function AssessmentLandingPage() {
   const enabled = process.env.ASSESSMENT_ENABLED === 'true'
 
   if (!enabled) {
-    return <ComingSoonPage />
+    return <ComingSoon />
   }
 
   return (
@@ -91,63 +92,6 @@ export default function AssessmentLandingPage() {
 }
 
 /* ---------- Internal helper components ---------- */
-
-function ComingSoonPage() {
-  return (
-    <main
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '60vh',
-        padding: '2rem 1.5rem',
-        textAlign: 'center',
-        fontFamily: "var(--font-body, 'Nunito', sans-serif)",
-      }}
-    >
-      <h1
-        style={{
-          fontFamily: "var(--font-display, 'Urbanist', sans-serif)",
-          fontSize: '2rem',
-          fontWeight: 800,
-          color: 'var(--color-navy, #000)',
-          marginBottom: '0.75rem',
-        }}
-      >
-        Assessment Tool &mdash; Coming Soon
-      </h1>
-      <p
-        style={{
-          fontSize: '1.05rem',
-          color: 'var(--color-gray, #93a0a9)',
-          maxWidth: '480px',
-          lineHeight: 1.6,
-          marginBottom: '2rem',
-        }}
-      >
-        We&apos;re building a comprehensive PNP entrepreneur assessment tool.
-        Check back soon!
-      </p>
-      <a
-        href="/"
-        style={{
-          display: 'inline-block',
-          padding: '0.75rem 1.75rem',
-          backgroundColor: 'var(--color-cyan, #0099cc)',
-          color: '#fff',
-          fontFamily: "var(--font-display, 'Urbanist', sans-serif)",
-          fontWeight: 700,
-          fontSize: '1rem',
-          borderRadius: 'var(--radius-lg, 12px)',
-          textDecoration: 'none',
-        }}
-      >
-        Return to Homepage
-      </a>
-    </main>
-  )
-}
 
 const ICONS: Record<string, React.ReactNode> = {
   clock: (
