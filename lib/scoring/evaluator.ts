@@ -1,4 +1,5 @@
 import { evaluateEligibility, computeScore } from './engine'
+import type { EligibilityRule, ScoringGrid } from './engine'
 import { estimateProbability } from './probability'
 import { computeSensitivity } from './sensitivity'
 import type { UserProfile } from '@/lib/types/assessment'
@@ -27,10 +28,10 @@ import nlGraduate from '@/lib/data/rules/nl-graduate-entrepreneur.json'
 import nwtBusiness from '@/lib/data/rules/nwt-business.json'
 import ykBusiness from '@/lib/data/rules/yk-business-nominee.json'
 
-interface ProgramRuleSet {
+export interface ProgramRuleSet {
   programId: string
-  eligibility: any[]
-  scoring: any
+  eligibility: EligibilityRule[]
+  scoring: ScoringGrid | null
 }
 
 // Registry of all loaded program rules

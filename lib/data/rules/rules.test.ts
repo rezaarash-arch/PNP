@@ -192,6 +192,30 @@ describe('Programs with scoring grids', () => {
       expect((ALL_PROGRAMS[id] as any).scoring).not.toBeNull()
     })
   })
+
+  PROGRAMS_WITH_SCORING.forEach((id) => {
+    it(`${id} category maxPoints sum matches maxScore when declared`, () => {
+      const scoring = (ALL_PROGRAMS[id] as any).scoring
+      if (!scoring || scoring.maxScore === null) return
+      const categorySum = scoring.categories.reduce(
+        (acc: number, cat: any) => acc + cat.maxPoints,
+        0
+      )
+      expect(categorySum).toBe(scoring.maxScore)
+    })
+
+    it(`${id} factor maxPoints sum matches category maxPoints`, () => {
+      const scoring = (ALL_PROGRAMS[id] as any).scoring
+      if (!scoring) return
+      for (const cat of scoring.categories) {
+        const factorSum = cat.factors.reduce(
+          (acc: number, f: any) => acc + f.maxPoints,
+          0
+        )
+        expect(factorSum).toBe(cat.maxPoints)
+      }
+    })
+  })
 })
 
 describe('Programs without scoring grids', () => {
