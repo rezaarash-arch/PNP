@@ -1,0 +1,104 @@
+.shell {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-lg, 1.5rem) var(--space-md, 1rem);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg, 1.5rem);
+}
+
+.sectionContainer {
+  background-color: var(--color-white, #ffffff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-xl, 2rem) var(--space-lg, 1.5rem);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  min-height: 320px;
+}
+
+.navigation {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-md, 1rem);
+  padding: var(--space-sm, 0.5rem) 0;
+}
+
+.backButton {
+  padding: var(--space-sm, 0.5rem) var(--space-lg, 1.5rem);
+  background: none;
+  border: 1.5px solid #d1d5db;
+  border-radius: var(--radius-md, 6px);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-gray, #93a0a9);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.backButton:hover {
+  border-color: var(--color-navy, #1a1a2e);
+  color: var(--color-navy, #1a1a2e);
+}
+
+.backButton:focus-visible {
+  outline: 2px solid var(--color-cyan, #0099cc);
+  outline-offset: 2px;
+}
+
+.nextButton {
+  padding: var(--space-sm, 0.5rem) var(--space-xl, 2rem);
+  background-color: var(--color-cyan, #0099cc);
+  color: var(--color-white, #ffffff);
+  border: none;
+  border-radius: var(--radius-md, 6px);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.nextButton:hover {
+  background-color: #007aa3;
+}
+
+.nextButton:focus-visible {
+  outline: 2px solid var(--color-cyan, #0099cc);
+  outline-offset: 2px;
+}
+
+.nextButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive: sticky nav + stacked buttons on mobile */
+@media (max-width: 639px) {
+  .shell {
+    padding: var(--space-md, 1rem) var(--space-sm, 0.5rem);
+  }
+
+  .sectionContainer {
+    padding: var(--space-lg, 1.5rem) var(--space-md, 1rem);
+    min-height: 280px;
+    border-radius: var(--radius-md, 6px);
+  }
+
+  .navigation {
+    position: sticky;
+    bottom: 0;
+    flex-direction: column-reverse;
+    gap: var(--space-sm, 0.5rem);
+    padding: var(--space-md, 1rem) 0;
+    background-color: var(--color-bg-light, #f8f9fa);
+  }
+
+  .backButton,
+  .nextButton {
+    width: 100%;
+    padding: var(--space-md, 1rem);
+    font-size: 1rem;
+  }
+}
