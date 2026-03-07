@@ -1,6 +1,6 @@
 import { evaluateCondition, type JsonLogicRule } from './jsonlogic'
 import type { UserProfile } from '@/lib/types/assessment'
-import type { Disqualifier, NearMiss } from '@/lib/types/results'
+import type { Disqualifier, NearMiss, ScoreBreakdown } from '@/lib/types/results'
 
 /**
  * Shape of an eligibility rule from the program rules JSON.
@@ -66,6 +66,112 @@ export function evaluateEligibility(
   }
 
   return { eligible: false, disqualifiers, nearMisses }
+}
+
+// ---------------------------------------------------------------------------
+// Points calculation
+// ---------------------------------------------------------------------------
+
+/**
+ * Shape of a single scoring rule within a factor.
+ */
+export interface ScoringRule {
+  condition: JsonLogicRule
+  points: number
+  label?: string
+}
+
+/**
+ * A scoring factor: one dimension of evaluation (e.g., "Years of business ownership").
+ */
+export interface ScoringFactor {
+  name: string
+  maxPoints: number
+  rules: ScoringRule[]
+}
+
+/**
+ * A scoring category grouping related factors (e.g., "Business Experience").
+ */
+export interface ScoringCategory {
+  name: string
+  maxPoints: number
+  factors: ScoringFactor[]
+}
+
+/**
+ * The top-level scoring grid from a program rules JSON.
+ */
+export interface ScoringGrid {
+  maxScore: number | null
+  minScoreRequired: number | null
+  categories: ScoringCategory[]
+}
+
+/**
+ * Result of computing a candidate's score against a program's scoring grid.
+ */
+export interface ScoreResult {
+  totalScore: number
+  maxPossible: number
+  meetsMinimum: boolean
+  breakdown: ScoreBreakdown[]
+}
+
+/**
+ * Computes a candidate's score against a program's scoring grid.
+ * Iterates categories -> factors -> rules (ordered highest-to-lowest).
+ * First matching rule wins for each factor.
+ *
+ * Returns null if no scoring grid is provided.
+ */
+export function computeScore(
+  profile: UserProfile,
+  scoring: ScoringGrid | null
+): ScoreResult | null {
+  if (!scoring) return null
+
+  const breakdown: ScoreBreakdown[] = []
+  let totalScore = 0
+  let maxPossible = 0
+
+  for (const category of scoring.categories) {
+    for (const factor of category.factors) {
+      maxPossible += factor.maxPoints
+      let matched = false
+
+      for (const rule of factor.rules) {
+        if (!matched && evaluateCondition(rule.condition as JsonLogicRule, profile as unknown as Record<string, unknown>)) {
+          breakdown.push({
+            category: category.name,
+            factor: factor.name,
+            points: rule.points,
+            maxPoints: factor.maxPoints,
+            explanation: rule.label ?? `${factor.name}: ${rule.points}/${factor.maxPoints} points`,
+          })
+          totalScore += rule.points
+          matched = true
+        }
+      }
+
+      if (!matched) {
+        breakdown.push({
+          category: category.name,
+          factor: factor.name,
+          points: 0,
+          maxPoints: factor.maxPoints,
+          explanation: `${factor.name}: 0/${factor.maxPoints} points`,
+        })
+      }
+    }
+  }
+
+  return {
+    totalScore,
+    maxPossible,
+    meetsMinimum: scoring.minScoreRequired === null || totalScore >= scoring.minScoreRequired,
+    breakdown,
+  }
 }
 
 // ---------------------------------------------------------------------------

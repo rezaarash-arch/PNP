@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { evaluateEligibility } from './engine'
+import { evaluateEligibility, computeScore } from './engine'
 import bcBase from '@/lib/data/rules/bc-entrepreneur-base.json'
 import strongCandidate from './__fixtures__/strong-candidate.json'
 import minimalCandidate from './__fixtures__/minimal-candidate.json'
@@ -61,6 +61,56 @@ describe('evaluateEligibility', () => {
         expect(nm).toHaveProperty('effort')
         expect(nm).toHaveProperty('suggestion')
       })
+    }
+  })
+})
+
+describe('computeScore', () => {
+  it('computes score for strong candidate on BC Base', () => {
+    const result = computeScore(strongCandidate as UserProfile, (bcBase as any).scoring)
+    expect(result).not.toBeNull()
+    expect(result!.totalScore).toBeGreaterThan(0)
+    expect(result!.breakdown.length).toBeGreaterThan(0)
+  })
+
+  it('each breakdown item has category, factor, points, maxPoints', () => {
+    const result = computeScore(strongCandidate as UserProfile, (bcBase as any).scoring)
+    expect(result).not.toBeNull()
+    for (const item of result!.breakdown) {
+      expect(item.category).toBeTruthy()
+      expect(item.factor).toBeTruthy()
+      expect(typeof item.points).toBe('number')
+      expect(item.maxPoints).toBeGreaterThan(0)
+      expect(item.points).toBeLessThanOrEqual(item.maxPoints)
+    }
+  })
+
+  it('total score equals sum of breakdown points', () => {
+    const result = computeScore(strongCandidate as UserProfile, (bcBase as any).scoring)
+    expect(result).not.toBeNull()
+    const sum = result!.breakdown.reduce((acc, b) => acc + b.points, 0)
+    expect(result!.totalScore).toBe(sum)
+  })
+
+  it('returns null for programs without points grid', () => {
+    const result = computeScore(strongCandidate as UserProfile, null)
+    expect(result).toBeNull()
+  })
+
+  it('strong candidate scores higher than minimal candidate', () => {
+    const strongResult = computeScore(strongCandidate as UserProfile, (bcBase as any).scoring)
+    const minimalResult = computeScore(minimalCandidate as UserProfile, (bcBase as any).scoring)
+    expect(strongResult).not.toBeNull()
+    expect(minimalResult).not.toBeNull()
+    expect(strongResult!.totalScore).toBeGreaterThan(minimalResult!.totalScore)
+  })
+
+  it('generates explanation strings for each breakdown item', () => {
+    const result = computeScore(strongCandidate as UserProfile, (bcBase as any).scoring)
+    expect(result).not.toBeNull()
+    for (const item of result!.breakdown) {
+      expect(item.explanation).toBeTruthy()
+      expect(typeof item.explanation).toBe('string')
     }
   })
 })
