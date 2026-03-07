@@ -1,0 +1,152 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 1rem);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+}
+
+/* Total score header */
+.totalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.totalLabel {
+  margin: 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+}
+
+.totalValue {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+}
+
+.totalTrack {
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.totalFill {
+  height: 100%;
+  background-color: var(--color-cyan, #0099cc);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* Category accordion */
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.categoryGroup {
+  border: 1px solid #f3f4f6;
+  border-radius: var(--radius-md, 6px);
+  overflow: hidden;
+}
+
+.categoryButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.5rem);
+  padding: var(--space-sm, 0.5rem) var(--space-md, 1rem);
+  background: var(--color-bg-light, #f8f9fa);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.875rem;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.categoryButton:hover {
+  background-color: #e5e7eb;
+}
+
+.categoryButton:focus-visible {
+  outline: 2px solid var(--color-cyan, #0099cc);
+  outline-offset: -2px;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.categoryName {
+  flex: 1;
+  font-weight: 600;
+  color: var(--color-navy, #000000);
+}
+
+.categoryScore {
+  font-weight: 700;
+  color: var(--color-cyan, #0099cc);
+  font-size: 0.8125rem;
+}
+
+/* Factor list */
+.factorList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm, 0.5rem);
+  padding: var(--space-sm, 0.5rem) var(--space-md, 1rem) var(--space-md, 1rem);
+}
+
+.factor {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.factorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.factorName {
+  font-size: 0.8125rem;
+  color: #4b5563;
+}
+
+.factorScore {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+}
+
+.miniTrack {
+  height: 4px;
+  background-color: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.miniFill {
+  height: 100%;
+  background-color: var(--color-cyan, #0099cc);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.factorExplanation {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  line-height: 1.4;
+}

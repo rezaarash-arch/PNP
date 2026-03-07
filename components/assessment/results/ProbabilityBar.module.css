@@ -1,0 +1,105 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs, 0.25rem);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tierBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-white, #ffffff);
+}
+
+.tierBadge.strong {
+  background-color: var(--color-strong, #10b981);
+}
+
+.tierBadge.competitive {
+  background-color: var(--color-competitive, #0099cc);
+}
+
+.tierBadge.moderate {
+  background-color: var(--color-moderate, #f59e0b);
+}
+
+.tierBadge.low {
+  background-color: var(--color-low, #ef4444);
+}
+
+.tierBadge.unlikely,
+.tierBadge.ineligible {
+  background-color: var(--color-unlikely, #6b7280);
+}
+
+.rangeText {
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+.track {
+  position: relative;
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.fill.strong {
+  background-color: var(--color-strong, #10b981);
+}
+
+.fill.competitive {
+  background-color: var(--color-competitive, #0099cc);
+}
+
+.fill.moderate {
+  background-color: var(--color-moderate, #f59e0b);
+}
+
+.fill.low {
+  background-color: var(--color-low, #ef4444);
+}
+
+.fill.unlikely,
+.fill.ineligible {
+  background-color: var(--color-unlikely, #6b7280);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.percentText {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+}
+
+.confidenceText {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: capitalize;
+}
