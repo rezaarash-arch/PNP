@@ -1,0 +1,30 @@
+{
+  "programId": "mb-farm-investor",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $300,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $300,000 minimum required"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $300,000 CAD investment in a Manitoba farm operation",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 300000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $300,000 minimum for farm stream"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 3 years of farm ownership or management experience",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 3] }
+        ]
+      },
+      "disqualifyMessage": "Farm ownership/management experience does not meet the 3-year minimum"
+    }
+  ],
+  "scoring": null
+}

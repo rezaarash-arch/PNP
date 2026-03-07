@@ -1,0 +1,183 @@
+{
+  "programId": "pei-work-permit",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $600,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 600000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $600,000 minimum required"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 4 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 requirement"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 3 years of business ownership or senior management experience",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 3] }
+        ]
+      },
+      "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $150,000 CAD personal investment",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 150000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $150,000 minimum"
+    }
+  ],
+  "scoring": {
+    "maxScore": 100,
+    "minScoreRequired": null,
+    "categories": [
+      {
+        "name": "Business Experience",
+        "maxPoints": 25,
+        "factors": [
+          {
+            "name": "Years of business ownership",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 10] }, "points": 15, "label": "10+ years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 8] }, "points": 12, "label": "8-9 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 9, "label": "5-7 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 6, "label": "3-4 years ownership" }
+            ]
+          },
+          {
+            "name": "Number of employees managed",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 20] }, "points": 10, "label": "20+ employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 10] }, "points": 7, "label": "10-19 employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 5] }, "points": 4, "label": "5-9 employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 1] }, "points": 2, "label": "1-4 employees" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Personal Net Worth",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Net worth level",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 2000000] }, "points": 10, "label": "$2M+ net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 7, "label": "$1M-$2M net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 600000] }, "points": 4, "label": "$600K-$1M net worth" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Language Proficiency",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "CLB level (highest of English/French)",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 15, "label": "CLB 9+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 10, "label": "CLB 7-8" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 6, "label": "CLB 5-6" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 3, "label": "CLB 4" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Age",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Age range",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 25] }, { "<=": [{ "var": "age" }, 39] }] }, "points": 10, "label": "Age 25-39" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 40] }, { "<=": [{ "var": "age" }, 44] }] }, "points": 8, "label": "Age 40-44" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 45] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 6, "label": "Age 45-49" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 4, "label": "Age 50-54" },
+              { "condition": { "or": [{ "<": [{ "var": "age" }, 25] }, { ">": [{ "var": "age" }, 54] }] }, "points": 2, "label": "Under 25 or over 54" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Location",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "Intended business location",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 15, "label": "Rural PEI" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 10, "label": "Regional/outside Charlottetown" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 5, "label": "Flexible location" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "Charlottetown metro" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Adaptability",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "Exploratory visit",
+            "maxPoints": 6,
+            "rules": [
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 6, "label": "Exploratory visit 5+ days" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 4, "label": "Exploratory visit (short)" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, false] }, "points": 0, "label": "No exploratory visit" }
+            ]
+          },
+          {
+            "name": "Community referral",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "==": [{ "var": "hasCommunityReferral" }, true] }, "points": 5, "label": "Has community referral" },
+              { "condition": { "==": [{ "var": "hasCommunityReferral" }, false] }, "points": 0, "label": "No community referral" }
+            ]
+          },
+          {
+            "name": "Canadian connection",
+            "maxPoints": 4,
+            "rules": [
+              { "condition": { "or": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 4, "label": "Has Canadian work experience or family" },
+              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, false] }, { "==": [{ "var": "hasFamilyInCanada" }, false] }] }, "points": 0, "label": "No Canadian connection" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Education",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Highest education level",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "phd"] }, { "==": [{ "var": "highestEducation" }, "masters"] }] }, "points": 10, "label": "Masters or PhD" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 7, "label": "Bachelors degree" },
+              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "3yr_degree"] }, { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }] }, "points": 4, "label": "Diploma or 3-year degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 2, "label": "High school" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

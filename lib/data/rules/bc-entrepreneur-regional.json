@@ -1,0 +1,178 @@
+{
+  "programId": "bc-entrepreneur-regional",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $300,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $300,000 minimum required"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 4 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 requirement"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 3 years of business ownership or senior management experience",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 3] }
+        ]
+      },
+      "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $100,000 CAD personal investment in a regional community",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 100000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $100,000 minimum for regional stream"
+    }
+  ],
+  "scoring": {
+    "maxScore": null,
+    "minScoreRequired": null,
+    "categories": [
+      {
+        "name": "Business Experience",
+        "maxPoints": 40,
+        "factors": [
+          {
+            "name": "Years of business ownership",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 10] }, "points": 20, "label": "10+ years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 8] }, "points": 16, "label": "8-9 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 12, "label": "5-7 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 8, "label": "3-4 years ownership" }
+            ]
+          },
+          {
+            "name": "Annual business revenue",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 1000000] }, "points": 10, "label": "$1M+ annual revenue" },
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 500000] }, "points": 7, "label": "$500K-$1M annual revenue" },
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 250000] }, "points": 4, "label": "$250K-$500K annual revenue" },
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 100000] }, "points": 2, "label": "$100K-$250K annual revenue" }
+            ]
+          },
+          {
+            "name": "Number of employees managed",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 20] }, "points": 10, "label": "20+ employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 10] }, "points": 7, "label": "10-19 employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 5] }, "points": 4, "label": "5-9 employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 1] }, "points": 2, "label": "1-4 employees" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Personal Net Worth",
+        "maxPoints": 12,
+        "factors": [
+          {
+            "name": "Net worth level",
+            "maxPoints": 12,
+            "rules": [
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 2000000] }, "points": 12, "label": "$2M+ net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 8, "label": "$1M-$2M net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 600000] }, "points": 4, "label": "$600K-$1M net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] }, "points": 2, "label": "$300K-$600K net worth" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Language Proficiency",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "CLB level (highest of English/French)",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 15, "label": "CLB 9+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 10, "label": "CLB 7-8" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 6, "label": "CLB 5-6" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 3, "label": "CLB 4" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Age",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Age range",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 25] }, { "<=": [{ "var": "age" }, 39] }] }, "points": 10, "label": "Age 25-39" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 40] }, { "<=": [{ "var": "age" }, 44] }] }, "points": 8, "label": "Age 40-44" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 45] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 6, "label": "Age 45-49" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 4, "label": "Age 50-54" },
+              { "condition": { "or": [{ "<": [{ "var": "age" }, 25] }, { ">": [{ "var": "age" }, 54] }] }, "points": 2, "label": "Under 25 or over 54" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Location",
+        "maxPoints": 20,
+        "factors": [
+          {
+            "name": "Intended business location (regional bonus)",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 20, "label": "Rural/remote area (maximum regional bonus)" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 15, "label": "Regional/small city" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 8, "label": "Flexible location" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "Metro area (not eligible for regional bonuses)" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Adaptability",
+        "maxPoints": 16,
+        "factors": [
+          {
+            "name": "Exploratory visit",
+            "maxPoints": 6,
+            "rules": [
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 6, "label": "Exploratory visit 5+ days" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 4, "label": "Exploratory visit (short)" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, false] }, "points": 0, "label": "No exploratory visit" }
+            ]
+          },
+          {
+            "name": "Community referral",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "==": [{ "var": "hasCommunityReferral" }, true] }, "points": 5, "label": "Has community referral" },
+              { "condition": { "==": [{ "var": "hasCommunityReferral" }, false] }, "points": 0, "label": "No community referral" }
+            ]
+          },
+          {
+            "name": "Canadian connection",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "or": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 5, "label": "Has Canadian work experience or family" },
+              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, false] }, { "==": [{ "var": "hasFamilyInCanada" }, false] }] }, "points": 0, "label": "No Canadian connection" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

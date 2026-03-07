@@ -1,0 +1,40 @@
+{
+  "programId": "sk-graduate-entrepreneur",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 7 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 7] },
+          { ">=": [{ "var": "clbFrench" }, 7] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 7 requirement"
+    },
+    {
+      "id": "canadian-degree",
+      "label": "Must have a post-secondary degree from a Saskatchewan institution",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasCanadianDegree" }, true] },
+          { "==": [{ "var": "canadianDegreeProvince" }, "SK"] }
+        ]
+      },
+      "disqualifyMessage": "Must have completed a post-secondary degree at a Saskatchewan institution"
+    },
+    {
+      "id": "operating-business",
+      "label": "Must have an operating business in Saskatchewan",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasOperatingBusiness" }, true] },
+          { "==": [{ "var": "operatingBusinessProvince" }, "SK"] }
+        ]
+      },
+      "disqualifyMessage": "Must have an operating business in Saskatchewan"
+    }
+  ],
+  "scoring": null
+}

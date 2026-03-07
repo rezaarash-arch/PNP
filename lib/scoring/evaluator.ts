@@ -4,8 +4,28 @@ import { computeSensitivity } from './sensitivity'
 import type { UserProfile } from '@/lib/types/assessment'
 import type { ProgramResult, EligibilityResult } from '@/lib/types/results'
 
-// Import available program rules
+// Import all program rules
 import bcBase from '@/lib/data/rules/bc-entrepreneur-base.json'
+import bcRegional from '@/lib/data/rules/bc-entrepreneur-regional.json'
+import bcStrategic from '@/lib/data/rules/bc-entrepreneur-strategic.json'
+import abRural from '@/lib/data/rules/ab-rural-entrepreneur.json'
+import abGraduate from '@/lib/data/rules/ab-graduate-entrepreneur.json'
+import abForeignGrad from '@/lib/data/rules/ab-foreign-graduate.json'
+import abFarm from '@/lib/data/rules/ab-farm.json'
+import skEntrepreneur from '@/lib/data/rules/sk-entrepreneur.json'
+import skGraduate from '@/lib/data/rules/sk-graduate-entrepreneur.json'
+import mbEntrepreneur from '@/lib/data/rules/mb-entrepreneur.json'
+import mbFarm from '@/lib/data/rules/mb-farm-investor.json'
+import onEntrepreneur from '@/lib/data/rules/on-entrepreneur.json'
+import nbEntrepreneurial from '@/lib/data/rules/nb-entrepreneurial.json'
+import nbPostGrad from '@/lib/data/rules/nb-post-grad.json'
+import nsEntrepreneur from '@/lib/data/rules/ns-entrepreneur.json'
+import nsGraduate from '@/lib/data/rules/ns-graduate-entrepreneur.json'
+import peiWorkPermit from '@/lib/data/rules/pei-work-permit.json'
+import nlEntrepreneur from '@/lib/data/rules/nl-entrepreneur.json'
+import nlGraduate from '@/lib/data/rules/nl-graduate-entrepreneur.json'
+import nwtBusiness from '@/lib/data/rules/nwt-business.json'
+import ykBusiness from '@/lib/data/rules/yk-business-nominee.json'
 
 interface ProgramRuleSet {
   programId: string
@@ -16,7 +36,26 @@ interface ProgramRuleSet {
 // Registry of all loaded program rules
 const PROGRAM_RULES: ProgramRuleSet[] = [
   bcBase as ProgramRuleSet,
-  // More programs will be added in future tasks
+  bcRegional as ProgramRuleSet,
+  bcStrategic as ProgramRuleSet,
+  abRural as ProgramRuleSet,
+  abGraduate as ProgramRuleSet,
+  abForeignGrad as ProgramRuleSet,
+  abFarm as ProgramRuleSet,
+  skEntrepreneur as ProgramRuleSet,
+  skGraduate as ProgramRuleSet,
+  mbEntrepreneur as ProgramRuleSet,
+  mbFarm as ProgramRuleSet,
+  onEntrepreneur as ProgramRuleSet,
+  nbEntrepreneurial as ProgramRuleSet,
+  nbPostGrad as ProgramRuleSet,
+  nsEntrepreneur as ProgramRuleSet,
+  nsGraduate as ProgramRuleSet,
+  peiWorkPermit as ProgramRuleSet,
+  nlEntrepreneur as ProgramRuleSet,
+  nlGraduate as ProgramRuleSet,
+  nwtBusiness as ProgramRuleSet,
+  ykBusiness as ProgramRuleSet,
 ]
 
 interface DrawDataMap {

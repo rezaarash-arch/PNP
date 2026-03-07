@@ -1,0 +1,30 @@
+{
+  "programId": "nwt-business",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $300,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $300,000 minimum required"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $150,000 CAD personal investment in an NWT business",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 150000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $150,000 minimum"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 3 years of business ownership or senior management experience",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 3] }
+        ]
+      },
+      "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
+    }
+  ],
+  "scoring": null
+}

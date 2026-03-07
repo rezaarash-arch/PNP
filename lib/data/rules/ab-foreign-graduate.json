@@ -1,0 +1,49 @@
+{
+  "programId": "ab-foreign-graduate",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 7 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 7] },
+          { ">=": [{ "var": "clbFrench" }, 7] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 7 requirement"
+    },
+    {
+      "id": "min-education",
+      "label": "Must have a post-secondary credential",
+      "condition": {
+        "or": [
+          { "==": [{ "var": "highestEducation" }, "2yr_diploma"] },
+          { "==": [{ "var": "highestEducation" }, "3yr_degree"] },
+          { "==": [{ "var": "highestEducation" }, "bachelors"] },
+          { "==": [{ "var": "highestEducation" }, "masters"] },
+          { "==": [{ "var": "highestEducation" }, "phd"] }
+        ]
+      },
+      "disqualifyMessage": "Must have a post-secondary credential (diploma or higher)"
+    },
+    {
+      "id": "canadian-work-experience",
+      "label": "Must have Canadian work experience in Alberta (work permit holder)",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasCanadianWorkExperience" }, true] },
+          { "==": [{ "var": "canadianWorkProvince" }, "AB"] }
+        ]
+      },
+      "disqualifyMessage": "Must have work experience in Alberta under a valid work permit"
+    },
+    {
+      "id": "has-pgwp",
+      "label": "Must hold a valid Post-Graduation Work Permit",
+      "condition": { "==": [{ "var": "hasPGWP" }, true] },
+      "disqualifyMessage": "Must hold a valid Post-Graduation Work Permit (PGWP)"
+    }
+  ],
+  "scoring": null
+}
