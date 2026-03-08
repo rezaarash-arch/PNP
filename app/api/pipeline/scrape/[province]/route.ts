@@ -236,6 +236,8 @@ async function applyDrawChanges(
         draw_date: draw.draw_date,
         invitations_issued: draw.invitations_issued,
         min_score: draw.min_score,
+        median_score: (draw as Record<string, unknown>).median_score as number | null ?? null,
+        max_score: (draw as Record<string, unknown>).max_score as number | null ?? null,
         source_url: draw.source_url || null,
         notes: draw.category,
       }
