@@ -134,11 +134,15 @@ const PROGRAMS_WITHOUT_SCORING = [
 // Graduate programs (require CLB 7, Canadian degree, operating business)
 const GRADUATE_PROGRAMS = [
   'ab-graduate-entrepreneur',
-  'ab-foreign-graduate',
   'sk-graduate-entrepreneur',
   'nb-post-grad',
   'ns-graduate-entrepreneur',
   'nl-graduate-entrepreneur',
+]
+
+// Foreign graduate programs (require degree from outside Canada)
+const FOREIGN_GRADUATE_PROGRAMS = [
+  'ab-foreign-graduate',
 ]
 
 // ---------------------------------------------------------------------------
@@ -298,10 +302,12 @@ describe('Cross-fixture: graduate candidate', () => {
     expect(result.eligible).toBe(true)
   })
 
-  it('is eligible for ab-foreign-graduate', () => {
+  it('is ineligible for ab-foreign-graduate (has Canadian degree, not foreign)', () => {
     const rules = ALL_PROGRAMS['ab-foreign-graduate'] as any
     const result = evaluateEligibility(graduateCandidate as any, rules.eligibility)
-    expect(result.eligible).toBe(true)
+    // Graduate candidate has hasCanadianDegree: true, but ab-foreign-graduate
+    // requires a degree from OUTSIDE Canada
+    expect(result.eligible).toBe(false)
   })
 
   // Graduate should NOT be eligible for most standard entrepreneur programs

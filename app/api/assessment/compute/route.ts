@@ -3,6 +3,7 @@ import { UserProfileSchema } from '@/lib/validation/schemas'
 import { evaluateAllPrograms } from '@/lib/scoring/evaluator'
 import type { DrawDataMap } from '@/lib/scoring/evaluator'
 import { getDrawsForAllPrograms } from '@/lib/db/draws'
+import { FALLBACK_DRAW_DATA } from '@/lib/data/draws-fallback'
 import type { UserProfile } from '@/lib/types/assessment'
 
 const DISCLAIMER =
@@ -35,25 +36,31 @@ export async function POST(request: NextRequest) {
   try {
     const profile = parseResult.data as UserProfile
 
-    // Fetch real draw data from Supabase
+    // Fetch real draw data from Supabase, fall back to static data if empty
     let drawData: DrawDataMap = {}
     try {
       const drawMap = await getDrawsForAllPrograms()
       for (const [programId, draws] of drawMap) {
         // Filter to draws with valid min_score and invitations_issued,
         // since the probability module requires non-nullable numbers
-        drawData[programId] = draws
+        const filtered = draws
           .filter((d) => d.min_score !== null && d.invitations_issued !== null)
           .map((d) => ({
             draw_date: d.draw_date,
             min_score: d.min_score as number,
             invitations_issued: d.invitations_issued as number,
           }))
+        if (filtered.length > 0) {
+          drawData[programId] = filtered
+        }
       }
     } catch (drawErr) {
-      // If Supabase is unavailable, proceed with empty draw data
-      // Probability estimates will be based on eligibility alone
-      console.warn('Failed to fetch draw data, proceeding without:', drawErr)
+      console.warn('Failed to fetch draw data from Supabase:', drawErr)
+    }
+
+    // If Supabase returned no data (empty DB or error), use static fallback
+    if (Object.keys(drawData).length === 0) {
+      drawData = FALLBACK_DRAW_DATA
     }
 
     const results = evaluateAllPrograms(profile, drawData)
