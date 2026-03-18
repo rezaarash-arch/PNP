@@ -1,40 +1,24 @@
 {
   "programId": "bc-entrepreneur-strategic",
-  "version": 1,
+  "version": 2,
   "eligibility": [
     {
       "id": "min-net-worth",
-      "label": "Minimum personal net worth of $500,000 CAD",
+      "label": "Corporation must have minimum equity of $500,000 CAD",
       "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] },
-      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $500,000 minimum required"
+      "disqualifyMessage": "Corporation equity is below the $500,000 minimum required for strategic projects"
     },
     {
-      "id": "min-clb",
-      "label": "Minimum CLB 4 in English or French",
-      "condition": {
-        "or": [
-          { ">=": [{ "var": "clbEnglish" }, 4] },
-          { ">=": [{ "var": "clbFrench" }, 4] }
-        ]
-      },
-      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 requirement"
+      "id": "min-jobs-per-key-staff",
+      "label": "Minimum 3 jobs must be created per key staff member",
+      "condition": { ">=": [{ "var": "intendedJobCreation" }, 3] },
+      "disqualifyMessage": "Must create at least 3 jobs per key staff member"
     },
     {
       "id": "min-business-exp",
-      "label": "Minimum 3 years of business ownership or senior management experience",
-      "condition": {
-        "or": [
-          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
-          { ">=": [{ "var": "seniorManagementYears" }, 3] }
-        ]
-      },
-      "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
-    },
-    {
-      "id": "min-investment",
-      "label": "Minimum $200,000 CAD personal investment in a strategic sector",
-      "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] },
-      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $200,000 minimum for strategic stream"
+      "label": "Must be an established international corporation with senior management experience",
+      "condition": { ">=": [{ "var": "seniorManagementYears" }, 3] },
+      "disqualifyMessage": "Must have at least 3 years of senior management experience with an established international corporation"
     }
   ],
   "scoring": null

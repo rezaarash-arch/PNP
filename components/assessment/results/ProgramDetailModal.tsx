@@ -45,6 +45,16 @@ function formatProgramId(programId: string): { province: string; stream: string 
   return { province, stream: stream || 'General' }
 }
 
+/** Programs where a portion of the total score is assessed by program officers */
+const BUSINESS_CONCEPT_PROGRAMS: Record<string, { label: string; maxPoints: number }> = {
+  'bc-entrepreneur-base': { label: 'Business Concept (assessed by BC PNP)', maxPoints: 80 },
+  'bc-entrepreneur-regional': { label: 'Business Concept (assessed by BC PNP)', maxPoints: 60 },
+  'on-entrepreneur': { label: 'Business Concept (assessed by OINP)', maxPoints: 74 },
+  'nb-entrepreneurial': { label: 'Business Concept (assessed by NB PNP)', maxPoints: 15 },
+  'ab-rural-entrepreneur': { label: 'Business Establishment (assessed by AAIP)', maxPoints: 60 },
+  'sk-entrepreneur': { label: 'Business Establishment Plan (assessed by SINP)', maxPoints: 35 },
+}
+
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
@@ -126,8 +136,10 @@ export default function ProgramDetailModal({
   if (!isOpen) return null
 
   const { province, stream } = formatProgramId(result.programId)
-  const { eligibility, probability, sensitivity } = result
+  const { eligibility, probability, sensitivity, meta } = result
   const isEligible = eligibility.eligible
+  const isInactive = meta.status !== 'active'
+  const businessConcept = BUSINESS_CONCEPT_PROGRAMS[result.programId]
 
   return (
     <div className={styles.overlay} onClick={onClose} aria-hidden="true">
@@ -172,6 +184,30 @@ export default function ProgramDetailModal({
 
         {/* Body */}
         <div className={styles.body}>
+          {/* Status banner for closed/paused/redesigning */}
+          {isInactive && (
+            <div
+              className={`${styles.statusBanner} ${
+                meta.status === 'closed'
+                  ? styles.statusClosed
+                  : meta.status === 'paused'
+                    ? styles.statusPaused
+                    : styles.statusRedesigning
+              }`}
+              role="alert"
+            >
+              <span className={styles.statusIcon} aria-hidden="true">
+                {meta.status === 'closed' ? '⊘' : meta.status === 'paused' ? '⏸' : '🔄'}
+              </span>
+              <span>
+                {meta.status === 'closed' && 'This program is currently closed and not accepting applications.'}
+                {meta.status === 'paused' && 'This program is temporarily suspended.'}
+                {meta.status === 'redesigning' && 'This program is being redesigned. Requirements may change.'}
+                {meta.statusNote ? ` ${meta.statusNote}` : ''}
+              </span>
+            </div>
+          )}
+
           {/* Probability */}
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>Selection Probability</h3>
@@ -191,10 +227,31 @@ export default function ProgramDetailModal({
                 ))}
               </ul>
             )}
-            {probability.lastDrawDate && (
-              <p className={styles.drawDate}>
-                Last draw: {probability.lastDrawDate}
-              </p>
+            {(probability.lastDrawDate || probability.lastDrawMinScore !== null) && (
+              <div className={styles.drawDate}>
+                {probability.lastDrawDate && (
+                  <p>
+                    Last draw: {new Date(probability.lastDrawDate).toLocaleDateString('en-CA', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </p>
+                )}
+                {probability.lastDrawMinScore !== null && (
+                  <p>
+                    Latest draw minimum score: <strong>{probability.lastDrawMinScore}</strong>
+                    {isEligible && eligibility.score !== null && (
+                      eligibility.score >= probability.lastDrawMinScore
+                        ? <span style={{ color: '#059669', marginLeft: '6px' }}>&#10003; Your score exceeds the cutoff</span>
+                        : <span style={{ color: '#dc2626', marginLeft: '6px' }}>&#9650; Your score is below the cutoff by {probability.lastDrawMinScore - eligibility.score} points</span>
+                    )}
+                  </p>
+                )}
+                <p style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
+                  Based on {probability.dataPoints} historical draw{probability.dataPoints !== 1 ? 's' : ''} &middot; {probability.confidence} confidence
+                </p>
+              </div>
             )}
           </section>
 
@@ -207,6 +264,16 @@ export default function ProgramDetailModal({
                 totalScore={eligibility.score}
                 maxScore={eligibility.maxScore}
               />
+              {/* Business Concept note for programs with officer-assessed components */}
+              {businessConcept && (
+                <div className={styles.businessConceptNote}>
+                  <strong>{businessConcept.label}</strong> — up to {businessConcept.maxPoints} points
+                  are assessed by program officers based on your business plan, market research, and
+                  proposed economic benefits. The score shown above includes an estimate for this
+                  component based on your profile, but the actual score will be determined during
+                  the application review.
+                </div>
+              )}
             </section>
           )}
 
@@ -225,6 +292,20 @@ export default function ProgramDetailModal({
           {isEligible && sensitivity.length > 0 && (
             <section className={styles.section}>
               <SensitivityTable items={sensitivity} />
+            </section>
+          )}
+
+          {/* Official link */}
+          {meta.officialUrl && (
+            <section className={styles.section}>
+              <a
+                href={meta.officialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.officialLink}
+              >
+                View official program page ↗
+              </a>
             </section>
           )}
 

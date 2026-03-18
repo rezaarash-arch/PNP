@@ -1,10 +1,16 @@
 {
   "programId": "nl-entrepreneur",
-  "version": 1,
+  "version": 2,
   "eligibility": [
     {
+      "id": "min-age",
+      "label": "Must be between 21 and 59 years of age",
+      "condition": { "and": [{ ">=": [{ "var": "age" }, 21] }, { "<=": [{ "var": "age" }, 59] }] },
+      "disqualifyMessage": "Applicants must be between 21 and 59 years of age"
+    },
+    {
       "id": "min-net-worth",
-      "label": "Minimum personal net worth of $600,000 CAD",
+      "label": "Minimum personal net worth of $600,000 CAD in unencumbered assets",
       "condition": { ">=": [{ "var": "personalNetWorth" }, 600000] },
       "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $600,000 minimum required"
     },
@@ -21,20 +27,37 @@
     },
     {
       "id": "min-business-exp",
-      "label": "Minimum 3 years of business ownership or senior management experience",
+      "label": "Minimum 2 years business ownership (25%+ stake) in last 5 years, or 5 years senior management in last 10 years",
       "condition": {
         "or": [
-          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
-          { ">=": [{ "var": "seniorManagementYears" }, 3] }
+          { ">=": [{ "var": "businessOwnershipYears" }, 2] },
+          { ">=": [{ "var": "seniorManagementYears" }, 5] }
         ]
       },
-      "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
+      "disqualifyMessage": "Must have at least 2 years business ownership (25%+ stake) or 5 years senior management experience"
     },
     {
       "id": "min-investment",
-      "label": "Minimum $200,000 CAD personal investment",
+      "label": "Minimum $200,000 CAD personal investment (33.3% ownership) or $1,000,000 pure equity",
       "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] },
       "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $200,000 minimum"
+    },
+    {
+      "id": "exploratory-visit",
+      "label": "Must complete an exploratory visit to Newfoundland and Labrador (if applying from outside the province)",
+      "condition": {
+        "or": [
+          { "==": [{ "var": "hasExploratoryVisit" }, true] },
+          { "==": [{ "var": "hasCanadianWorkExperience" }, true] }
+        ]
+      },
+      "disqualifyMessage": "An exploratory visit to Newfoundland and Labrador is required for applicants outside the province"
+    },
+    {
+      "id": "min-job-creation",
+      "label": "Must create at least 1 full-time job for a Canadian citizen or permanent resident",
+      "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] },
+      "disqualifyMessage": "Must intend to create at least 1 full-time job for a Canadian citizen or permanent resident"
     }
   ],
   "scoring": {

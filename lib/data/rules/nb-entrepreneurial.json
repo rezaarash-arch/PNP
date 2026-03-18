@@ -1,40 +1,68 @@
 {
   "programId": "nb-entrepreneurial",
-  "version": 1,
+  "version": 2,
   "eligibility": [
     {
+      "id": "min-age",
+      "label": "Applicant must be between 19 and 59 years of age",
+      "condition": {
+        "and": [
+          { ">=": [{ "var": "age" }, 19] },
+          { "<=": [{ "var": "age" }, 59] }
+        ]
+      },
+      "disqualifyMessage": "Age must be between 19 and 59 to qualify for the NB Business Immigration Stream"
+    },
+    {
       "id": "min-net-worth",
-      "label": "Minimum personal net worth of $600,000 CAD",
-      "condition": { ">=": [{ "var": "personalNetWorth" }, 600000] },
-      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $600,000 minimum required"
+      "label": "Minimum personal net worth of $500,000 CAD ($300,000 for agriculture/farming)",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the minimum required ($500,000 general / $300,000 agriculture)"
     },
     {
       "id": "min-clb",
-      "label": "Minimum CLB 5 in English or French",
+      "label": "Minimum CLB 4 in English or French",
       "condition": {
         "or": [
-          { ">=": [{ "var": "clbEnglish" }, 5] },
-          { ">=": [{ "var": "clbFrench" }, 5] }
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
         ]
       },
-      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 5 requirement"
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 requirement"
     },
     {
-      "id": "min-business-exp",
-      "label": "Minimum 3 years of business ownership or senior management experience",
+      "id": "min-education",
+      "label": "Minimum high school diploma or equivalent",
       "condition": {
-        "or": [
-          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
-          { ">=": [{ "var": "seniorManagementYears" }, 3] }
-        ]
+        "in": [{ "var": "highestEducation" }, ["high_school", "2yr_diploma", "3yr_degree", "bachelors", "masters", "phd"]]
       },
-      "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
+      "disqualifyMessage": "A minimum of a high school diploma or equivalent is required"
     },
     {
       "id": "min-investment",
-      "label": "Minimum $250,000 CAD personal investment",
-      "condition": { ">=": [{ "var": "investmentCapacity" }, 250000] },
-      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $250,000 minimum"
+      "label": "Minimum $150,000 CAD personal investment",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 150000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $150,000 minimum"
+    },
+    {
+      "id": "min-ownership",
+      "label": "Must hold at least 51% ownership and be primary decision-maker",
+      "condition": { ">=": [{ "var": "ownershipPercentage" }, 51] },
+      "disqualifyMessage": "Ownership percentage must be at least 51% with primary decision-making authority"
+    },
+    {
+      "id": "min-job-creation",
+      "label": "Must create at least 1 full-time job for a Canadian citizen or permanent resident",
+      "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] },
+      "disqualifyMessage": "Must commit to creating at least 1 full-time job for a Canadian citizen or permanent resident"
+    },
+    {
+      "id": "excluded-naics",
+      "label": "Business must not be in NAICS 72 (Accommodation & Food Services)",
+      "condition": {
+        "!": { "==": [{ "var": "naicsCode" }, "72"] }
+      },
+      "disqualifyMessage": "Businesses in NAICS 72 (Accommodation & Food Services) are largely excluded from this stream"
     }
   ],
   "scoring": {
@@ -50,9 +78,10 @@
             "maxPoints": 15,
             "rules": [
               { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 10] }, "points": 15, "label": "10+ years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 8] }, "points": 12, "label": "8-9 years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 9, "label": "5-7 years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 6, "label": "3-4 years ownership" }
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 7] }, "points": 12, "label": "7-9 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 9, "label": "5-6 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 6, "label": "3-4 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 1] }, "points": 3, "label": "1-2 years ownership" }
             ]
           },
           {
@@ -61,7 +90,7 @@
             "rules": [
               { "condition": { ">=": [{ "var": "employeesManaged" }, 20] }, "points": 10, "label": "20+ employees" },
               { "condition": { ">=": [{ "var": "employeesManaged" }, 10] }, "points": 7, "label": "10-19 employees" },
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 5] }, "points": 4, "label": "5-9 employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 5] }, "points": 5, "label": "5-9 employees" },
               { "condition": { ">=": [{ "var": "employeesManaged" }, 1] }, "points": 2, "label": "1-4 employees" }
             ]
           }
@@ -77,22 +106,75 @@
             "rules": [
               { "condition": { ">=": [{ "var": "personalNetWorth" }, 2000000] }, "points": 10, "label": "$2M+ net worth" },
               { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 7, "label": "$1M-$2M net worth" },
-              { "condition": { ">=": [{ "var": "personalNetWorth" }, 600000] }, "points": 4, "label": "$600K-$1M net worth" }
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] }, "points": 4, "label": "$500K-$1M net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] }, "points": 2, "label": "$300K-$500K net worth (agriculture)" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Investment Amount",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "Proposed investment in New Brunswick business",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 1000000] }, "points": 15, "label": "$1M+ investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 500000] }, "points": 12, "label": "$500K-$1M investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 300000] }, "points": 9, "label": "$300K-$500K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] }, "points": 6, "label": "$200K-$300K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 150000] }, "points": 3, "label": "$150K-$200K investment" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Job Creation",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Full-time jobs for Canadian citizens/PRs",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 10] }, "points": 10, "label": "10+ FTE jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 5] }, "points": 8, "label": "5-9 FTE jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 3] }, "points": 6, "label": "3-4 FTE jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 2] }, "points": 4, "label": "2 FTE jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] }, "points": 2, "label": "1 FTE job" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Education",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Highest education level",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "==": [{ "var": "highestEducation" }, "phd"] }, "points": 10, "label": "Doctorate / PhD" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "masters"] }, "points": 8, "label": "Master's degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 6, "label": "Bachelor's degree" },
+              { "condition": { "in": [{ "var": "highestEducation" }, ["3yr_degree", "2yr_diploma"]] }, "points": 4, "label": "Diploma or 3-year degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 2, "label": "High school diploma" }
             ]
           }
         ]
       },
       {
         "name": "Language Proficiency",
-        "maxPoints": 20,
+        "maxPoints": 15,
         "factors": [
           {
             "name": "CLB level (highest of English/French)",
-            "maxPoints": 15,
+            "maxPoints": 10,
             "rules": [
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 15, "label": "CLB 9+" },
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 10, "label": "CLB 7-8" },
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 6, "label": "CLB 5-6" }
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 10, "label": "CLB 9+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 8, "label": "CLB 7-8" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 5, "label": "CLB 5-6" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 2, "label": "CLB 4" }
             ]
           },
           {
@@ -107,81 +189,37 @@
         ]
       },
       {
-        "name": "Age",
-        "maxPoints": 10,
-        "factors": [
-          {
-            "name": "Age range",
-            "maxPoints": 10,
-            "rules": [
-              { "condition": { "and": [{ ">=": [{ "var": "age" }, 25] }, { "<=": [{ "var": "age" }, 39] }] }, "points": 10, "label": "Age 25-39" },
-              { "condition": { "and": [{ ">=": [{ "var": "age" }, 40] }, { "<=": [{ "var": "age" }, 44] }] }, "points": 8, "label": "Age 40-44" },
-              { "condition": { "and": [{ ">=": [{ "var": "age" }, 45] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 6, "label": "Age 45-49" },
-              { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 4, "label": "Age 50-54" },
-              { "condition": { "or": [{ "<": [{ "var": "age" }, 25] }, { ">": [{ "var": "age" }, 54] }] }, "points": 2, "label": "Under 25 or over 54" }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Location",
-        "maxPoints": 15,
-        "factors": [
-          {
-            "name": "Intended business location",
-            "maxPoints": 15,
-            "rules": [
-              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 15, "label": "Rural New Brunswick" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 10, "label": "Regional/small city" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 5, "label": "Flexible location" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "Metro area" }
-            ]
-          }
-        ]
-      },
-      {
         "name": "Adaptability",
         "maxPoints": 15,
         "factors": [
           {
-            "name": "Exploratory visit to New Brunswick",
-            "maxPoints": 6,
-            "rules": [
-              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 6, "label": "Exploratory visit 5+ days" },
-              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 4, "label": "Exploratory visit (short)" },
-              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, false] }, "points": 0, "label": "No exploratory visit" }
-            ]
-          },
-          {
-            "name": "Community referral",
+            "name": "5-day exploratory visit to New Brunswick (within last 12 months)",
             "maxPoints": 5,
             "rules": [
-              { "condition": { "==": [{ "var": "hasCommunityReferral" }, true] }, "points": 5, "label": "Has community referral" },
-              { "condition": { "==": [{ "var": "hasCommunityReferral" }, false] }, "points": 0, "label": "No community referral" }
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 5, "label": "5+ day exploratory visit in last 12 months" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 2, "label": "Exploratory visit (less than 5 days)" }
             ]
           },
           {
-            "name": "Canadian connection",
+            "name": "Local post-secondary credential from New Brunswick",
+            "maxPoints": 3,
+            "rules": [
+              { "condition": { "==": [{ "var": "hasCanadianDegree" }, true] }, "points": 3, "label": "Post-secondary credential from NB institution" }
+            ]
+          },
+          {
+            "name": "High-skilled work history in New Brunswick",
             "maxPoints": 4,
             "rules": [
-              { "condition": { "or": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 4, "label": "Has Canadian work experience or family" },
-              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, false] }, { "==": [{ "var": "hasFamilyInCanada" }, false] }] }, "points": 0, "label": "No Canadian connection" }
+              { "condition": { "==": [{ "var": "hasCanadianWorkExperience" }, true] }, "points": 4, "label": "High-skilled work experience in NB" }
             ]
-          }
-        ]
-      },
-      {
-        "name": "Education",
-        "maxPoints": 5,
-        "factors": [
+          },
           {
-            "name": "Highest education level",
-            "maxPoints": 5,
+            "name": "Immediate family member in New Brunswick (1+ year)",
+            "maxPoints": 3,
             "rules": [
-              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "phd"] }, { "==": [{ "var": "highestEducation" }, "masters"] }] }, "points": 5, "label": "Masters or PhD" },
-              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 4, "label": "Bachelors degree" },
-              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "3yr_degree"] }, { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }] }, "points": 2, "label": "Diploma or 3-year degree" },
-              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 1, "label": "High school" }
+              { "condition": { "==": [{ "var": "hasFamilyInCanada" }, true] }, "points": 3, "label": "Immediate family in NB for 1+ year" },
+              { "condition": { "==": [{ "var": "hasFamilyInCanada" }, false] }, "points": 0, "label": "No immediate family in NB" }
             ]
           }
         ]

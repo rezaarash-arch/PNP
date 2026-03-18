@@ -3,45 +3,12 @@
 import { RadioCardGroup } from '@/components/assessment/inputs/RadioCardGroup'
 import { RangeSlider } from '@/components/assessment/inputs/RangeSlider'
 import { SearchableDropdown } from '@/components/assessment/inputs/SearchableDropdown'
+import { COUNTRIES } from '@/lib/data/countries'
 
 interface SectionProps {
   answers: Record<string, any>
   onUpdate: (field: string, value: any) => void
 }
-
-const COUNTRIES = [
-  { value: 'IN', label: 'India' },
-  { value: 'CN', label: 'China' },
-  { value: 'PH', label: 'Philippines' },
-  { value: 'NG', label: 'Nigeria' },
-  { value: 'PK', label: 'Pakistan' },
-  { value: 'US', label: 'United States' },
-  { value: 'GB', label: 'United Kingdom' },
-  { value: 'FR', label: 'France' },
-  { value: 'BR', label: 'Brazil' },
-  { value: 'IR', label: 'Iran' },
-  { value: 'KR', label: 'South Korea' },
-  { value: 'SY', label: 'Syria' },
-  { value: 'MX', label: 'Mexico' },
-  { value: 'EG', label: 'Egypt' },
-  { value: 'LK', label: 'Sri Lanka' },
-  { value: 'BD', label: 'Bangladesh' },
-  { value: 'VN', label: 'Vietnam' },
-  { value: 'CO', label: 'Colombia' },
-  { value: 'UA', label: 'Ukraine' },
-  { value: 'IQ', label: 'Iraq' },
-  { value: 'AF', label: 'Afghanistan' },
-  { value: 'JP', label: 'Japan' },
-  { value: 'DE', label: 'Germany' },
-  { value: 'SA', label: 'Saudi Arabia' },
-  { value: 'AE', label: 'United Arab Emirates' },
-  { value: 'HK', label: 'Hong Kong' },
-  { value: 'TR', label: 'Turkey' },
-  { value: 'LB', label: 'Lebanon' },
-  { value: 'ET', label: 'Ethiopia' },
-  { value: 'KE', label: 'Kenya' },
-  { value: 'OTHER', label: 'Other' },
-]
 
 const MARITAL_OPTIONS = [
   { value: 'single', label: 'Single' },
@@ -87,6 +54,7 @@ export function PersonalInfo({ answers, onUpdate }: SectionProps) {
           value={answers.age ?? 30}
           onChange={(v) => onUpdate('age', v)}
           label="Age"
+          unit="years"
           formatValue={(v) => `${v} years`}
         />
 

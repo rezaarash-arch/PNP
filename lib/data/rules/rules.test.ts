@@ -116,6 +116,9 @@ const PROGRAMS_WITH_SCORING = [
   'pei-work-permit',
   'nl-entrepreneur',
   'nl-graduate-entrepreneur',
+  'sk-entrepreneur',
+  'yk-business-nominee',
+  'nwt-business',
 ]
 
 // Programs with null scoring
@@ -124,11 +127,8 @@ const PROGRAMS_WITHOUT_SCORING = [
   'ab-graduate-entrepreneur',
   'ab-foreign-graduate',
   'ab-farm',
-  'sk-entrepreneur',
   'sk-graduate-entrepreneur',
   'mb-farm-investor',
-  'nwt-business',
-  'yk-business-nominee',
 ]
 
 // Graduate programs (require CLB 7, Canadian degree, operating business)
@@ -361,10 +361,10 @@ describe('Cross-fixture: minimal candidate', () => {
   // Minimal: age 45, CLB 4, high_school, 3yr ownership, $300K net worth, $100K invest
   // Should be eligible for the lower-threshold programs
 
-  it('is eligible for bc-entrepreneur-regional', () => {
+  it('is ineligible for bc-entrepreneur-regional (needs community referral)', () => {
     const rules = ALL_PROGRAMS['bc-entrepreneur-regional'] as any
     const result = evaluateEligibility(minimalCandidate as any, rules.eligibility)
-    expect(result.eligible).toBe(true)
+    expect(result.eligible).toBe(false)
   })
 
   it('is ineligible for bc-entrepreneur-base (needs $600K net worth)', () => {

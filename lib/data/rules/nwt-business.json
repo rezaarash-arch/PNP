@@ -1,18 +1,60 @@
 {
   "programId": "nwt-business",
-  "version": 1,
+  "version": 2,
+  "notes": "2026 update: Added geographic tiering (Yellowknife vs Regional), EOI system, CLB requirement, equity minimum, and language test validity.",
   "eligibility": [
     {
-      "id": "min-net-worth",
-      "label": "Minimum personal net worth of $300,000 CAD",
-      "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] },
-      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $300,000 minimum required"
+      "id": "min-net-worth-yellowknife",
+      "label": "Minimum personal net worth of $500,000 CAD (Yellowknife) or $250,000 CAD (Regional)",
+      "condition": {
+        "or": [
+          {
+            "and": [
+              { "==": [{ "var": "intendedLocation" }, "metro"] },
+              { ">=": [{ "var": "personalNetWorth" }, 500000] }
+            ]
+          },
+          {
+            "and": [
+              { "!=": [{ "var": "intendedLocation" }, "metro"] },
+              { ">=": [{ "var": "personalNetWorth" }, 250000] }
+            ]
+          }
+        ]
+      },
+      "disqualifyMessage": "Personal net worth does not meet the minimum: $500,000 for Yellowknife or $250,000 for regional (outside Yellowknife)"
     },
     {
       "id": "min-investment",
-      "label": "Minimum $150,000 CAD personal investment in an NWT business",
-      "condition": { ">=": [{ "var": "investmentCapacity" }, 150000] },
-      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $150,000 minimum"
+      "label": "Minimum $200,000 CAD investment (Yellowknife) or $100,000 CAD (Regional)",
+      "condition": {
+        "or": [
+          {
+            "and": [
+              { "==": [{ "var": "intendedLocation" }, "metro"] },
+              { ">=": [{ "var": "investmentCapacity" }, 200000] }
+            ]
+          },
+          {
+            "and": [
+              { "!=": [{ "var": "intendedLocation" }, "metro"] },
+              { ">=": [{ "var": "investmentCapacity" }, 100000] }
+            ]
+          }
+        ]
+      },
+      "disqualifyMessage": "Investment capacity does not meet the minimum: $200,000 for Yellowknife or $100,000 for regional (outside Yellowknife)"
+    },
+    {
+      "id": "min-equity",
+      "label": "Minimum 33.3% equity ownership (unless personal investment exceeds $1,000,000)",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "ownershipPercentage" }, 33.3] },
+          { ">=": [{ "var": "investmentCapacity" }, 1000000] }
+        ]
+      },
+      "disqualifyMessage": "Equity ownership must be at least 33.3% unless personal investment exceeds $1,000,000"
     },
     {
       "id": "min-business-exp",
@@ -24,7 +66,154 @@
         ]
       },
       "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 4 in English or NCLC 4 in French (test results must be less than 2 years old)",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 / NCLC 4 requirement. Test results must be less than 2 years old."
+    },
+    {
+      "id": "language-test-validity",
+      "label": "Language test results must be less than 2 years old",
+      "condition": { "==": [{ "var": "languageTestValid" }, true] },
+      "disqualifyMessage": "Language test results are expired. Results must be less than 2 years old at time of application."
     }
   ],
-  "scoring": null
+  "scoring": {
+    "maxScore": 100,
+    "minScoreRequired": null,
+    "notes": "NWT uses an Expression of Interest (EOI) system introduced in 2026. Candidates are ranked by EOI score and invited in order of ranking. No fixed pass mark.",
+    "categories": [
+      {
+        "name": "Investment Value",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "Proposed investment amount",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 500000] }, "points": 15, "label": "$500K+ investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 300000] }, "points": 12, "label": "$300K-$499K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] }, "points": 9, "label": "$200K-$299K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 100000] }, "points": 6, "label": "$100K-$199K investment" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Net Worth",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Total personal net worth",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 10, "label": "$1M+ net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 750000] }, "points": 8, "label": "$750K-$999K net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] }, "points": 6, "label": "$500K-$749K net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 250000] }, "points": 4, "label": "$250K-$499K net worth" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Experience",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "Years of business ownership or senior management experience",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 15, "label": "5+ years business ownership" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 5] }, "points": 12, "label": "5+ years senior management" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 10, "label": "3-4 years business ownership" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 3] }, "points": 8, "label": "3-4 years senior management" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Language Proficiency",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "English (CLB) or French (NCLC) proficiency",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 15, "label": "CLB/NCLC 7+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 10, "label": "CLB/NCLC 5-6" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 5, "label": "CLB/NCLC 4" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Education",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "Highest education level",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "==": [{ "var": "highestEducation" }, "phd"] }, "points": 15, "label": "Doctorate / PhD" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "masters"] }, "points": 12, "label": "Master's degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 10, "label": "Bachelor's degree" },
+              { "condition": { "in": [{ "var": "highestEducation" }, ["2yr_diploma", "3yr_degree"]] }, "points": 7, "label": "Diploma or trade certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 3, "label": "High school diploma" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Age",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Age range",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 25] }, { "<=": [{ "var": "age" }, 44] }] }, "points": 10, "label": "Age 25-44" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 45] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 7, "label": "Age 45-54" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 55] }, { "<=": [{ "var": "age" }, 64] }] }, "points": 4, "label": "Age 55-64" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Location",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Location of proposed business in NWT",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "!=": [{ "var": "intendedLocation" }, "metro"] }, "points": 10, "label": "Regional (outside Yellowknife) - lower thresholds apply" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 5, "label": "Yellowknife" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Equity Ownership",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Equity stake in proposed business",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "ownershipPercentage" }, 100] }, "points": 10, "label": "100% ownership" },
+              { "condition": { ">=": [{ "var": "ownershipPercentage" }, 51] }, "points": 7, "label": "51-99% ownership" },
+              { "condition": { ">=": [{ "var": "ownershipPercentage" }, 33.3] }, "points": 4, "label": "33.3-50% ownership" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

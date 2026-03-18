@@ -1,7 +1,13 @@
 {
   "programId": "nb-post-grad",
-  "version": 1,
+  "version": 2,
   "eligibility": [
+    {
+      "id": "program-closed",
+      "label": "Legacy stream replaced by NB Business Immigration Stream as of Feb 3, 2026",
+      "condition": { "==": [true, false] },
+      "disqualifyMessage": "The New Brunswick Post-Graduate Entrepreneurial stream was replaced by the NB Business Immigration Stream on February 3, 2026. Apply through the new NB Business Immigration Stream instead."
+    },
     {
       "id": "min-clb",
       "label": "Minimum CLB 7 in English or French",

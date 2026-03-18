@@ -1,0 +1,342 @@
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg, 1.5rem);
+}
+
+.sectionHeader {
+  text-align: center;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-navy, #000000);
+  line-height: 1.3;
+}
+
+.sectionSubtitle {
+  margin: var(--space-xs, 0.25rem) 0 0;
+  font-size: 0.9375rem;
+  color: var(--color-gray, #93a0a9);
+  line-height: 1.5;
+}
+
+/* Pathway cards grid */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md, 1rem);
+}
+
+/* Individual pathway card */
+.pathwayCard {
+  background: var(--color-white, #ffffff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-lg, 1.5rem);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 1rem);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.pathwayCard:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+/* Rank badge */
+.rankBadge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--color-white, #ffffff);
+  border-radius: 0 0 var(--radius-md, 6px) 0;
+}
+
+.rank1 { background: linear-gradient(135deg, #059669, #10b981); }
+.rank2 { background: linear-gradient(135deg, #0284c7, #38bdf8); }
+.rank3 { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+
+/* Card header */
+.cardHeader {
+  padding-left: 36px;
+}
+
+.province {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-gray, #93a0a9);
+}
+
+.stream {
+  margin: 2px 0 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+  line-height: 1.3;
+}
+
+/* Progress ring */
+.progressSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md, 1rem);
+}
+
+.progressRing {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.progressRingSvg {
+  transform: rotate(-90deg);
+}
+
+.progressTrack {
+  fill: none;
+  stroke: #e5e7eb;
+  stroke-width: 5;
+}
+
+.progressFill {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progressLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progressCount {
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-navy, #000000);
+}
+
+.progressUnit {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-gray, #93a0a9);
+  letter-spacing: 0.04em;
+}
+
+.progressMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.8125rem;
+}
+
+.progressMetaLine {
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.progressMetaDetail {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+/* Effort badge */
+.effortBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.effortLow {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.effortMedium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.effortHigh {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Improvements list */
+.improvementsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.improvementItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background-color: #f9fafb;
+  border-radius: var(--radius-sm, 4px);
+  border-left: 3px solid transparent;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  transition: background-color 0.15s ease;
+}
+
+.improvementFixable {
+  border-left-color: #10b981;
+}
+
+.improvementHard {
+  border-left-color: #ef4444;
+}
+
+.improvementIcon {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  margin-top: 1px;
+}
+
+.improvementContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.improvementRequirement {
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+}
+
+.improvementGap {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.improvementEffort {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Official link */
+.officialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding-top: var(--space-xs, 0.25rem);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-cyan, #0099cc);
+  text-decoration: none;
+  border-top: 1px solid #f3f4f6;
+  transition: color 0.15s ease;
+}
+
+.officialLink:hover {
+  color: #007aa3;
+}
+
+/* Overall banner when no programs eligible */
+.overallBanner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md, 1rem);
+  padding: var(--space-md, 1rem) var(--space-lg, 1.5rem);
+  background: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%);
+  border-radius: var(--radius-md, 6px);
+  border: 1px solid #fde68a;
+}
+
+.bannerIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.bannerText {
+  font-size: 0.875rem;
+  color: #78350f;
+  line-height: 1.5;
+}
+
+.bannerText strong {
+  display: block;
+  font-size: 0.9375rem;
+  margin-bottom: 2px;
+}
+
+/* Status tag for paused programs */
+.statusTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: #fffbeb;
+  color: #92400e;
+  margin-left: 4px;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionTitle {
+    font-size: 1.25rem;
+  }
+
+  .pathwayCard {
+    padding: var(--space-md, 1rem);
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

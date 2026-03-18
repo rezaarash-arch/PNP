@@ -1,156 +1,216 @@
 {
   "programId": "on-entrepreneur",
-  "version": 1,
+  "version": 2,
   "eligibility": [
     {
+      "id": "program-paused",
+      "label": "Program PAUSED since 2019 (last updated December 2023) - not currently accepting new applications",
+      "condition": { "==": [true, false] },
+      "disqualifyMessage": "The Ontario Entrepreneur stream has been paused since 2019 and is not currently accepting new applications"
+    },
+    {
       "id": "min-net-worth",
-      "label": "Minimum personal net worth of $800,000 CAD",
-      "condition": { ">=": [{ "var": "personalNetWorth" }, 800000] },
-      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $800,000 minimum required"
-    },
-    {
-      "id": "min-clb",
-      "label": "Minimum CLB 5 in English or French",
-      "condition": {
-        "or": [
-          { ">=": [{ "var": "clbEnglish" }, 5] },
-          { ">=": [{ "var": "clbFrench" }, 5] }
-        ]
-      },
-      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 5 requirement"
-    },
-    {
-      "id": "min-business-exp",
-      "label": "Minimum 3 years of business ownership or senior management experience",
-      "condition": {
-        "or": [
-          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
-          { ">=": [{ "var": "seniorManagementYears" }, 3] }
-        ]
-      },
-      "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
+      "label": "Minimum personal net worth of $800,000 CAD ($400,000 outside GTA)",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 400000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the minimum required"
     },
     {
       "id": "min-investment",
-      "label": "Minimum $600,000 CAD personal investment ($200,000 outside GTA)",
+      "label": "Minimum $600,000 CAD investment in GTA or $200,000 outside GTA",
       "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] },
       "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the minimum required"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 4 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 requirement"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 2 years of business experience within the last 5 years",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 2] },
+          { ">=": [{ "var": "seniorManagementYears" }, 2] }
+        ]
+      },
+      "disqualifyMessage": "Business experience does not meet the 2-year minimum"
     }
   ],
   "scoring": {
-    "maxScore": null,
-    "minScoreRequired": null,
+    "maxScore": 200,
+    "minScoreRequired": 127,
     "categories": [
       {
-        "name": "Business Experience",
-        "maxPoints": 35,
+        "name": "Human Capital",
+        "maxPoints": 80,
         "factors": [
           {
-            "name": "Years of business ownership",
-            "maxPoints": 20,
+            "name": "Business experience (years of ownership or senior management)",
+            "maxPoints": 25,
             "rules": [
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 10] }, "points": 20, "label": "10+ years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 8] }, "points": 16, "label": "8-9 years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 12, "label": "5-7 years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 8, "label": "3-4 years ownership" }
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 10] }, "points": 25, "label": "10+ years business experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 8] }, "points": 22, "label": "8-9 years business experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 6] }, "points": 18, "label": "6-7 years business experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 4] }, "points": 14, "label": "4-5 years business experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 10, "label": "3 years business experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 2] }, "points": 6, "label": "2 years business experience" }
             ]
           },
           {
-            "name": "Number of employees managed",
-            "maxPoints": 15,
+            "name": "Past specific experience (related to proposed business)",
+            "maxPoints": 35,
             "rules": [
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 20] }, "points": 15, "label": "20+ employees" },
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 10] }, "points": 10, "label": "10-19 employees" },
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 5] }, "points": 6, "label": "5-9 employees" },
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 1] }, "points": 3, "label": "1-4 employees" }
+              { "condition": { "and": [{ ">=": [{ "var": "businessOwnershipYears" }, 5] }, { ">=": [{ "var": "annualRevenue" }, 1000000] }] }, "points": 35, "label": "5+ years in same sector with $1M+ revenue" },
+              { "condition": { "and": [{ ">=": [{ "var": "businessOwnershipYears" }, 5] }, { ">=": [{ "var": "annualRevenue" }, 500000] }] }, "points": 28, "label": "5+ years in same sector with $500K+ revenue" },
+              { "condition": { "and": [{ ">=": [{ "var": "businessOwnershipYears" }, 3] }, { ">=": [{ "var": "annualRevenue" }, 500000] }] }, "points": 22, "label": "3+ years in same sector with $500K+ revenue" },
+              { "condition": { "and": [{ ">=": [{ "var": "businessOwnershipYears" }, 3] }, { ">=": [{ "var": "annualRevenue" }, 250000] }] }, "points": 16, "label": "3+ years in same sector with $250K+ revenue" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 10, "label": "3+ years in related sector" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 2] }, "points": 5, "label": "2+ years in related sector" }
+            ]
+          },
+          {
+            "name": "Education level",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "in": [{ "var": "highestEducation" }, ["masters", "phd"]] }, "points": 10, "label": "Master's or Doctorate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 8, "label": "Bachelor's degree" },
+              { "condition": { "in": [{ "var": "highestEducation" }, ["3yr_degree", "2yr_diploma"]] }, "points": 6, "label": "3-year diploma or trade certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }, "points": 4, "label": "2-year diploma" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }, "points": 2, "label": "1-year certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 0, "label": "High school or less" }
+            ]
+          },
+          {
+            "name": "Language proficiency (English or French)",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 8] }, { ">=": [{ "var": "clbFrench" }, 8] }] }, "points": 10, "label": "CLB 8+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 8, "label": "CLB 7" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 6] }, { ">=": [{ "var": "clbFrench" }, 6] }] }, "points": 6, "label": "CLB 6" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 4, "label": "CLB 5" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 2, "label": "CLB 4" }
             ]
           }
         ]
       },
       {
-        "name": "Personal Net Worth",
-        "maxPoints": 15,
+        "name": "Investment Factors",
+        "maxPoints": 46,
         "factors": [
           {
-            "name": "Net worth level",
+            "name": "Personal net worth",
             "maxPoints": 15,
             "rules": [
               { "condition": { ">=": [{ "var": "personalNetWorth" }, 5000000] }, "points": 15, "label": "$5M+ net worth" },
               { "condition": { ">=": [{ "var": "personalNetWorth" }, 2000000] }, "points": 12, "label": "$2M-$5M net worth" },
-              { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 8, "label": "$1M-$2M net worth" },
-              { "condition": { ">=": [{ "var": "personalNetWorth" }, 800000] }, "points": 4, "label": "$800K-$1M net worth" }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Language Proficiency",
-        "maxPoints": 15,
-        "factors": [
-          {
-            "name": "CLB level (highest of English/French)",
-            "maxPoints": 15,
-            "rules": [
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 15, "label": "CLB 9+" },
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 10, "label": "CLB 7-8" },
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 6, "label": "CLB 5-6" }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Age",
-        "maxPoints": 10,
-        "factors": [
-          {
-            "name": "Age range",
-            "maxPoints": 10,
-            "rules": [
-              { "condition": { "and": [{ ">=": [{ "var": "age" }, 25] }, { "<=": [{ "var": "age" }, 39] }] }, "points": 10, "label": "Age 25-39" },
-              { "condition": { "and": [{ ">=": [{ "var": "age" }, 40] }, { "<=": [{ "var": "age" }, 44] }] }, "points": 8, "label": "Age 40-44" },
-              { "condition": { "and": [{ ">=": [{ "var": "age" }, 45] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 6, "label": "Age 45-49" },
-              { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 4, "label": "Age 50-54" },
-              { "condition": { "or": [{ "<": [{ "var": "age" }, 25] }, { ">": [{ "var": "age" }, 54] }] }, "points": 2, "label": "Under 25 or over 54" }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Location",
-        "maxPoints": 12,
-        "factors": [
-          {
-            "name": "Intended business location",
-            "maxPoints": 12,
-            "rules": [
-              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 12, "label": "Rural/northern Ontario" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 8, "label": "Regional/outside GTA" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 4, "label": "Flexible location" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "GTA metro" }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Adaptability",
-        "maxPoints": 13,
-        "factors": [
-          {
-            "name": "Exploratory visit",
-            "maxPoints": 5,
-            "rules": [
-              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 5, "label": "Exploratory visit 5+ days" },
-              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 3, "label": "Exploratory visit (short)" },
-              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, false] }, "points": 0, "label": "No exploratory visit" }
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 9, "label": "$1M-$2M net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 800000] }, "points": 6, "label": "$800K-$1M net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 400000] }, "points": 3, "label": "$400K-$800K net worth" }
             ]
           },
           {
-            "name": "Canadian connection",
-            "maxPoints": 8,
+            "name": "Investment amount",
+            "maxPoints": 25,
             "rules": [
-              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 8, "label": "Work experience and family in Canada" },
-              { "condition": { "or": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 4, "label": "Work experience or family in Canada" },
-              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, false] }, { "==": [{ "var": "hasFamilyInCanada" }, false] }] }, "points": 0, "label": "No Canadian connection" }
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 3000000] }, "points": 25, "label": "$3M+ investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 1500000] }, "points": 21, "label": "$1.5M-$3M investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 1000000] }, "points": 18, "label": "$1M-$1.5M investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 600000] }, "points": 14, "label": "$600K-$1M investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 400000] }, "points": 10, "label": "$400K-$600K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] }, "points": 6, "label": "$200K-$400K investment" }
+            ]
+          },
+          {
+            "name": "Business visit to Ontario",
+            "maxPoints": 6,
+            "rules": [
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 6, "label": "5+ day business visit" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 3, "label": "Short business visit" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, false] }, "points": 0, "label": "No business visit" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Concept",
+        "maxPoints": 74,
+        "factors": [
+          {
+            "name": "Business model viability",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "businessOwnershipYears" }, 5] }, { ">=": [{ "var": "investmentCapacity" }, 600000] }] }, "points": 15, "label": "Highly viable business model" },
+              { "condition": { "and": [{ ">=": [{ "var": "businessOwnershipYears" }, 3] }, { ">=": [{ "var": "investmentCapacity" }, 400000] }] }, "points": 11, "label": "Strong business model" },
+              { "condition": { "and": [{ ">=": [{ "var": "businessOwnershipYears" }, 2] }, { ">=": [{ "var": "investmentCapacity" }, 200000] }] }, "points": 7, "label": "Good business model" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] }, "points": 3, "label": "Basic business model" }
+            ]
+          },
+          {
+            "name": "Economic benefit and key sector alignment",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "intendedJobCreation" }, 5] }, { "!=": [{ "var": "intendedLocation" }, "metro"] }] }, "points": 10, "label": "Key sector outside GTA with 5+ jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 5] }, "points": 8, "label": "5+ jobs in key sector" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 3] }, "points": 6, "label": "3-4 jobs with economic benefit" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 2] }, "points": 4, "label": "2 jobs with some economic benefit" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] }, "points": 2, "label": "1 job created" }
+            ]
+          },
+          {
+            "name": "Investment allocation and use of funds",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 1000000] }, "points": 10, "label": "Investment $1M+ well-allocated" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 600000] }, "points": 7, "label": "Investment $600K-$1M well-allocated" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 400000] }, "points": 5, "label": "Investment $400K-$600K appropriately allocated" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] }, "points": 3, "label": "Investment $200K-$400K meets minimum allocation" }
+            ]
+          },
+          {
+            "name": "Location of proposed business",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 10, "label": "Rural or Northern Ontario" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 7, "label": "Regional centre outside GTA" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 4, "label": "Flexible location" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "Greater Toronto Area" }
+            ]
+          },
+          {
+            "name": "Job creation (number of positions)",
+            "maxPoints": 7,
+            "rules": [
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 10] }, "points": 7, "label": "10+ permanent FTE jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 5] }, "points": 5, "label": "5-9 permanent FTE jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 3] }, "points": 4, "label": "3-4 permanent FTE jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 2] }, "points": 2, "label": "2 permanent FTE jobs" }
+            ]
+          },
+          {
+            "name": "Job creation (skill level of positions)",
+            "maxPoints": 7,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "intendedJobCreation" }, 5] }, { ">=": [{ "var": "investmentCapacity" }, 600000] }] }, "points": 7, "label": "5+ high-skilled NOC 0/A/B jobs" },
+              { "condition": { "and": [{ ">=": [{ "var": "intendedJobCreation" }, 3] }, { ">=": [{ "var": "investmentCapacity" }, 400000] }] }, "points": 5, "label": "3+ skilled NOC 0/A/B jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 2] }, "points": 3, "label": "2+ semi-skilled jobs" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] }, "points": 1, "label": "1 job of any skill level" }
+            ]
+          },
+          {
+            "name": "Other factors (Canadian experience, family, innovation)",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }, { "==": [{ "var": "hasCanadianDegree" }, true] }] }, "points": 15, "label": "Canadian work, family, and education" },
+              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 11, "label": "Canadian work experience and family" },
+              { "condition": { "or": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasCanadianDegree" }, true] }] }, "points": 7, "label": "Canadian work experience or education" },
+              { "condition": { "==": [{ "var": "hasFamilyInCanada" }, true] }, "points": 4, "label": "Family in Ontario" }
             ]
           }
         ]

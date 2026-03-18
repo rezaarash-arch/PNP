@@ -64,6 +64,7 @@ export function estimateProbability(
       caveats: ['Candidate is ineligible for this program.'],
       dataPoints: 0,
       lastDrawDate: null,
+      lastDrawMinScore: null,
     }
   }
 
@@ -72,6 +73,7 @@ export function estimateProbability(
     (a, b) => new Date(b.draw_date).getTime() - new Date(a.draw_date).getTime(),
   )
   const lastDrawDate = sortedDraws.length > 0 ? sortedDraws[0].draw_date : null
+  const lastDrawMinScore = sortedDraws.length > 0 ? sortedDraws[0].min_score : null
   const dataPoints = draws.length
 
   const hasSufficientData = draws.length >= 3
@@ -119,6 +121,7 @@ export function estimateProbability(
       caveats,
       dataPoints,
       lastDrawDate,
+      lastDrawMinScore,
     }
   }
 
@@ -183,6 +186,7 @@ export function estimateProbability(
     caveats,
     dataPoints,
     lastDrawDate,
+    lastDrawMinScore,
   }
 }
 

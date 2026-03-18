@@ -18,7 +18,7 @@ const PROGRAM_DISPLAY_NAMES: Record<string, { province: string; stream: string }
   'mb-entrepreneur': { province: 'Manitoba', stream: 'Entrepreneur' },
   'mb-farm-investor': { province: 'Manitoba', stream: 'Farm Investor' },
   'on-entrepreneur': { province: 'Ontario', stream: 'Entrepreneur' },
-  'nb-entrepreneurial': { province: 'New Brunswick', stream: 'Entrepreneurial' },
+  'nb-entrepreneurial': { province: 'New Brunswick', stream: 'Business Immigration' },
   'nb-post-grad': { province: 'New Brunswick', stream: 'Post-Graduate' },
   'ns-entrepreneur': { province: 'Nova Scotia', stream: 'Entrepreneur' },
   'ns-graduate-entrepreneur': { province: 'Nova Scotia', stream: 'Graduate Entrepreneur' },
@@ -33,7 +33,6 @@ function formatProgramId(programId: string): { province: string; stream: string 
   const known = PROGRAM_DISPLAY_NAMES[programId]
   if (known) return known
 
-  // Fallback: parse slug into readable text
   const parts = programId.split('-')
   const province = (parts[0] ?? programId).toUpperCase()
   const stream = parts
@@ -46,11 +45,13 @@ function formatProgramId(programId: string): { province: string; stream: string 
 export interface ProgramCardProps {
   result: ProgramResult
   onViewDetails: () => void
+  /** When true, renders with featured styling (used for top recommendations) */
+  featured?: boolean
 }
 
-export default function ProgramCard({ result, onViewDetails }: ProgramCardProps) {
+export default function ProgramCard({ result, onViewDetails, featured = false }: ProgramCardProps) {
   const { province, stream } = formatProgramId(result.programId)
-  const { eligibility, probability, sensitivity } = result
+  const { eligibility, probability, sensitivity, meta } = result
 
   const isEligible = eligibility.eligible
   const score = isEligible ? eligibility.score : null
@@ -58,10 +59,18 @@ export default function ProgramCard({ result, onViewDetails }: ProgramCardProps)
   const hasScore = score !== null && maxScore !== null && maxScore > 0
   const scorePercent = hasScore ? Math.round((score / maxScore) * 100) : 0
 
+  const cutoff = probability.lastDrawMinScore
+  const cutoffPercent = hasScore && cutoff !== null && maxScore > 0
+    ? Math.round((cutoff / maxScore) * 100)
+    : null
+
+  const aboveCutoff = hasScore && cutoff !== null ? score >= cutoff : null
+
   const improvementCount = sensitivity.length
+  const isInactive = meta.status !== 'active'
 
   return (
-    <article className={styles.card}>
+    <article className={`${styles.card} ${featured ? styles.featured : ''}`}>
       <div className={styles.header}>
         <div className={styles.programInfo}>
           <span className={styles.province}>{province}</span>
@@ -83,12 +92,36 @@ export default function ProgramCard({ result, onViewDetails }: ProgramCardProps)
         </span>
       </div>
 
+      {/* Status banner for closed/paused/redesigning programs */}
+      {isInactive && (
+        <div
+          className={`${styles.statusBanner} ${
+            meta.status === 'closed'
+              ? styles.statusClosed
+              : meta.status === 'paused'
+                ? styles.statusPaused
+                : styles.statusRedesigning
+          }`}
+          role="alert"
+        >
+          <span className={styles.statusIcon} aria-hidden="true">
+            {meta.status === 'closed' ? '⊘' : meta.status === 'paused' ? '⏸' : '🔄'}
+          </span>
+          <span>
+            {meta.status === 'closed' && 'This program is closed'}
+            {meta.status === 'paused' && 'This program is currently suspended'}
+            {meta.status === 'redesigning' && 'This program is being redesigned'}
+          </span>
+        </div>
+      )}
+
+      {/* Score vs Cutoff comparison */}
       {hasScore && (
         <div className={styles.scoreSection}>
           <div className={styles.scoreHeader}>
-            <span className={styles.scoreLabel}>Score</span>
+            <span className={styles.scoreLabel}>Your Score</span>
             <span className={styles.scoreValue}>
-              {score}/{maxScore} ({scorePercent}%)
+              {score}/{maxScore}
             </span>
           </div>
           <div className={styles.scoreTrack}>
@@ -96,7 +129,28 @@ export default function ProgramCard({ result, onViewDetails }: ProgramCardProps)
               className={styles.scoreFill}
               style={{ width: `${scorePercent}%` }}
             />
+            {/* Cutoff marker line */}
+            {cutoffPercent !== null && (
+              <div
+                className={styles.cutoffMarker}
+                style={{ left: `${Math.min(cutoffPercent, 100)}%` }}
+                title={`Latest draw cutoff: ${cutoff}`}
+              >
+                <div className={styles.cutoffLine} />
+              </div>
+            )}
           </div>
+          {/* Score legend */}
+          {cutoff !== null && (
+            <div className={styles.scoreLegend}>
+              <span className={`${styles.cutoffLabel} ${aboveCutoff ? styles.cutoffAbove : styles.cutoffBelow}`}>
+                {aboveCutoff ? '✓' : '▲'} Last draw cutoff: {cutoff}
+              </span>
+              <span className={styles.dataPointsLabel}>
+                {probability.dataPoints} draw{probability.dataPoints !== 1 ? 's' : ''} &middot; {probability.confidence} confidence
+              </span>
+            </div>
+          )}
         </div>
       )}
 
@@ -108,6 +162,16 @@ export default function ProgramCard({ result, onViewDetails }: ProgramCardProps)
           confidence={probability.confidence}
         />
       </div>
+
+      {probability.lastDrawDate && (
+        <p className={styles.drawInfo}>
+          Last draw: {new Date(probability.lastDrawDate).toLocaleDateString('en-CA', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
+        </p>
+      )}
 
       <div className={styles.footer}>
         {improvementCount > 0 && (

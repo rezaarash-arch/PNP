@@ -153,6 +153,69 @@
   color: #9ca3af;
 }
 
+/* Status banner */
+.statusBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md, 6px);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.statusClosed {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.statusPaused {
+  background-color: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.statusRedesigning {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.statusIcon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* Official link */
+.officialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8125rem;
+  color: var(--color-cyan, #0099cc);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.officialLink:hover {
+  color: #007aa3;
+  text-decoration: underline;
+}
+
+/* Business concept note */
+.businessConceptNote {
+  padding: 10px 14px;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: var(--radius-md, 6px);
+  font-size: 0.75rem;
+  color: #0369a1;
+  line-height: 1.5;
+}
+
 /* Disclaimer */
 .disclaimer {
   padding: var(--space-md, 1rem);

@@ -1,7 +1,13 @@
 {
   "programId": "ns-graduate-entrepreneur",
-  "version": 1,
+  "version": 2,
   "eligibility": [
+    {
+      "id": "program-closed",
+      "label": "Stream absorbed into unified NS Entrepreneur Stream as of Feb 18, 2026",
+      "condition": { "==": [true, false] },
+      "disqualifyMessage": "The Nova Scotia International Graduate Entrepreneur stream was absorbed into the unified Entrepreneur Stream on February 18, 2026. Apply through the consolidated NS Entrepreneur Stream instead."
+    },
     {
       "id": "min-clb",
       "label": "Minimum CLB 7 in English or French",

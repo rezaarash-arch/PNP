@@ -1,6 +1,6 @@
 {
   "programId": "mb-entrepreneur",
-  "version": 1,
+  "version": 2,
   "eligibility": [
     {
       "id": "min-net-worth",
@@ -21,15 +21,26 @@
     },
     {
       "id": "min-business-exp",
-      "label": "Minimum 3 years of business ownership experience",
-      "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] },
-      "disqualifyMessage": "Business ownership experience (${businessOwnershipYears} years) is below the 3-year minimum"
+      "label": "Minimum 3 years of business ownership or 5 years senior management experience",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 5] }
+        ]
+      },
+      "disqualifyMessage": "Business experience does not meet the 3-year ownership or 5-year management minimum"
     },
     {
       "id": "min-investment",
       "label": "Minimum $250,000 CAD personal investment ($150,000 outside Winnipeg)",
       "condition": { ">=": [{ "var": "investmentCapacity" }, 150000] },
       "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the minimum required"
+    },
+    {
+      "id": "exploratory-visit",
+      "label": "Must have completed a Business Research Visit to Manitoba",
+      "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] },
+      "disqualifyMessage": "A Business Research Visit to Manitoba is required before applying"
     }
   ],
   "scoring": {
@@ -37,90 +48,99 @@
     "minScoreRequired": null,
     "categories": [
       {
-        "name": "Business Experience",
-        "maxPoints": 35,
+        "name": "Human Capital",
+        "maxPoints": 75,
         "factors": [
           {
-            "name": "Years of business ownership",
-            "maxPoints": 20,
-            "rules": [
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 10] }, "points": 20, "label": "10+ years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 8] }, "points": 16, "label": "8-9 years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 12, "label": "5-7 years ownership" },
-              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 8, "label": "3-4 years ownership" }
-            ]
-          },
-          {
-            "name": "Number of employees managed",
-            "maxPoints": 15,
-            "rules": [
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 20] }, "points": 15, "label": "20+ employees" },
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 10] }, "points": 10, "label": "10-19 employees" },
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 5] }, "points": 6, "label": "5-9 employees" },
-              { "condition": { ">=": [{ "var": "employeesManaged" }, 1] }, "points": 3, "label": "1-4 employees" }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Personal Net Worth",
-        "maxPoints": 15,
-        "factors": [
-          {
-            "name": "Net worth level",
-            "maxPoints": 15,
-            "rules": [
-              { "condition": { ">=": [{ "var": "personalNetWorth" }, 2000000] }, "points": 15, "label": "$2M+ net worth" },
-              { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 10, "label": "$1M-$2M net worth" },
-              { "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] }, "points": 5, "label": "$500K-$1M net worth" }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Language Proficiency",
-        "maxPoints": 25,
-        "factors": [
-          {
-            "name": "CLB level (highest of English/French)",
-            "maxPoints": 25,
-            "rules": [
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 25, "label": "CLB 9+" },
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 18, "label": "CLB 7-8" },
-              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 10, "label": "CLB 5-6" }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Age",
-        "maxPoints": 10,
-        "factors": [
-          {
-            "name": "Age range",
+            "name": "Age",
             "maxPoints": 10,
             "rules": [
               { "condition": { "and": [{ ">=": [{ "var": "age" }, 25] }, { "<=": [{ "var": "age" }, 39] }] }, "points": 10, "label": "Age 25-39" },
               { "condition": { "and": [{ ">=": [{ "var": "age" }, 40] }, { "<=": [{ "var": "age" }, 44] }] }, "points": 8, "label": "Age 40-44" },
               { "condition": { "and": [{ ">=": [{ "var": "age" }, 45] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 6, "label": "Age 45-49" },
               { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 4, "label": "Age 50-54" },
-              { "condition": { "or": [{ "<": [{ "var": "age" }, 25] }, { ">": [{ "var": "age" }, 54] }] }, "points": 2, "label": "Under 25 or over 54" }
+              { "condition": { "or": [{ "<": [{ "var": "age" }, 25] }, { ">": [{ "var": "age" }, 54] }] }, "points": 0, "label": "Under 25 or over 54" }
+            ]
+          },
+          {
+            "name": "Education level",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "==": [{ "var": "highestEducation" }, "phd"] }, "points": 10, "label": "Doctorate / PhD" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "masters"] }, "points": 9, "label": "Master's degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 7, "label": "Bachelor's degree" },
+              { "condition": { "in": [{ "var": "highestEducation" }, ["3yr_degree", "2yr_diploma"]] }, "points": 5, "label": "3-year diploma or trade certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }, "points": 3, "label": "2-year diploma" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }, "points": 2, "label": "1-year certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 0, "label": "High school or less" }
+            ]
+          },
+          {
+            "name": "Business experience",
+            "maxPoints": 30,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "businessOwnershipYears" }, 5] }, { ">=": [{ "var": "ownershipPercentage" }, 51] }] }, "points": 30, "label": "5+ years as majority owner-operator" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 25, "label": "5+ years business ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 4] }, "points": 20, "label": "4 years business ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 15, "label": "3 years business ownership" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 5] }, "points": 10, "label": "5+ years senior management" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 3] }, "points": 5, "label": "3-4 years senior management" }
+            ]
+          },
+          {
+            "name": "Language proficiency (English or French)",
+            "maxPoints": 25,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 25, "label": "CLB 9+ (Advanced)" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 8] }, { ">=": [{ "var": "clbFrench" }, 8] }] }, "points": 22, "label": "CLB 8" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 18, "label": "CLB 7" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 6] }, { ">=": [{ "var": "clbFrench" }, 6] }] }, "points": 14, "label": "CLB 6" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 10, "label": "CLB 5" }
             ]
           }
         ]
       },
       {
-        "name": "Location",
-        "maxPoints": 15,
+        "name": "Investment",
+        "maxPoints": 50,
         "factors": [
           {
-            "name": "Intended business location",
+            "name": "Personal net worth",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 2000000] }, "points": 10, "label": "$2M+ net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 7, "label": "$1M-$2M net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] }, "points": 4, "label": "$500K-$1M net worth" }
+            ]
+          },
+          {
+            "name": "Business investment amount",
             "maxPoints": 15,
             "rules": [
-              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 15, "label": "Rural Manitoba" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 10, "label": "Regional/outside Winnipeg" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 5, "label": "Flexible location" },
-              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "Winnipeg metro" }
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 1000000] }, "points": 15, "label": "$1M+ investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 500000] }, "points": 12, "label": "$500K-$1M investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 350000] }, "points": 9, "label": "$350K-$500K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 250000] }, "points": 6, "label": "$250K-$350K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 150000] }, "points": 3, "label": "$150K-$250K investment" }
+            ]
+          },
+          {
+            "name": "Business Research Visit to Manitoba",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 7] }] }, "points": 20, "label": "7+ day research visit" },
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 15, "label": "5-6 day research visit" },
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 3] }] }, "points": 10, "label": "3-4 day research visit" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 5, "label": "Short research visit" }
+            ]
+          },
+          {
+            "name": "Economic priorities alignment",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 5, "label": "Rural Manitoba priority sector" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 3, "label": "Regional Manitoba" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 1, "label": "Winnipeg metro" }
             ]
           }
         ]
@@ -130,60 +150,43 @@
         "maxPoints": 25,
         "factors": [
           {
-            "name": "Exploratory visit to Manitoba",
-            "maxPoints": 10,
-            "rules": [
-              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 10, "label": "Exploratory visit 5+ days" },
-              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 6, "label": "Exploratory visit (short)" },
-              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, false] }, "points": 0, "label": "No exploratory visit" }
-            ]
-          },
-          {
-            "name": "Canadian connection",
-            "maxPoints": 10,
-            "rules": [
-              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 10, "label": "Work experience and family in Canada" },
-              { "condition": { "or": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 5, "label": "Work experience or family in Canada" },
-              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, false] }, { "==": [{ "var": "hasFamilyInCanada" }, false] }] }, "points": 0, "label": "No Canadian connection" }
-            ]
-          },
-          {
-            "name": "Community referral",
+            "name": "Spouse/common-law partner language proficiency",
             "maxPoints": 5,
             "rules": [
-              { "condition": { "==": [{ "var": "hasCommunityReferral" }, true] }, "points": 5, "label": "Has community referral" },
-              { "condition": { "==": [{ "var": "hasCommunityReferral" }, false] }, "points": 0, "label": "No community referral" }
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 5, "label": "Spouse CLB 7+ in English or French" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 3, "label": "Spouse CLB 5-6 in English or French" }
             ]
-          }
-        ]
-      },
-      {
-        "name": "Education",
-        "maxPoints": 10,
-        "factors": [
+          },
           {
-            "name": "Highest education level",
-            "maxPoints": 10,
+            "name": "Spouse/common-law partner second language",
+            "maxPoints": 5,
             "rules": [
-              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "phd"] }, { "==": [{ "var": "highestEducation" }, "masters"] }] }, "points": 10, "label": "Masters or PhD" },
-              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 7, "label": "Bachelors degree" },
-              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "3yr_degree"] }, { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }] }, "points": 4, "label": "Diploma or 3-year degree" },
-              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 2, "label": "High school" }
+              { "condition": { "and": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 5, "label": "Bilingual (CLB 5+ in both English and French)" },
+              { "condition": { ">=": [{ "var": "clbFrench" }, 5] }, "points": 3, "label": "French CLB 5+ as second language" }
             ]
-          }
-        ]
-      },
-      {
-        "name": "Job Creation",
-        "maxPoints": 15,
-        "factors": [
+          },
           {
-            "name": "Intended jobs to create",
-            "maxPoints": 15,
+            "name": "Close relative in Manitoba",
+            "maxPoints": 5,
             "rules": [
-              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 5] }, "points": 15, "label": "5+ jobs created" },
-              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 3] }, "points": 10, "label": "3-4 jobs created" },
-              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] }, "points": 5, "label": "1-2 jobs created" }
+              { "condition": { "==": [{ "var": "hasFamilyInCanada" }, true] }, "points": 5, "label": "Has close relative in Manitoba" },
+              { "condition": { "==": [{ "var": "hasFamilyInCanada" }, false] }, "points": 0, "label": "No close relative in Manitoba" }
+            ]
+          },
+          {
+            "name": "Child enrolled in Manitoba school",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "==": [{ "var": "hasFamilyInCanada" }, true] }, "points": 5, "label": "Child attending school in Manitoba" },
+              { "condition": { "==": [{ "var": "hasFamilyInCanada" }, false] }, "points": 0, "label": "No child in Manitoba school" }
+            ]
+          },
+          {
+            "name": "Spouse education or employment in Manitoba",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "==": [{ "var": "hasCanadianWorkExperience" }, true] }, "points": 5, "label": "Spouse has education or employment in Manitoba" },
+              { "condition": { "==": [{ "var": "hasCanadianWorkExperience" }, false] }, "points": 0, "label": "No spouse education/employment in Manitoba" }
             ]
           }
         ]

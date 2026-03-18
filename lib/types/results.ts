@@ -43,6 +43,7 @@ export interface ProbabilityEstimate {
   caveats: string[];
   dataPoints: number;
   lastDrawDate: string | null;
+  lastDrawMinScore: number | null;
 }
 
 export interface SensitivityAnalysis {
@@ -55,8 +56,16 @@ export interface SensitivityAnalysis {
   description: string;
 }
 
+export interface ProgramMeta {
+  status: 'active' | 'paused' | 'closed' | 'redesigning';
+  statusNote: string | null;
+  category: string;
+  officialUrl: string;
+}
+
 export interface ProgramResult {
   programId: string;
+  meta: ProgramMeta;
   eligibility: EligibilityResult;
   probability: ProbabilityEstimate;
   sensitivity: SensitivityAnalysis[];

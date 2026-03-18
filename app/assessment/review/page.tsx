@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { DisclaimerBanner } from '@/components/assessment/shared'
+import { transformAnswersToProfile } from '@/lib/validation/transform'
 
 /* ------------------------------------------------------------------
  * Lookup maps used to display human-readable labels for coded values
@@ -211,12 +212,18 @@ export default function ReviewPage() {
     if (!consent) return
     setLoading(true)
     try {
+      const profile = transformAnswersToProfile(answers)
       const response = await fetch('/api/assessment/compute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(answers),
+        body: JSON.stringify(profile),
       })
       const data = await response.json()
+      if (!response.ok || !Array.isArray(data.results)) {
+        console.error('Compute API error:', data)
+        alert('Something went wrong computing your results. Please try again.')
+        return
+      }
       sessionStorage.setItem('assessmentResults', JSON.stringify(data))
       router.push('/assessment/results')
     } catch {

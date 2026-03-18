@@ -1,7 +1,14 @@
-import { describe, it, expect } from 'vitest'
-import { POST } from './route'
+import { describe, it, expect, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 import strongCandidate from '@/lib/scoring/__fixtures__/strong-candidate.json'
+
+// Mock the Supabase draws module so it doesn't require real env vars
+vi.mock('@/lib/db/draws', () => ({
+  getDrawsForAllPrograms: vi.fn().mockResolvedValue(new Map()),
+}))
+
+// Import AFTER mocking
+const { POST } = await import('./route')
 
 function createRequest(body: unknown): NextRequest {
   return new NextRequest('http://localhost:3000/api/assessment/compute', {
@@ -12,7 +19,7 @@ function createRequest(body: unknown): NextRequest {
 }
 
 describe('POST /api/assessment/compute', () => {
-  it('returns JSON with results array sorted by probability', async () => {
+  it('returns JSON with results array and meta for each program', async () => {
     const req = createRequest(strongCandidate)
     const res = await POST(req)
     const data = await res.json()
@@ -22,19 +29,32 @@ describe('POST /api/assessment/compute', () => {
     expect(Array.isArray(data.results)).toBe(true)
     expect(data.results.length).toBeGreaterThan(0)
 
-    // Each result has required fields
+    // Each result has required fields including meta
     for (const result of data.results) {
       expect(result).toHaveProperty('programId')
+      expect(result).toHaveProperty('meta')
+      expect(result.meta).toHaveProperty('status')
+      expect(result.meta).toHaveProperty('officialUrl')
       expect(result).toHaveProperty('eligibility')
       expect(result).toHaveProperty('probability')
       expect(result).toHaveProperty('sensitivity')
     }
+  })
 
-    // Results are sorted by probability descending
-    for (let i = 1; i < data.results.length; i++) {
-      expect(data.results[i].probability.percent).toBeLessThanOrEqual(
-        data.results[i - 1].probability.percent
-      )
+  it('sorts results with eligible+active first, then eligible+inactive, then ineligible', async () => {
+    const req = createRequest(strongCandidate)
+    const res = await POST(req)
+    const data = await res.json()
+
+    // Three-tier sort: eligible+active → eligible+inactive → ineligible
+    let lastTier = -1
+    for (const result of data.results) {
+      const isEligible = result.eligibility.eligible
+      const isActive = result.meta.status === 'active'
+      const tier = !isEligible ? 2 : isActive ? 0 : 1
+
+      expect(tier).toBeGreaterThanOrEqual(lastTier)
+      lastTier = tier
     }
   })
 

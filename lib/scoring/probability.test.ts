@@ -61,10 +61,16 @@ describe('estimateProbability', () => {
     expect(['low', 'unlikely']).toContain(weak.tier)
   })
 
-  it('includes data points count and last draw date', () => {
+  it('includes data points count, last draw date, and last draw min score', () => {
     const result = estimateProbability('test', 120, true, mockDraws)
     expect(result.dataPoints).toBe(mockDraws.length)
     expect(result.lastDrawDate).toBe('2026-01-15')
+    expect(result.lastDrawMinScore).toBe(115) // min_score of the most recent draw
+  })
+
+  it('returns null lastDrawMinScore when no draws are available', () => {
+    const result = estimateProbability('test', 120, true, [])
+    expect(result.lastDrawMinScore).toBeNull()
   })
 
   it('percent is always between 0 and 100', () => {
