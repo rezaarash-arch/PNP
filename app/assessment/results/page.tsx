@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ResultsDashboard } from '@/components/assessment/results'
+import AIAnalysisSection from '@/components/assessment/results/AIAnalysisSection'
 
 export default function ResultsPage() {
   const router = useRouter()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any>(null)
+  const [profile, setProfile] = useState<Record<string, unknown> | null>(null)
 
   useEffect(() => {
     const stored = sessionStorage.getItem('assessmentResults')
@@ -15,6 +17,11 @@ export default function ResultsPage() {
       setData(JSON.parse(stored))
     } else {
       router.push('/assessment/questionnaire')
+    }
+
+    const storedProfile = sessionStorage.getItem('assessmentProfile')
+    if (storedProfile) {
+      setProfile(JSON.parse(storedProfile))
     }
   }, [router])
 
@@ -32,6 +39,9 @@ export default function ResultsPage() {
         results={data.results}
         assessedAt={data.meta?.timestamp ?? new Date().toISOString()}
       />
+      {profile && (
+        <AIAnalysisSection profile={profile} results={data.results} />
+      )}
     </main>
   )
 }

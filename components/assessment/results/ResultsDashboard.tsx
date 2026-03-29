@@ -258,6 +258,13 @@ export default function ResultsDashboard({
         >
           {pdfLoading ? 'Generating PDF...' : 'Download PDF'}
         </button>
+        <button
+          type="button"
+          className={styles.secondaryAction}
+          onClick={() => router.push('/assessment/report')}
+        >
+          View Full Report
+        </button>
         <a
           href="/contact"
           className={styles.primaryAction}

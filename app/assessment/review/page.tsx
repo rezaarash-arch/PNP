@@ -225,6 +225,7 @@ export default function ReviewPage() {
         return
       }
       sessionStorage.setItem('assessmentResults', JSON.stringify(data))
+      sessionStorage.setItem('assessmentProfile', JSON.stringify(profile))
       router.push('/assessment/results')
     } catch {
       alert('An error occurred. Please try again.')

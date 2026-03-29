@@ -1,0 +1,364 @@
+/* =========================================================
+   AI Analysis Section — dark-theme card system
+   ========================================================= */
+
+.section {
+  padding-top: var(--space-xl, 2rem);
+  margin-top: var(--space-xl, 2rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sectionTitle {
+  margin: 0 0 var(--space-lg, 1.5rem);
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: #0099cc;
+  line-height: 1.3;
+}
+
+/* Loading */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl, 3rem) var(--space-md, 1rem);
+  gap: var(--space-md, 1rem);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  border-top-color: #0099cc;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0;
+}
+
+.loadingSubtext {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Error */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md, 1rem);
+  padding: var(--space-2xl, 3rem) var(--space-md, 1rem);
+  text-align: center;
+}
+
+.errorText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.retryButton {
+  padding: var(--space-sm, 0.5rem) var(--space-xl, 2rem);
+  background: none;
+  border: 1.5px solid #0099cc;
+  border-radius: var(--radius-md, 6px);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0099cc;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.retryButton:hover {
+  background-color: #0099cc;
+  color: #ffffff;
+}
+
+/* Executive Summary */
+.executiveSummary {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 4px solid #0099cc;
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-lg, 1.5rem);
+  margin-bottom: var(--space-lg, 1.5rem);
+}
+
+.executiveSummary p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #f1f5f9;
+}
+
+/* Sub-section headings */
+.subSectionTitle {
+  margin: var(--space-lg, 1.5rem) 0 var(--space-md, 1rem);
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+/* Program Analysis cards */
+.programAnalysis {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-lg, 1.5rem);
+  margin-bottom: var(--space-md, 1rem);
+}
+
+.programAnalysisHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.5rem);
+  margin-bottom: var(--space-md, 1rem);
+}
+
+.programAnalysisName {
+  margin: 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+/* Fit badges */
+.fitBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.fit_strong {
+  background-color: rgba(5, 150, 105, 0.15);
+  color: #059669;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.fit_moderate {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.fit_weak {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.narrative {
+  margin: 0 0 var(--space-md, 1rem);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: #94a3b8;
+}
+
+.risksList {
+  list-style: disc;
+  margin: 0 0 var(--space-sm, 0.5rem);
+  padding-left: 1.25rem;
+}
+
+.risksList li {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.timeline {
+  font-size: 0.8125rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Strategic Roadmap */
+.roadmap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 1rem);
+  margin-bottom: var(--space-lg, 1.5rem);
+}
+
+.phase {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-md, 1rem) var(--space-lg, 1.5rem);
+}
+
+.phaseTitle {
+  margin: 0 0 var(--space-sm, 0.5rem);
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0099cc;
+}
+
+.actionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.actionList li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+  line-height: 1.5;
+}
+
+.actionList li::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: #0099cc;
+}
+
+/* Improvement Priorities */
+.improvements {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm, 0.5rem);
+  margin-bottom: var(--space-lg, 1.5rem);
+}
+
+.improvementItem {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md, 6px);
+  padding: var(--space-md, 1rem) var(--space-lg, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.improvementHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.5rem);
+}
+
+.improvementField {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.effortBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.effort_low {
+  background-color: rgba(5, 150, 105, 0.15);
+  color: #059669;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.effort_medium {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.effort_high {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.improvementRec {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.improvementImpact {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Risk Factors */
+.riskFactorList {
+  list-style: none;
+  margin: 0 0 var(--space-lg, 1.5rem);
+  padding: 0;
+}
+
+.riskFactorItem {
+  position: relative;
+  padding: var(--space-sm, 0.5rem) 0 var(--space-sm, 0.5rem) 1.25rem;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.riskFactorItem:last-child {
+  border-bottom: none;
+}
+
+.riskFactorItem::before {
+  content: '\26A0';
+  position: absolute;
+  left: 0;
+  color: #f59e0b;
+  font-size: 0.75rem;
+}
+
+/* Model note */
+.modelNote {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-align: center;
+  padding-top: var(--space-md, 1rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .programAnalysisHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .improvementHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
