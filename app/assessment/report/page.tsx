@@ -85,6 +85,8 @@ export default function ReportPage() {
   const [analysisLoading, setAnalysisLoading] = useState(true)
   const [analysisError, setAnalysisError] = useState(false)
 
+  const [pdfLoading, setPdfLoading] = useState(false)
+
   const [sortKey, setSortKey] = useState<SortKey>('probability')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
 
@@ -195,9 +197,27 @@ export default function ReportPage() {
     }
   }
 
-  function handleDownloadPdf() {
-    // Placeholder — Task 8 will implement /api/assessment/report/pdf
-    alert('PDF download will be available soon.')
+  async function handleDownloadPdf() {
+    setPdfLoading(true)
+    try {
+      const res = await fetch('/api/assessment/report/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ analysis, results }),
+      })
+      if (!res.ok) throw new Error('PDF generation failed')
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `genesislink-intelligence-report-${new Date().toISOString().split('T')[0]}.pdf`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      alert('Failed to generate PDF. Please try again.')
+    } finally {
+      setPdfLoading(false)
+    }
   }
 
   function handleRetry() {
@@ -267,8 +287,8 @@ export default function ReportPage() {
           <p className={styles.subtitle}>Prepared on {preparedDate}</p>
         </div>
         <div className={styles.headerActions}>
-          <button type="button" className={styles.downloadButton} onClick={handleDownloadPdf}>
-            &#128196; Download PDF
+          <button type="button" className={styles.downloadButton} onClick={handleDownloadPdf} disabled={pdfLoading || !analysis}>
+            {pdfLoading ? 'Generating PDF...' : '\u{1F4C4} Download PDF'}
           </button>
           <Link href="/assessment/results" className={styles.backLink}>
             &larr; Back to Results

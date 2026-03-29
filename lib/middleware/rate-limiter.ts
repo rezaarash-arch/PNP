@@ -128,6 +128,7 @@ export const ASSESSMENT_RATE_LIMITS: Record<string, RateLimitConfig> = {
   '/api/assessment/save': { maxTokens: 5, windowMs: 60_000 },
   '/api/assessment/pdf': { maxTokens: 3, windowMs: 60_000 },
   '/api/assessment/analyze': { maxTokens: 3, windowMs: 60_000 },
+  '/api/assessment/report/pdf': { maxTokens: 3, windowMs: 60_000 },
 }
 
 /** Singleton rate limiter instance for the middleware */
