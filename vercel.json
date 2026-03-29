@@ -9,6 +9,7 @@
     { "path": "/api/pipeline/scrape/pe", "schedule": "0 2 * * *" },
     { "path": "/api/pipeline/scrape/nt", "schedule": "0 2 * * *" },
     { "path": "/api/pipeline/scrape/yt", "schedule": "0 2 * * *" },
-    { "path": "/api/cleanup", "schedule": "0 3 * * *" }
+    { "path": "/api/cleanup", "schedule": "0 3 * * *" },
+    { "path": "/api/pipeline/research", "schedule": "0 4 1,15 * *" }
   ]
 }
