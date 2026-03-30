@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { DisclaimerBanner } from '@/components/assessment/shared'
-import { transformAnswersToProfile } from '@/lib/validation/transform'
 
 /* ------------------------------------------------------------------
  * Lookup maps used to display human-readable labels for coded values
@@ -195,7 +194,6 @@ export default function ReviewPage() {
   const router = useRouter()
   const [answers, setAnswers] = useState<Record<string, unknown>>({})
   const [consent, setConsent] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
@@ -208,30 +206,9 @@ export default function ReviewPage() {
     }
   }, [router])
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!consent) return
-    setLoading(true)
-    try {
-      const profile = transformAnswersToProfile(answers)
-      const response = await fetch('/api/assessment/compute', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profile),
-      })
-      const data = await response.json()
-      if (!response.ok || !Array.isArray(data.results)) {
-        console.error('Compute API error:', data)
-        alert('Something went wrong computing your results. Please try again.')
-        return
-      }
-      sessionStorage.setItem('assessmentResults', JSON.stringify(data))
-      sessionStorage.setItem('assessmentProfile', JSON.stringify(profile))
-      router.push('/assessment/results')
-    } catch {
-      alert('An error occurred. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+    router.push('/assessment/contact')
   }
 
   const handleEdit = (stepIndex: number) => {
@@ -409,27 +386,26 @@ export default function ReviewPage() {
       <button
         type="button"
         onClick={handleSubmit}
-        disabled={!consent || loading}
+        disabled={!consent}
         style={{
           display: 'block',
           width: '100%',
           padding: '0.875rem 2rem',
-          backgroundColor:
-            consent && !loading
-              ? 'var(--color-cyan, #0099cc)'
-              : '#ccc',
+          backgroundColor: consent
+            ? 'var(--color-cyan, #0099cc)'
+            : '#ccc',
           color: '#fff',
           fontFamily: "var(--font-display, 'Urbanist', sans-serif)",
           fontWeight: 700,
           fontSize: '1.05rem',
           border: 'none',
           borderRadius: 'var(--radius-lg, 12px)',
-          cursor: consent && !loading ? 'pointer' : 'not-allowed',
+          cursor: consent ? 'pointer' : 'not-allowed',
           marginBottom: '1.5rem',
           transition: 'background-color 0.2s ease',
         }}
       >
-        {loading ? 'Calculating...' : 'Get My Results'}
+        Continue
       </button>
 
       <DisclaimerBanner variant="inline" />
