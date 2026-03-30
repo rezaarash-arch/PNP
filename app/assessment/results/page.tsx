@@ -220,6 +220,40 @@ export default function ResultsPage() {
       .slice(0, 3)
   }, [results])
 
+  // Stats for the banner
+  const stats = useMemo(() => {
+    if (!results) return { eligible: 0, total: 0, bestProb: 0, bestProvince: '', activeCount: 0 }
+    const eligible = results.filter((r) => r.eligibility.eligible)
+    const active = results.filter((r) => r.meta.status === 'active')
+    const best = eligible.length > 0
+      ? eligible.reduce((a, b) => a.probability.percent > b.probability.percent ? a : b)
+      : null
+    return {
+      eligible: eligible.length,
+      total: results.length,
+      bestProb: best?.probability.percent ?? 0,
+      bestProvince: best ? displayName(best.programId).province : '—',
+      activeCount: active.length,
+    }
+  }, [results])
+
+  // Tier distribution for eligibility chart
+  const tierDistribution = useMemo(() => {
+    if (!results) return []
+    const counts: Record<string, number> = {}
+    for (const r of results) {
+      counts[r.probability.tier] = (counts[r.probability.tier] ?? 0) + 1
+    }
+    return [
+      { tier: 'strong', count: counts['strong'] ?? 0, color: '#34d399' },
+      { tier: 'competitive', count: counts['competitive'] ?? 0, color: '#22d3ee' },
+      { tier: 'moderate', count: counts['moderate'] ?? 0, color: '#fbbf24' },
+      { tier: 'low', count: counts['low'] ?? 0, color: '#fb7185' },
+      { tier: 'unlikely', count: counts['unlikely'] ?? 0, color: '#64748b' },
+      { tier: 'ineligible', count: counts['ineligible'] ?? 0, color: '#334155' },
+    ].filter((d) => d.count > 0)
+  }, [results])
+
   const analysisMap = useMemo(() => {
     const m = new Map<string, ProgramAnalysis>()
     if (analysis) {
@@ -573,6 +607,9 @@ export default function ResultsPage() {
 
   const clientName = contactInfo?.fullName ?? 'Candidate'
 
+  // Donut chart colors per rank
+  const RANK_COLORS = ['#34d399', '#fbbf24', '#22d3ee']
+
   return (
     <main className={styles.reportPage}>
       {/* ===== HEADER ===== */}
@@ -580,7 +617,7 @@ export default function ResultsPage() {
         <div className={styles.headerLeft}>
           <h1 className={styles.title}>GenesisLink Intelligence Report</h1>
           <p className={styles.subtitle}>
-            Prepared for <strong style={{ color: '#94a3b8' }}>{clientName}</strong> &middot; {preparedDate}
+            Prepared for <strong style={{ color: '#e2e8f0' }}>{clientName}</strong> &middot; {preparedDate}
           </p>
         </div>
         <div className={styles.headerActions}>
@@ -595,6 +632,30 @@ export default function ResultsPage() {
         </div>
       </header>
 
+      {/* ===== STATS BANNER ===== */}
+      <div className={styles.statsBanner}>
+        <div className={styles.statCard}>
+          <span className={styles.statLabel}>Eligible Programs</span>
+          <span className={styles.statValue}>{stats.eligible}<span style={{ fontSize: '0.9rem', color: '#5a6a7a', fontWeight: 500 }}>/{stats.total}</span></span>
+          <span className={styles.statNote}>programs matched</span>
+        </div>
+        <div className={styles.statCard}>
+          <span className={styles.statLabel}>Best Probability</span>
+          <span className={styles.statValue}>{stats.bestProb}%</span>
+          <span className={styles.statNote}>selection chance</span>
+        </div>
+        <div className={styles.statCard}>
+          <span className={styles.statLabel}>Top Province</span>
+          <span className={styles.statValue} style={{ fontSize: '1.35rem' }}>{stats.bestProvince}</span>
+          <span className={styles.statNote}>highest match</span>
+        </div>
+        <div className={styles.statCard}>
+          <span className={styles.statLabel}>Active Programs</span>
+          <span className={styles.statValue}>{stats.activeCount}</span>
+          <span className={styles.statNote}>currently accepting</span>
+        </div>
+      </div>
+
       {/* ===== ERROR STATE ===== */}
       {analysisError && (
         <div className={styles.errorContainer}>
@@ -608,23 +669,32 @@ export default function ResultsPage() {
       {/* ===== EXECUTIVE SUMMARY ===== */}
       {analysis && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>📋 Executive Summary</h2>
+          <h2 className={styles.sectionTitle}>Executive Summary</h2>
           <div className={styles.summaryCard}>
             <p>{analysis.executiveSummary}</p>
           </div>
         </section>
       )}
 
-      {/* ===== TOP RECOMMENDATIONS ===== */}
+      {/* ===== TOP RECOMMENDATIONS with DONUT CHARTS ===== */}
       {topPicks.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>🏆 Top Recommendations</h2>
+          <h2 className={styles.sectionTitle}>Top Recommendations</h2>
           <div className={styles.topRecommendations}>
             {topPicks.map((r, i) => {
               const d = displayName(r.programId)
               const pa = analysisMap.get(r.programId)
               const score = r.eligibility.eligible ? r.eligibility.score : null
               const maxScore = r.eligibility.eligible ? r.eligibility.maxScore : null
+              const pct = r.probability.percent
+              const donutColor = RANK_COLORS[i] ?? '#22d3ee'
+
+              // SVG donut params
+              const DR = 32
+              const DS = 5
+              const DCIRC = 2 * Math.PI * (DR - DS)
+              const donutOffset = DCIRC - (pct / 100) * DCIRC
+
               return (
                 <div key={r.programId} className={styles.recommendationCard}>
                   <div className={styles.recHeader}>
@@ -634,12 +704,33 @@ export default function ResultsPage() {
                       <h3 className={styles.recName}>{d.stream}</h3>
                     </div>
                   </div>
-                  <div className={styles.recStats}>
-                    <span>Probability: <span className={styles.recStatValue}>{r.probability.percent}%</span></span>
-                    {score !== null && maxScore !== null && (
-                      <span>Score: <span className={styles.recStatValue}>{score}/{maxScore}</span></span>
-                    )}
+
+                  {/* Donut chart + score */}
+                  <div className={styles.recChartRow}>
+                    <svg width={DR * 2} height={DR * 2} viewBox={`0 0 ${DR * 2} ${DR * 2}`}>
+                      <circle cx={DR} cy={DR} r={DR - DS} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={DS} />
+                      <circle
+                        cx={DR} cy={DR} r={DR - DS} fill="none"
+                        stroke={donutColor} strokeWidth={DS}
+                        strokeDasharray={DCIRC} strokeDashoffset={donutOffset}
+                        strokeLinecap="round"
+                        style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
+                      />
+                      <text x={DR} y={DR + 1} textAnchor="middle" dominantBaseline="middle"
+                        fill="#fff" fontSize="13" fontWeight="800" fontFamily="Outfit, sans-serif">
+                        {pct}%
+                      </text>
+                    </svg>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                      <span className={styles.recChartLabelTitle}>Probability</span>
+                      {score !== null && maxScore !== null && (
+                        <span style={{ fontSize: '0.75rem', color: '#5a6a7a' }}>
+                          Score: <strong style={{ color: '#e2e8f0' }}>{score}/{maxScore}</strong>
+                        </span>
+                      )}
+                    </div>
                   </div>
+
                   {pa && (
                     <>
                       <span className={`${styles.fitBadge} ${
@@ -665,10 +756,63 @@ export default function ResultsPage() {
         </section>
       )}
 
+      {/* ===== ELIGIBILITY OVERVIEW PIE CHART ===== */}
+      {tierDistribution.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Eligibility Overview</h2>
+          <div className={styles.eligibilityOverview}>
+            <div className={styles.eligPieArea}>
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                {(() => {
+                  const total = tierDistribution.reduce((s, d) => s + d.count, 0)
+                  let cumulativeAngle = -90
+                  return tierDistribution.map((d, idx) => {
+                    const angle = (d.count / total) * 360
+                    const startAngle = cumulativeAngle
+                    cumulativeAngle += angle
+                    const startRad = (startAngle * Math.PI) / 180
+                    const endRad = ((startAngle + angle) * Math.PI) / 180
+                    const largeArc = angle > 180 ? 1 : 0
+                    const cx = 80, cy = 80, r = 60
+                    const x1 = cx + r * Math.cos(startRad)
+                    const y1 = cy + r * Math.sin(startRad)
+                    const x2 = cx + r * Math.cos(endRad)
+                    const y2 = cy + r * Math.sin(endRad)
+                    const pathD = total === d.count
+                      ? `M ${cx},${cy - r} A ${r},${r} 0 1 1 ${cx - 0.01},${cy - r} Z`
+                      : `M ${cx},${cy} L ${x1},${y1} A ${r},${r} 0 ${largeArc} 1 ${x2},${y2} Z`
+                    return <path key={idx} d={pathD} fill={d.color} opacity={0.85} />
+                  })
+                })()}
+                <circle cx="80" cy="80" r="36" fill="#06101c" />
+                <text x="80" y="76" textAnchor="middle" dominantBaseline="middle"
+                  fill="#fff" fontSize="22" fontWeight="800" fontFamily="Outfit, sans-serif">
+                  {stats.eligible}
+                </text>
+                <text x="80" y="95" textAnchor="middle" dominantBaseline="middle"
+                  fill="#5a6a7a" fontSize="9" fontWeight="600" fontFamily="DM Sans, sans-serif"
+                  style={{ letterSpacing: '0.08em' }}>
+                  ELIGIBLE
+                </text>
+              </svg>
+            </div>
+            <div className={styles.eligLegend}>
+              {tierDistribution.map((d) => (
+                <div key={d.tier} className={styles.eligLegendItem}>
+                  <span className={styles.eligLegendDot} style={{ background: d.color }} />
+                  <span className={styles.eligLegendLabel} style={{ textTransform: 'capitalize' }}>{d.tier}</span>
+                  <span className={styles.eligLegendCount}>{d.count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ===== STRATEGIC ROADMAP ===== */}
       {analysis && analysis.strategicRoadmap.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>🗺️ Strategic Roadmap</h2>
+          <h2 className={styles.sectionTitle}>Strategic Roadmap</h2>
           <div className={styles.roadmapTimeline}>
             {analysis.strategicRoadmap.map((phase, i) => (
               <div key={i} className={styles.phase}>
@@ -685,7 +829,7 @@ export default function ResultsPage() {
       {/* ===== IMPROVEMENT PRIORITIES ===== */}
       {analysis && analysis.improvementPriorities.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>📈 Improvement Priorities</h2>
+          <h2 className={styles.sectionTitle}>Improvement Priorities</h2>
           <div className={styles.improvementsGrid}>
             {analysis.improvementPriorities.map((item, i) => (
               <div key={i} className={styles.improvementCard}>
@@ -710,7 +854,7 @@ export default function ResultsPage() {
       {/* ===== RISK FACTORS ===== */}
       {analysis && analysis.riskFactors.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>⚠️ Risk Factors</h2>
+          <h2 className={styles.sectionTitle}>Risk Factors</h2>
           <ul className={styles.riskList}>
             {analysis.riskFactors.map((risk, i) => (
               <li key={i} className={styles.riskItem}>{risk}</li>
@@ -719,9 +863,9 @@ export default function ResultsPage() {
         </section>
       )}
 
-      {/* ===== FULL PROGRAM MATRIX ===== */}
+      {/* ===== FULL PROGRAM MATRIX with VISUAL BARS ===== */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>📊 Full Program Matrix</h2>
+        <h2 className={styles.sectionTitle}>Full Program Matrix</h2>
         <div className={styles.matrixWrapper}>
           <table className={styles.matrixTable}>
             <thead>
@@ -729,9 +873,9 @@ export default function ResultsPage() {
                 <th><button type="button" className={styles.sortButton} onClick={() => handleSort('province')}>Province {renderSortArrow('province')}</button></th>
                 <th><button type="button" className={styles.sortButton} onClick={() => handleSort('stream')}>Stream {renderSortArrow('stream')}</button></th>
                 <th><button type="button" className={styles.sortButton} onClick={() => handleSort('status')}>Status {renderSortArrow('status')}</button></th>
-                <th><button type="button" className={styles.sortButton} onClick={() => handleSort('eligible')}>Eligible? {renderSortArrow('eligible')}</button></th>
-                <th><button type="button" className={styles.sortButton} onClick={() => handleSort('score')}>Score {renderSortArrow('score')}</button></th>
-                <th><button type="button" className={styles.sortButton} onClick={() => handleSort('probability')}>Probability {renderSortArrow('probability')}</button></th>
+                <th><button type="button" className={styles.sortButton} onClick={() => handleSort('eligible')}>Eligible {renderSortArrow('eligible')}</button></th>
+                <th style={{ minWidth: '140px' }}><button type="button" className={styles.sortButton} onClick={() => handleSort('score')}>Score {renderSortArrow('score')}</button></th>
+                <th style={{ minWidth: '130px' }}><button type="button" className={styles.sortButton} onClick={() => handleSort('probability')}>Probability {renderSortArrow('probability')}</button></th>
                 <th><button type="button" className={styles.sortButton} onClick={() => handleSort('tier')}>Tier {renderSortArrow('tier')}</button></th>
               </tr>
             </thead>
@@ -740,14 +884,49 @@ export default function ResultsPage() {
                 const d = displayName(r.programId)
                 const score = r.eligibility.eligible ? r.eligibility.score : null
                 const maxScore = r.eligibility.eligible ? r.eligibility.maxScore : null
+                const scorePct = score !== null && maxScore !== null && maxScore > 0
+                  ? (score / maxScore) * 100
+                  : 0
+                const probPct = r.probability.percent
+                const probColor = probPct >= 60 ? '#34d399'
+                  : probPct >= 30 ? '#fbbf24'
+                    : probPct > 0 ? '#fb7185'
+                      : '#334155'
+                const scoreColor = scorePct >= 70 ? '#34d399'
+                  : scorePct >= 40 ? '#fbbf24'
+                    : scorePct > 0 ? '#fb7185'
+                      : '#334155'
                 return (
                   <tr key={r.programId} className={rowClass(r)}>
                     <td>{d.province}</td>
                     <td>{d.stream}</td>
                     <td><span className={statusClass(r.meta.status)}>{r.meta.status}</span></td>
-                    <td>{r.eligibility.eligible ? 'Yes' : 'No'}</td>
-                    <td>{score !== null && maxScore !== null ? `${score}/${maxScore}` : '\u2014'}</td>
-                    <td>{r.probability.percent}%</td>
+                    <td>{r.eligibility.eligible
+                      ? <span style={{ color: '#34d399', fontWeight: 700 }}>Yes</span>
+                      : <span style={{ color: '#3a4a5a' }}>No</span>}
+                    </td>
+                    <td>
+                      {score !== null && maxScore !== null ? (
+                        <div className={styles.scoreBarCell}>
+                          <div className={styles.scoreBarTrack}>
+                            <div className={styles.scoreBarFill}
+                              style={{ width: `${scorePct}%`, background: scoreColor }} />
+                          </div>
+                          <span className={styles.scoreBarLabel}>{score}/{maxScore}</span>
+                        </div>
+                      ) : (
+                        <span style={{ color: '#2a3a4a' }}>&mdash;</span>
+                      )}
+                    </td>
+                    <td>
+                      <div className={styles.probBarCell}>
+                        <div className={styles.probBarTrack}>
+                          <div className={styles.probBarFill}
+                            style={{ width: `${probPct}%`, background: probColor }} />
+                        </div>
+                        <span className={styles.probBarLabel} style={{ color: probColor }}>{probPct}%</span>
+                      </div>
+                    </td>
                     <td><span className={tierClass(r.probability.tier)}>{r.probability.tier}</span></td>
                   </tr>
                 )
