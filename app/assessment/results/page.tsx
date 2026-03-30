@@ -580,7 +580,7 @@ export default function ResultsPage() {
         <div className={styles.headerLeft}>
           <h1 className={styles.title}>GenesisLink Intelligence Report</h1>
           <p className={styles.subtitle}>
-            Prepared for {clientName} &middot; {preparedDate}
+            Prepared for <strong style={{ color: '#94a3b8' }}>{clientName}</strong> &middot; {preparedDate}
           </p>
         </div>
         <div className={styles.headerActions}>
@@ -590,7 +590,7 @@ export default function ResultsPage() {
             onClick={handleDownloadPdf}
             disabled={pdfLoading || !analysis}
           >
-            {pdfLoading ? 'Generating PDF...' : '\u{1F4C4} Download PDF'}
+            {pdfLoading ? 'Generating...' : '📄 Download PDF'}
           </button>
         </div>
       </header>
@@ -608,7 +608,7 @@ export default function ResultsPage() {
       {/* ===== EXECUTIVE SUMMARY ===== */}
       {analysis && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Executive Summary</h2>
+          <h2 className={styles.sectionTitle}>📋 Executive Summary</h2>
           <div className={styles.summaryCard}>
             <p>{analysis.executiveSummary}</p>
           </div>
@@ -618,7 +618,7 @@ export default function ResultsPage() {
       {/* ===== TOP RECOMMENDATIONS ===== */}
       {topPicks.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Top Recommendations</h2>
+          <h2 className={styles.sectionTitle}>🏆 Top Recommendations</h2>
           <div className={styles.topRecommendations}>
             {topPicks.map((r, i) => {
               const d = displayName(r.programId)
@@ -668,7 +668,7 @@ export default function ResultsPage() {
       {/* ===== STRATEGIC ROADMAP ===== */}
       {analysis && analysis.strategicRoadmap.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Strategic Roadmap</h2>
+          <h2 className={styles.sectionTitle}>🗺️ Strategic Roadmap</h2>
           <div className={styles.roadmapTimeline}>
             {analysis.strategicRoadmap.map((phase, i) => (
               <div key={i} className={styles.phase}>
@@ -685,7 +685,7 @@ export default function ResultsPage() {
       {/* ===== IMPROVEMENT PRIORITIES ===== */}
       {analysis && analysis.improvementPriorities.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Improvement Priorities</h2>
+          <h2 className={styles.sectionTitle}>📈 Improvement Priorities</h2>
           <div className={styles.improvementsGrid}>
             {analysis.improvementPriorities.map((item, i) => (
               <div key={i} className={styles.improvementCard}>
@@ -710,7 +710,7 @@ export default function ResultsPage() {
       {/* ===== RISK FACTORS ===== */}
       {analysis && analysis.riskFactors.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Risk Factors</h2>
+          <h2 className={styles.sectionTitle}>⚠️ Risk Factors</h2>
           <ul className={styles.riskList}>
             {analysis.riskFactors.map((risk, i) => (
               <li key={i} className={styles.riskItem}>{risk}</li>
@@ -721,7 +721,7 @@ export default function ResultsPage() {
 
       {/* ===== FULL PROGRAM MATRIX ===== */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Full Program Matrix</h2>
+        <h2 className={styles.sectionTitle}>📊 Full Program Matrix</h2>
         <div className={styles.matrixWrapper}>
           <table className={styles.matrixTable}>
             <thead>
