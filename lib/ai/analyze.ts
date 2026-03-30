@@ -3,8 +3,8 @@ import type { AIAnalysis } from './types'
 import type { UserProfile } from '@/lib/types/assessment'
 import type { ProgramResult } from '@/lib/types/results'
 
-const MODEL = 'claude-sonnet-4-6'
-const MAX_TOKENS = 3000
+const MODEL = 'claude-sonnet-4-20250514'
+const MAX_TOKENS = 4096
 
 function buildSystemPrompt(): string {
   return `You are a Canadian immigration consultant AI specializing in business and entrepreneur immigration pathways. Your role is to analyze applicant profiles and program eligibility results, then provide strategic guidance.
@@ -158,7 +158,8 @@ export async function analyzeProfile(
     }
 
     return analysis
-  } catch {
+  } catch (err) {
+    console.error('[analyzeProfile] AI analysis failed:', err instanceof Error ? err.message : err)
     return null
   }
 }

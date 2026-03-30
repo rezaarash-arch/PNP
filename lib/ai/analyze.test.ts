@@ -141,7 +141,7 @@ describe('analyzeProfile', () => {
     expect(result!.improvementPriorities).toHaveLength(1)
     expect(result!.riskFactors).toHaveLength(1)
     expect(result!.generatedAt).toBeDefined()
-    expect(result!.modelUsed).toBe('claude-sonnet-4-6')
+    expect(result!.modelUsed).toBe('claude-sonnet-4-20250514')
   })
 
   it('returns null when Claude call fails', async () => {

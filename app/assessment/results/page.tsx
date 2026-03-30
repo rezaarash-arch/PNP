@@ -321,9 +321,19 @@ export default function ResultsPage() {
   }
 
   /* ==================================================================
-     PHASE 1: Progress Bar
+     PHASE 1: Circular Progress Gauge
      ================================================================== */
   if (!reportReady) {
+    const SIZE = 220
+    const STROKE = 10
+    const RADIUS = (SIZE - STROKE) / 2
+    const CIRCUMFERENCE = 2 * Math.PI * RADIUS
+    const dashOffset = CIRCUMFERENCE - (progress / 100) * CIRCUMFERENCE
+
+    // Determine current stage index for step indicators
+    const currentStageIdx = STAGES.findIndex((s) => s.target > progress)
+    const activeStage = currentStageIdx === -1 ? STAGES.length - 1 : currentStageIdx
+
     return (
       <main
         style={{
@@ -334,76 +344,216 @@ export default function ResultsPage() {
           justifyContent: 'center',
           padding: '2rem 1rem',
           fontFamily: "var(--font-body, 'Nunito', sans-serif)",
+          background: 'linear-gradient(135deg, #0a1628 0%, #0f2744 50%, #0a1628 100%)',
         }}
       >
-        <div style={{ width: '100%', maxWidth: '480px', textAlign: 'center' }}>
-          {/* Logo / branding */}
+        <div style={{ width: '100%', maxWidth: '520px', textAlign: 'center' }}>
+          {/* Logo */}
           <h1
             style={{
               fontFamily: "var(--font-display, 'Urbanist', sans-serif)",
-              fontSize: '1.5rem',
+              fontSize: '1.4rem',
               fontWeight: 800,
-              color: '#f1f5f9',
+              color: 'rgba(255,255,255,0.7)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
               marginBottom: '2.5rem',
             }}
           >
             GenesisLink
           </h1>
 
-          {/* Progress percentage */}
-          <div
-            style={{
-              fontSize: '3rem',
-              fontWeight: 800,
-              fontFamily: "var(--font-display, 'Urbanist', sans-serif)",
-              color: '#0099cc',
-              marginBottom: '1rem',
-              lineHeight: 1,
-            }}
-          >
-            {progress}%
-          </div>
+          {/* Circular gauge */}
+          <div style={{ position: 'relative', width: SIZE, height: SIZE, margin: '0 auto 2rem' }}>
+            <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
+              {/* Outer glow */}
+              <defs>
+                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#0099cc" />
+                  <stop offset="50%" stopColor="#00c2ff" />
+                  <stop offset="100%" stopColor="#00e5ff" />
+                </linearGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="innerShadow">
+                  <feGaussianBlur stdDeviation="2" />
+                  <feComposite operator="out" in2="SourceGraphic" />
+                </filter>
+              </defs>
 
-          {/* Progress bar track */}
-          <div
-            style={{
-              width: '100%',
-              height: '8px',
-              backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              borderRadius: '4px',
-              overflow: 'hidden',
-              marginBottom: '1.5rem',
-            }}
-          >
+              {/* Background track */}
+              <circle
+                cx={SIZE / 2}
+                cy={SIZE / 2}
+                r={RADIUS}
+                fill="none"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth={STROKE}
+              />
+
+              {/* Tick marks */}
+              {Array.from({ length: 40 }).map((_, i) => {
+                const angle = (i / 40) * 360 - 90
+                const rad = (angle * Math.PI) / 180
+                const innerR = RADIUS - STROKE / 2 - 4
+                const outerR = RADIUS - STROKE / 2 - (i % 5 === 0 ? 12 : 8)
+                return (
+                  <line
+                    key={i}
+                    x1={SIZE / 2 + innerR * Math.cos(rad)}
+                    y1={SIZE / 2 + innerR * Math.sin(rad)}
+                    x2={SIZE / 2 + outerR * Math.cos(rad)}
+                    y2={SIZE / 2 + outerR * Math.sin(rad)}
+                    stroke={
+                      (i / 40) * 100 <= progress
+                        ? 'rgba(0,194,255,0.4)'
+                        : 'rgba(255,255,255,0.08)'
+                    }
+                    strokeWidth={i % 5 === 0 ? 1.5 : 0.8}
+                    strokeLinecap="round"
+                  />
+                )
+              })}
+
+              {/* Progress arc */}
+              <circle
+                cx={SIZE / 2}
+                cy={SIZE / 2}
+                r={RADIUS}
+                fill="none"
+                stroke="url(#gaugeGradient)"
+                strokeWidth={STROKE}
+                strokeDasharray={CIRCUMFERENCE}
+                strokeDashoffset={dashOffset}
+                strokeLinecap="round"
+                filter="url(#glow)"
+                style={{
+                  transform: 'rotate(-90deg)',
+                  transformOrigin: '50% 50%',
+                  transition: 'stroke-dashoffset 0.3s ease-out',
+                }}
+              />
+
+              {/* Leading dot */}
+              {progress > 0 && progress < 100 && (() => {
+                const angle = ((progress / 100) * 360 - 90) * (Math.PI / 180)
+                return (
+                  <circle
+                    cx={SIZE / 2 + RADIUS * Math.cos(angle)}
+                    cy={SIZE / 2 + RADIUS * Math.sin(angle)}
+                    r={4}
+                    fill="#00e5ff"
+                    filter="url(#glow)"
+                  />
+                )
+              })()}
+            </svg>
+
+            {/* Center content */}
             <div
               style={{
-                width: `${progress}%`,
-                height: '100%',
-                background: 'linear-gradient(90deg, #0099cc, #00c2ff)',
-                borderRadius: '4px',
-                transition: 'width 0.3s ease-out',
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-            />
+            >
+              <span
+                style={{
+                  fontSize: '3.2rem',
+                  fontWeight: 800,
+                  fontFamily: "var(--font-display, 'Urbanist', sans-serif)",
+                  background: 'linear-gradient(135deg, #00c2ff, #00e5ff)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  lineHeight: 1,
+                }}
+              >
+                {progress}
+              </span>
+              <span
+                style={{
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  color: 'rgba(255,255,255,0.4)',
+                  marginTop: '0.15rem',
+                  letterSpacing: '0.05em',
+                }}
+              >
+                PERCENT
+              </span>
+            </div>
           </div>
 
           {/* Stage label */}
           <p
             style={{
-              fontSize: '1rem',
-              fontWeight: 600,
+              fontSize: '1.05rem',
+              fontWeight: 700,
               color: '#f1f5f9',
-              marginBottom: '0.5rem',
+              marginBottom: '1.5rem',
+              minHeight: '1.5em',
             }}
           >
             {stageLabel}
           </p>
 
+          {/* Step indicators */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginBottom: '2rem',
+            }}
+          >
+            {STAGES.map((stage, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <div
+                  style={{
+                    width: i <= activeStage ? 32 : 24,
+                    height: 4,
+                    borderRadius: 2,
+                    background:
+                      i < activeStage
+                        ? 'linear-gradient(90deg, #0099cc, #00c2ff)'
+                        : i === activeStage
+                          ? 'linear-gradient(90deg, #0099cc, rgba(0,194,255,0.5))'
+                          : 'rgba(255,255,255,0.1)',
+                    transition: 'all 0.4s ease',
+                    boxShadow:
+                      i <= activeStage
+                        ? '0 0 8px rgba(0,153,204,0.4)'
+                        : 'none',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+
           {/* Subtext */}
           <p
             style={{
               fontSize: '0.85rem',
-              color: '#64748b',
-              lineHeight: 1.5,
+              color: 'rgba(255,255,255,0.35)',
+              lineHeight: 1.6,
+              maxWidth: '360px',
+              margin: '0 auto',
             }}
           >
             Our AI agent is analyzing your profile against all 21 Canadian
