@@ -282,7 +282,7 @@ function Footer() {
   return (
     <View style={styles.footer} fixed>
       <Text>GenesisLink - Confidential</Text>
-      <Text>Intelligence Report</Text>
+      <Text>Business Immigration Report</Text>
     </View>
   )
 }
@@ -420,13 +420,13 @@ export function IntelligenceReport({
 }: IntelligenceReportProps) {
   return (
     <Document
-      title="GenesisLink Intelligence Report"
+      title="GenesisLink Business Immigration Report"
       author="GenesisLink"
-      subject="PNP Intelligence Report"
+      subject="PNP Business Immigration Report"
     >
       {/* Page 1: Cover + Executive Summary */}
       <Page size="LETTER" style={styles.page} wrap>
-        <Text style={styles.coverTitle}>GenesisLink Intelligence Report</Text>
+        <Text style={styles.coverTitle}>GenesisLink Business Immigration Report</Text>
         <Text style={styles.coverSubtitle}>Generated {generatedAt}</Text>
         <View style={styles.hr} />
 

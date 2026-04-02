@@ -89,6 +89,14 @@ export function Education({ answers, onUpdate }: SectionProps) {
           label="Do you have a Canadian degree or diploma?"
         />
 
+        <RadioCardGroup
+          name="degreeWithinLastTenYears"
+          options={YES_NO_OPTIONS}
+          value={answers.degreeWithinLastTenYears ?? ''}
+          onChange={(v) => onUpdate('degreeWithinLastTenYears', v)}
+          label="Was your highest degree completed within the last 10 years?"
+        />
+
         {answers.hasCanadianDegree === 'yes' && (
           <>
             <SearchableDropdown
@@ -108,32 +116,30 @@ export function Education({ answers, onUpdate }: SectionProps) {
               label="Length of Canadian program (years)"
               formatValue={(v) => `${v} ${v === 1 ? 'year' : 'years'}`}
             />
-          </>
-        )}
 
-        {answers.educationCountry && answers.educationCountry !== 'CA' && (
-          <div>
-            <Tooltip content="An Educational Credential Assessment (ECA) verifies that your foreign degree, diploma, or certificate is valid and equivalent to a Canadian credential. It is required for most immigration programs.">
-              <span
-                style={{
-                  fontFamily: "var(--font-display, 'Urbanist', sans-serif)",
-                  fontSize: '0.95rem',
-                  fontWeight: 600,
-                  color: 'var(--color-navy, #000)',
-                }}
-              >
-                Do you have an ECA (Educational Credential Assessment)?
-              </span>
-            </Tooltip>
-            <div style={{ marginTop: 'var(--space-sm, 0.5rem)' }}>
-              <RadioCardGroup
-                name="hasECA"
-                options={YES_NO_OPTIONS}
-                value={answers.hasECA ?? ''}
-                onChange={(v) => onUpdate('hasECA', v)}
-              />
+            <div>
+              <Tooltip content="A Post-Graduation Work Permit (PGWP) is issued to international students who have graduated from an eligible Canadian institution. Holding a PGWP can give you Canadian work experience and strengthen your immigration profile.">
+                <span
+                  style={{
+                    fontFamily: "var(--font-display, 'Urbanist', sans-serif)",
+                    fontSize: '0.95rem',
+                    fontWeight: 600,
+                    color: 'var(--color-navy, #000)',
+                  }}
+                >
+                  Do you hold a PGWP (Post-Graduation Work Permit)?
+                </span>
+              </Tooltip>
+              <div style={{ marginTop: 'var(--space-sm, 0.5rem)' }}>
+                <RadioCardGroup
+                  name="hasPGWP"
+                  options={YES_NO_OPTIONS}
+                  value={answers.hasPGWP ?? ''}
+                  onChange={(v) => onUpdate('hasPGWP', v)}
+                />
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </section>

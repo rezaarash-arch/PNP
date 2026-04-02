@@ -10,9 +10,11 @@ export default function ContactPage() {
   const [answers, setAnswers] = useState<Record<string, unknown>>({})
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
+  const [confirmEmail, setConfirmEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
+  const [marketingConsent, setMarketingConsent] = useState(false)
 
   useEffect(() => {
     const stored = sessionStorage.getItem('assessmentAnswers')
@@ -31,6 +33,9 @@ export default function ContactPage() {
       errs.email = 'Email is required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       errs.email = 'Please enter a valid email address'
+    }
+    if (confirmEmail.trim().toLowerCase() !== email.trim().toLowerCase()) {
+      errs.confirmEmail = 'Email addresses do not match'
     }
     if (!phone.trim()) {
       errs.phone = 'Phone number is required'
@@ -52,6 +57,7 @@ export default function ContactPage() {
         fullName: fullName.trim(),
         email: email.trim(),
         phone: phone.trim(),
+        marketingConsent,
       }
       sessionStorage.setItem('contactInfo', JSON.stringify(contactInfo))
 
@@ -71,6 +77,31 @@ export default function ContactPage() {
 
       sessionStorage.setItem('assessmentResults', JSON.stringify(data))
       sessionStorage.setItem('assessmentProfile', JSON.stringify(profile))
+
+      // Persist summary to localStorage for the dashboard
+      try {
+        const topPrograms = (data.results as Array<{ programId: string; eligibility: { eligible: boolean; score?: number; maxScore?: number }; probability: { percent: number } }>)
+          .filter((r) => r.eligibility.eligible)
+          .sort((a, b) => b.probability.percent - a.probability.percent)
+          .slice(0, 3)
+          .map((r) => r.programId)
+
+        const entry = {
+          id: crypto.randomUUID(),
+          date: new Date().toISOString(),
+          name: fullName.trim(),
+          email: email.trim(),
+          topPrograms,
+          totalEligible: (data.results as Array<{ eligibility: { eligible: boolean } }>).filter((r) => r.eligibility.eligible).length,
+          totalPrograms: (data.results as Array<unknown>).length,
+        }
+        const history = JSON.parse(localStorage.getItem('assessmentHistory') ?? '[]')
+        history.unshift(entry)
+        localStorage.setItem('assessmentHistory', JSON.stringify(history.slice(0, 20)))
+      } catch {
+        // localStorage unavailable — skip silently
+      }
+
       router.push('/assessment/results')
     } catch {
       alert('An error occurred. Please try again.')
@@ -116,7 +147,7 @@ export default function ContactPage() {
         }}
       >
         Enter your contact details below so we can send you your personalized
-        intelligence report.
+        business immigration report.
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -205,8 +236,51 @@ export default function ContactPage() {
             )}
           </div>
 
+          {/* Confirm Email */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <label
+              htmlFor="confirmEmail"
+              style={{
+                display: 'block',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                color: 'var(--color-navy, #000)',
+                marginBottom: '0.4rem',
+              }}
+            >
+              Confirm Email <span style={{ color: '#dc2626' }}>*</span>
+            </label>
+            <input
+              id="confirmEmail"
+              type="email"
+              value={confirmEmail}
+              onChange={(e) => setConfirmEmail(e.target.value)}
+              placeholder="Re-enter your email address"
+              style={{
+                width: '100%',
+                padding: '0.65rem 0.75rem',
+                border: `1px solid ${errors.confirmEmail ? '#dc2626' : confirmEmail && confirmEmail.toLowerCase() === email.toLowerCase() ? '#16a34a' : '#d1d5db'}`,
+                borderRadius: '8px',
+                fontSize: '0.95rem',
+                fontFamily: 'inherit',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+            {errors.confirmEmail && (
+              <p style={{ color: '#dc2626', fontSize: '0.8rem', marginTop: '0.3rem' }}>
+                {errors.confirmEmail}
+              </p>
+            )}
+            {!errors.confirmEmail && confirmEmail && confirmEmail.toLowerCase() === email.toLowerCase() && (
+              <p style={{ color: '#16a34a', fontSize: '0.8rem', marginTop: '0.3rem' }}>
+                ✓ Emails match
+              </p>
+            )}
+          </div>
+
           {/* Phone */}
-          <div>
+          <div style={{ marginBottom: '1.25rem' }}>
             <label
               htmlFor="phone"
               style={{
@@ -242,6 +316,36 @@ export default function ContactPage() {
               </p>
             )}
           </div>
+
+          {/* Marketing Consent */}
+          <label
+            style={{
+              display: 'flex',
+              gap: '0.6rem',
+              alignItems: 'flex-start',
+              cursor: 'pointer',
+              fontSize: '0.85rem',
+              lineHeight: 1.5,
+              color: '#475569',
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={marketingConsent}
+              onChange={(e) => setMarketingConsent(e.target.checked)}
+              style={{
+                marginTop: '0.15rem',
+                width: '16px',
+                height: '16px',
+                accentColor: 'var(--color-cyan, #0099cc)',
+                flexShrink: 0,
+              }}
+            />
+            <span>
+              I would like to receive educational content, program updates, and
+              promotional emails from GenesisLink. You can unsubscribe at any time.
+            </span>
+          </label>
         </div>
 
         <button

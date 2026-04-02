@@ -131,13 +131,15 @@ export function BusinessExperience({ answers, onUpdate }: SectionProps) {
           placeholder="Select industry..."
         />
 
-        <RadioCardGroup
-          name="annualRevenue"
-          options={REVENUE_OPTIONS}
-          value={answers.annualRevenue ?? ''}
-          onChange={(v) => onUpdate('annualRevenue', v)}
-          label="Annual business revenue (CAD)"
-        />
+        {isOwner && (
+          <RadioCardGroup
+            name="annualRevenue"
+            options={REVENUE_OPTIONS}
+            value={answers.annualRevenue ?? ''}
+            onChange={(v) => onUpdate('annualRevenue', v)}
+            label="Annual business revenue (CAD)"
+          />
+        )}
 
         {isOwner && (
           <RadioCardGroup

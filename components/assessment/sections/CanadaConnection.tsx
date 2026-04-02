@@ -28,6 +28,12 @@ const YES_NO_OPTIONS = [
   { value: 'no', label: 'No' },
 ]
 
+const COMMUNITY_REFERRAL_OPTIONS = [
+  { value: 'yes', label: 'Yes', description: 'I already have a community referral letter' },
+  { value: 'willing', label: 'No, but willing', description: 'I don\'t have one but I\'m willing to obtain one' },
+  { value: 'no', label: 'No, prefer without', description: 'I prefer programs that don\'t require one' },
+]
+
 export function CanadaConnection({ answers, onUpdate }: SectionProps) {
   return (
     <section>
@@ -86,7 +92,7 @@ export function CanadaConnection({ answers, onUpdate }: SectionProps) {
 
         <RadioCardGroup
           name="hasCommunityReferral"
-          options={YES_NO_OPTIONS}
+          options={COMMUNITY_REFERRAL_OPTIONS}
           value={answers.hasCommunityReferral ?? ''}
           onChange={(v) => onUpdate('hasCommunityReferral', v)}
           label="Do you have a community referral letter?"

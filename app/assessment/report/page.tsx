@@ -32,6 +32,8 @@ const PROGRAM_DISPLAY: Record<string, { province: string; stream: string }> = {
   'nl-graduate-entrepreneur': { province: 'Newfoundland & Labrador', stream: 'Graduate Entrepreneur' },
   'nwt-business': { province: 'Northwest Territories', stream: 'Business' },
   'yk-business-nominee': { province: 'Yukon', stream: 'Business Nominee' },
+  'fed-start-up-visa': { province: 'Federal', stream: 'Start-Up Visa' },
+  'fed-self-employed': { province: 'Federal', stream: 'Self-Employed Persons' },
 }
 
 function displayName(id: string): { province: string; stream: string } {
@@ -283,7 +285,7 @@ export default function ReportPage() {
       {/* ===== HEADER ===== */}
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <h1 className={styles.title}>GenesisLink Intelligence Report</h1>
+          <h1 className={styles.title}>GenesisLink Business Immigration Report</h1>
           <p className={styles.subtitle}>Prepared on {preparedDate}</p>
         </div>
         <div className={styles.headerActions}>
@@ -452,7 +454,9 @@ export default function ReportPage() {
                 <th><button type="button" className={styles.sortButton} onClick={() => handleSort('eligible')}>Eligible? {renderSortArrow('eligible')}</button></th>
                 <th><button type="button" className={styles.sortButton} onClick={() => handleSort('score')}>Score {renderSortArrow('score')}</button></th>
                 <th><button type="button" className={styles.sortButton} onClick={() => handleSort('probability')}>Probability {renderSortArrow('probability')}</button></th>
+                <th className={styles.lastDrawCol}>Last Draw</th>
                 <th><button type="button" className={styles.sortButton} onClick={() => handleSort('tier')}>Tier {renderSortArrow('tier')}</button></th>
+                <th>Link</th>
               </tr>
             </thead>
             <tbody>
@@ -468,12 +472,46 @@ export default function ReportPage() {
                     <td>{r.eligibility.eligible ? 'Yes' : 'No'}</td>
                     <td>{score !== null && maxScore !== null ? `${score}/${maxScore}` : '\u2014'}</td>
                     <td>{r.probability.percent}%</td>
+                    <td className={styles.lastDrawCol}>
+                      {r.probability.lastDrawDate
+                        ? new Date(r.probability.lastDrawDate).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' })
+                        : '\u2014'}
+                      {r.probability.lastDrawMinScore != null && (
+                        <span className={styles.lastDrawScore}> (min: {r.probability.lastDrawMinScore})</span>
+                      )}
+                    </td>
                     <td><span className={tierClass(r.probability.tier)}>{r.probability.tier}</span></td>
+                    <td>
+                      {r.meta.officialUrl ? (
+                        <a href={r.meta.officialUrl} target="_blank" rel="noopener noreferrer" className={styles.programLink}>
+                          View &#8599;
+                        </a>
+                      ) : '\u2014'}
+                    </td>
                   </tr>
                 )
               })}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* ===== CONSULTATION CTA ===== */}
+      <section className={styles.section}>
+        <div className={styles.ctaCard}>
+          <h2 className={styles.ctaTitle}>Ready to Take the Next Step?</h2>
+          <p className={styles.ctaText}>
+            Book a personalized consultation with a regulated Canadian immigration consultant
+            to discuss your results and develop a tailored strategy.
+          </p>
+          <a
+            href="https://genesislink.co/consultation"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.ctaButton}
+          >
+            Book a Consultation
+          </a>
         </div>
       </section>
 

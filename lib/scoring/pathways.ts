@@ -38,7 +38,9 @@ export interface PathwayRecommendation {
  */
 export function computePathways(results: ProgramResult[]): PathwayRecommendation[] {
   const ineligibleResults = results.filter(
-    (r) => !r.eligibility.eligible && r.meta.status !== 'closed'
+    (r) => !r.eligibility.eligible &&
+           r.meta.status !== 'closed' &&
+           r.meta.status !== 'redesigning'
   )
 
   if (ineligibleResults.length === 0) return []
@@ -101,8 +103,9 @@ export function computePathways(results: ProgramResult[]): PathwayRecommendation
     }
 
     // Closeness percent: higher = closer to eligible
+    // Uses diminishing penalty per disqualifier so many-fixable scores > few-nonfixable
     const closenessPercent = totalDisqualifiers > 0
-      ? Math.round((1 - totalDisqualifiers / 10) * 100 * fixRatio)
+      ? Math.round(fixRatio * 100 * Math.exp(-0.3 * totalDisqualifiers))
       : 0
 
     // Composite score for sorting (higher = closer to eligible)

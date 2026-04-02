@@ -27,6 +27,8 @@ import nlEntrepreneur from '@/lib/data/rules/nl-entrepreneur.json'
 import nlGraduate from '@/lib/data/rules/nl-graduate-entrepreneur.json'
 import nwtBusiness from '@/lib/data/rules/nwt-business.json'
 import ykBusiness from '@/lib/data/rules/yk-business-nominee.json'
+import fedStartUpVisa from '@/lib/data/rules/fed-start-up-visa.json'
+import fedSelfEmployed from '@/lib/data/rules/fed-self-employed.json'
 
 export interface ProgramRuleSet {
   programId: string
@@ -164,6 +166,18 @@ const PROGRAM_META: Record<string, ProgramMeta> = {
     category: 'main',
     officialUrl: 'https://yukon.ca/en/immigration/yukon-business-nominee-program/find-eligibility-requirements-apply-run-your-business-yukon-foreign-entrepreneurs',
   },
+  'fed-start-up-visa': {
+    status: 'active',
+    statusNote: 'Federal program; requires letter of support from a designated organization (VC fund, angel investor group, or business incubator)',
+    category: 'federal',
+    officialUrl: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/start-visa.html',
+  },
+  'fed-self-employed': {
+    status: 'active',
+    statusNote: 'Federal program for self-employed persons with relevant experience in cultural activities, athletics, or farm management',
+    category: 'federal',
+    officialUrl: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/self-employed.html',
+  },
 }
 
 const DEFAULT_META: ProgramMeta = {
@@ -196,6 +210,8 @@ const PROGRAM_RULES: ProgramRuleSet[] = [
   nlGraduate as ProgramRuleSet,
   nwtBusiness as ProgramRuleSet,
   ykBusiness as ProgramRuleSet,
+  fedStartUpVisa as ProgramRuleSet,
+  fedSelfEmployed as ProgramRuleSet,
 ]
 
 // ---------------------------------------------------------------------------

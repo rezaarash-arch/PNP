@@ -18,6 +18,7 @@ import styles from './QuestionnaireShell.module.css'
 interface QuestionnaireShellProps {
   onComplete: (answers: Record<string, unknown>) => void
   initialAnswers?: Record<string, unknown>
+  initialStep?: number
 }
 
 const SECTION_LABELS = [
@@ -33,10 +34,13 @@ const SECTION_LABELS = [
 export function QuestionnaireShell({
   onComplete,
   initialAnswers = {},
+  initialStep,
 }: QuestionnaireShellProps) {
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(initialStep ?? 0)
   const [answers, setAnswers] = useState<Record<string, unknown>>(initialAnswers)
-  const [completedSteps, setCompletedSteps] = useState<number[]>([])
+  const [completedSteps, setCompletedSteps] = useState<number[]>(
+    initialStep != null ? Array.from({ length: 7 }, (_, i) => i) : [],
+  )
   const [showSavePrompt, setShowSavePrompt] = useState(false)
 
   const handleUpdate = useCallback((field: string, value: unknown) => {

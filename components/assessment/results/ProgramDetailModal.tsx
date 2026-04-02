@@ -31,6 +31,8 @@ const PROGRAM_DISPLAY_NAMES: Record<string, { province: string; stream: string }
   'nl-graduate-entrepreneur': { province: 'Newfoundland & Labrador', stream: 'Graduate Entrepreneur' },
   'nwt-business': { province: 'Northwest Territories', stream: 'Business' },
   'yk-business-nominee': { province: 'Yukon', stream: 'Business Nominee' },
+  'fed-start-up-visa': { province: 'Federal', stream: 'Start-Up Visa' },
+  'fed-self-employed': { province: 'Federal', stream: 'Self-Employed Persons' },
 }
 
 function formatProgramId(programId: string): { province: string; stream: string } {

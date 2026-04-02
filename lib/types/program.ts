@@ -1,6 +1,6 @@
 export type ProgramStatus = "active" | "paused" | "closed" | "redesigning";
 export type EOIType = "points_ranked" | "first_come" | "intake_period" | "hybrid" | "none";
-export type ProgramCategory = "main" | "regional" | "graduate" | "farm" | "strategic";
+export type ProgramCategory = "main" | "regional" | "graduate" | "farm" | "strategic" | "federal";
 
 export interface ProgramDefinition {
   id: string;

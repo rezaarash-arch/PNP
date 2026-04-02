@@ -46,7 +46,7 @@ export default function AssessmentLandingPage() {
           }}
         >
           Discover which Provincial Nominee Programs match your profile. Our
-          assessment evaluates your eligibility across 15+ entrepreneur streams
+          assessment evaluates your eligibility across 21 entrepreneur streams
           in under 5 minutes.
         </p>
         <a
@@ -80,7 +80,7 @@ export default function AssessmentLandingPage() {
         }}
       >
         <FeatureCard icon="clock" title="5-Minute Questionnaire" />
-        <FeatureCard icon="chart" title="Scored Against 15+ Programs" />
+        <FeatureCard icon="chart" title="Scored Against 21 Programs" />
         <FeatureCard icon="target" title="Personalized Gap Analysis" />
       </section>
 

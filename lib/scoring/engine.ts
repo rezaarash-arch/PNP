@@ -47,7 +47,7 @@ export function evaluateEligibility(
         requiredValue: formatValue(threshold),
         explanation,
         fixable,
-        fixSuggestion: fixable ? generateFixSuggestion(rule.id, profileData) : null,
+        fixSuggestion: fixable ? generateFixSuggestion(rule.id, profileData, threshold) : null,
       })
 
       if (fixable) {
@@ -55,7 +55,7 @@ export function evaluateEligibility(
           requirement: rule.label,
           gap: computeGap(userValue, threshold),
           effort: classifyEffort(rule.id, userValue, threshold),
-          suggestion: generateFixSuggestion(rule.id, profileData),
+          suggestion: generateFixSuggestion(rule.id, profileData, threshold),
         })
       }
     }
@@ -330,26 +330,31 @@ function classifyFixability(ruleId: string): boolean {
  */
 function generateFixSuggestion(
   ruleId: string,
-  profile: Record<string, unknown>
+  profile: Record<string, unknown>,
+  threshold: unknown
 ): string {
   switch (ruleId) {
     case 'min-net-worth': {
+      const required = typeof threshold === 'number' ? threshold : 600000
       const current = (profile['personalNetWorth'] as number) ?? 0
-      const gap = 600000 - current
-      return `Increase personal net worth by $${gap.toLocaleString()} to meet the $600,000 minimum. Consider building assets over time or including spousal assets.`
+      const gap = required - current
+      return `Increase personal net worth by $${gap.toLocaleString()} to meet the $${required.toLocaleString()} minimum. Consider building assets over time or including spousal assets.`
     }
     case 'min-clb': {
-      return 'Improve language proficiency to at least CLB 4. Consider taking IELTS or CELPIP preparation courses.'
+      const required = typeof threshold === 'number' ? threshold : 4
+      return `Improve language proficiency to at least CLB ${required}. Consider taking IELTS or CELPIP preparation courses.`
     }
     case 'min-business-exp': {
+      const required = typeof threshold === 'number' ? threshold : 3
       const current = (profile['businessOwnershipYears'] as number) ?? 0
-      const gap = 3 - current
-      return `Gain ${gap} more year${gap !== 1 ? 's' : ''} of business ownership experience to meet the 3-year minimum.`
+      const gap = required - current
+      return `Gain ${gap} more year${gap !== 1 ? 's' : ''} of business ownership experience to meet the ${required}-year minimum.`
     }
     case 'min-investment': {
+      const required = typeof threshold === 'number' ? threshold : 200000
       const current = (profile['investmentCapacity'] as number) ?? 0
-      const gap = 200000 - current
-      return `Increase investment capacity by $${gap.toLocaleString()} to meet the $200,000 minimum.`
+      const gap = required - current
+      return `Increase investment capacity by $${gap.toLocaleString()} to meet the $${required.toLocaleString()} minimum.`
     }
     case 'min-education': {
       return 'Consider upgrading education credentials or obtaining an Educational Credential Assessment (ECA).'
@@ -398,8 +403,13 @@ function classifyEffort(
       return 'high'
     }
     case 'min-clb': {
-      // Language improvement is typically medium effort
       if (userValue == null) return 'high'
+      if (typeof userValue === 'number' && typeof threshold === 'number') {
+        const gap = threshold - userValue
+        if (gap <= 1) return 'low'
+        if (gap <= 3) return 'medium'
+        return 'high'
+      }
       return 'medium'
     }
     case 'min-business-exp': {

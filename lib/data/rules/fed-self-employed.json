@@ -1,0 +1,112 @@
+{
+  "programId": "fed-self-employed",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 2 years relevant self-employment experience",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 2] },
+          { ">=": [{ "var": "seniorManagementYears" }, 2] }
+        ]
+      },
+      "disqualifyMessage": "Does not meet the 2-year self-employment or relevant experience requirement"
+    },
+    {
+      "id": "min-clb",
+      "label": "No formal minimum CLB, but CLB 4+ recommended for selection criteria",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency is below the recommended CLB 4 for competitive selection"
+    }
+  ],
+  "scoring": {
+    "maxScore": 100,
+    "minScoreRequired": 35,
+    "categories": [
+      {
+        "name": "Experience",
+        "maxPoints": 35,
+        "factors": [
+          {
+            "name": "Years of relevant experience",
+            "maxPoints": 35,
+            "rules": [
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 35, "label": "5+ years experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 4] }, "points": 30, "label": "4 years experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 25, "label": "3 years experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 2] }, "points": 20, "label": "2 years experience" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Education",
+        "maxPoints": 25,
+        "factors": [
+          {
+            "name": "Education level",
+            "maxPoints": 25,
+            "rules": [
+              { "condition": { "in": [{ "var": "educationLevel" }, ["masters", "phd"]] }, "points": 25, "label": "Master's or PhD" },
+              { "condition": { "==": [{ "var": "educationLevel" }, "bachelors"] }, "points": 20, "label": "Bachelor's degree" },
+              { "condition": { "in": [{ "var": "educationLevel" }, ["two-year-diploma", "one-year-diploma"]] }, "points": 15, "label": "Post-secondary diploma" },
+              { "condition": { "==": [{ "var": "educationLevel" }, "high-school"] }, "points": 5, "label": "High school" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Age",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Age at time of application",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 21] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 10, "label": "Age 21-49" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 8, "label": "Age 50-54" },
+              { "condition": { ">=": [{ "var": "age" }, 55] }, "points": 2, "label": "Age 55+" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Language Ability",
+        "maxPoints": 24,
+        "factors": [
+          {
+            "name": "First official language proficiency",
+            "maxPoints": 24,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 24, "label": "CLB 9+ (first language)" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 20, "label": "CLB 7-8 (first language)" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 14, "label": "CLB 5-6 (first language)" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 8, "label": "CLB 4 (first language)" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Adaptability",
+        "maxPoints": 6,
+        "factors": [
+          {
+            "name": "Canadian adaptability",
+            "maxPoints": 6,
+            "rules": [
+              { "condition": { "==": [{ "var": "hasCanadianDegree" }, "yes"] }, "points": 5, "label": "Canadian educational credential" },
+              { "condition": { "==": [{ "var": "hasCanadianWorkExperience" }, "yes"] }, "points": 5, "label": "Canadian work experience" },
+              { "condition": { "==": [{ "var": "hasFamilyInCanada" }, "yes"] }, "points": 5, "label": "Family in Canada" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

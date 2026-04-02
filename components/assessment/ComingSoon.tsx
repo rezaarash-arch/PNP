@@ -54,7 +54,7 @@ export default function ComingSoon() {
         {/* Description */}
         <p className={styles.description}>
           We&apos;re building a comprehensive tool to evaluate your eligibility
-          across 15+ Canadian Provincial Nominee Program entrepreneur streams.
+          across 21 Canadian Provincial Nominee Program entrepreneur streams.
           Get scored, discover gaps, and find your best path to Canadian
           entrepreneurship &mdash; all in under 5 minutes.
         </p>

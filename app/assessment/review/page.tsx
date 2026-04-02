@@ -131,10 +131,11 @@ const SECTIONS: ReviewSection[] = [
     fields: [
       { key: 'educationLevel', label: 'Highest Education', format: (v) => fmt(v, EDUCATION_LABELS) },
       { key: 'educationCountry', label: 'Credential Country', format: (v) => fmt(v, COUNTRY_LABELS) },
+      { key: 'degreeWithinLastTenYears', label: 'Degree Within Last 10 Years', format: (v) => fmt(v, YES_NO) },
       { key: 'hasCanadianDegree', label: 'Canadian Degree', format: (v) => fmt(v, YES_NO) },
       { key: 'canadianDegreeProvince', label: 'Canadian Institution Province', format: (v) => fmt(v, PROVINCE_LABELS) },
       { key: 'canadianDegreeYears', label: 'Canadian Program Length', format: (v) => (v ? `${v} year${Number(v) === 1 ? '' : 's'}` : '—') },
-      { key: 'hasECA', label: 'Has ECA', format: (v) => fmt(v, YES_NO) },
+      { key: 'hasPGWP', label: 'Holds PGWP', format: (v) => fmt(v, YES_NO) },
     ],
   },
   {
@@ -168,7 +169,7 @@ const SECTIONS: ReviewSection[] = [
       { key: 'hasVisitedCanada', label: 'Visited Canada', format: (v) => fmt(v, YES_NO) },
       { key: 'visitedProvince', label: 'Province Visited', format: (v) => fmt(v, PROVINCE_LABELS) },
       { key: 'visitDurationDays', label: 'Visit Duration', format: (v) => (v ? `${v} day${Number(v) === 1 ? '' : 's'}` : '—') },
-      { key: 'hasCommunityReferral', label: 'Community Referral', format: (v) => fmt(v, YES_NO) },
+      { key: 'hasCommunityReferral', label: 'Community Referral', format: (v) => fmt(v, { yes: 'Yes', willing: 'No, but willing', no: 'No, prefer without' }) },
       { key: 'referralProvince', label: 'Referral Province', format: (v) => fmt(v, PROVINCE_LABELS) },
       { key: 'hasFamilyInCanada', label: 'Family in Canada', format: (v) => fmt(v, YES_NO) },
       { key: 'familyProvince', label: 'Family Province', format: (v) => fmt(v, PROVINCE_LABELS) },
@@ -178,10 +179,9 @@ const SECTIONS: ReviewSection[] = [
     title: 'Business Intent',
     stepIndex: 6,
     fields: [
-      { key: 'interestedProvince', label: 'Interested Province', format: (v) => fmt(v, PROVINCE_LABELS) },
+      { key: 'interestedProvince', label: 'Interested Province', format: (v) => fmt(v, { ...PROVINCE_LABELS, 'no-preference': 'No Preference / Open to All' }) },
       { key: 'locationPreference', label: 'Location Preference', format: (v) => fmt(v, LOCATION_LABELS) },
       { key: 'plannedEmployees', label: 'Planned Employees', format: (v) => (v !== undefined && v !== null ? `${v}` : '—') },
-      { key: 'hasPGWP', label: 'Holds PGWP', format: (v) => fmt(v, YES_NO) },
     ],
   },
 ]

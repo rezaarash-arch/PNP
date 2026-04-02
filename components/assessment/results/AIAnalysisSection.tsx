@@ -83,7 +83,7 @@ export default function AIAnalysisSection({ profile, results }: AIAnalysisSectio
   if (loading) {
     return (
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>AI Intelligence Report</h2>
+        <h2 className={styles.sectionTitle}>AI Business Immigration Report</h2>
         <div className={styles.loadingContainer}>
           <div className={styles.spinner} />
           <p className={styles.loadingText}>Preparing your intelligence report...</p>
@@ -96,7 +96,7 @@ export default function AIAnalysisSection({ profile, results }: AIAnalysisSectio
   if (error || !analysis) {
     return (
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>AI Intelligence Report</h2>
+        <h2 className={styles.sectionTitle}>AI Business Immigration Report</h2>
         <div className={styles.errorContainer}>
           <p className={styles.errorText}>AI analysis temporarily unavailable</p>
           <button type="button" className={styles.retryButton} onClick={handleRetry}>
@@ -109,7 +109,7 @@ export default function AIAnalysisSection({ profile, results }: AIAnalysisSectio
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>AI Intelligence Report</h2>
+      <h2 className={styles.sectionTitle}>AI Business Immigration Report</h2>
 
       {/* Executive Summary */}
       <div className={styles.executiveSummary}>

@@ -31,6 +31,8 @@ const PROGRAM_DISPLAY: Record<string, { province: string; stream: string }> = {
   'nl-graduate-entrepreneur': { province: 'Newfoundland & Labrador', stream: 'Graduate Entrepreneur' },
   'nwt-business': { province: 'Northwest Territories', stream: 'Business' },
   'yk-business-nominee': { province: 'Yukon', stream: 'Business Nominee' },
+  'fed-start-up-visa': { province: 'Federal', stream: 'Start-Up Visa' },
+  'fed-self-employed': { province: 'Federal', stream: 'Self-Employed Persons' },
 }
 
 function displayName(id: string): { province: string; stream: string } {
@@ -599,7 +601,7 @@ export default function ResultsPage() {
   }
 
   /* ==================================================================
-     PHASE 2: AI Intelligence Report
+     PHASE 2: AI Business Immigration Report
      ================================================================== */
   const preparedDate = timestamp
     ? new Date(timestamp).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -615,7 +617,7 @@ export default function ResultsPage() {
       {/* ===== HEADER ===== */}
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <h1 className={styles.title}>GenesisLink Intelligence Report</h1>
+          <h1 className={styles.title}>GenesisLink Business Immigration Report</h1>
           <p className={styles.subtitle}>
             Prepared for <strong style={{ color: '#e2e8f0' }}>{clientName}</strong> &middot; {preparedDate}
           </p>

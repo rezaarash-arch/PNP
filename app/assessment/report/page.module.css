@@ -1,5 +1,5 @@
 /* =========================================================
-   GenesisLink Intelligence Report — Premium Dashboard
+   GenesisLink Business Immigration Report — Premium Dashboard
    Font: DM Sans (body), Outfit (display)
    ========================================================= */
 
@@ -9,18 +9,18 @@
 .reportPage {
   --font-d: 'Outfit', var(--font-display, sans-serif);
   --font-b: 'DM Sans', var(--font-body, sans-serif);
-  --c-bg: #06101c;
-  --c-surface: rgba(255,255,255,0.035);
-  --c-border: rgba(255,255,255,0.07);
-  --c-text: #c8d6e5;
-  --c-text-bright: #edf2f7;
-  --c-text-dim: #5a6a7a;
-  --c-accent: #00b4d8;
-  --c-emerald: #10b981;
-  --c-amber: #f59e0b;
-  --c-rose: #f43f5e;
-  --c-violet: #8b5cf6;
-  --c-sky: #38bdf8;
+  --c-bg: #f8fafc;
+  --c-surface: #ffffff;
+  --c-border: #e2e8f0;
+  --c-text: #475569;
+  --c-text-bright: #0f172a;
+  --c-text-dim: #94a3b8;
+  --c-accent: #0099cc;
+  --c-emerald: #059669;
+  --c-amber: #d97706;
+  --c-rose: #e11d48;
+  --c-violet: #7c3aed;
+  --c-sky: #0284c7;
   --radius: 16px;
 
   max-width: 1120px;
@@ -50,7 +50,7 @@
   left: -10%;
   width: 550px;
   height: 550px;
-  background: radial-gradient(circle, rgba(0,180,216,0.07), transparent 70%);
+  background: radial-gradient(circle, rgba(0,153,204,0.06), transparent 70%);
 }
 
 .reportPage::after {
@@ -58,7 +58,7 @@
   right: -10%;
   width: 450px;
   height: 450px;
-  background: radial-gradient(circle, rgba(139,92,246,0.05), transparent 70%);
+  background: radial-gradient(circle, rgba(124,58,237,0.04), transparent 70%);
 }
 
 .reportPage > * {
@@ -87,7 +87,7 @@
   font-size: 1.65rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--c-text-bright);
 }
 
 .subtitle {
@@ -190,7 +190,7 @@
   font-family: var(--font-d);
   font-size: 1.75rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--c-text-bright);
   line-height: 1.1;
 }
 
@@ -210,7 +210,7 @@
   font-family: var(--font-d);
   font-size: 1.15rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.9);
+  color: var(--c-text-bright);
   padding-bottom: 0.65rem;
   border-bottom: 1px solid var(--c-border);
   display: flex;
@@ -221,8 +221,8 @@
 
 /* ===================== Executive Summary ===================== */
 .summaryCard {
-  background: linear-gradient(135deg, rgba(0,180,216,0.06), rgba(139,92,246,0.03));
-  border: 1px solid rgba(0,180,216,0.15);
+  background: linear-gradient(135deg, rgba(0,153,204,0.04), rgba(124,58,237,0.02));
+  border: 1px solid var(--c-border);
   border-left: 4px solid var(--c-accent);
   border-radius: var(--radius);
   padding: 1.5rem 1.75rem;
@@ -237,7 +237,7 @@
 
 .skeletonLine {
   height: 0.875rem;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.06);
   border-radius: 4px;
   margin-bottom: 0.75rem;
   animation: pulse 1.5s ease-in-out infinite;
@@ -274,9 +274,9 @@
 }
 
 .recommendationCard:hover {
-  border-color: rgba(255,255,255,0.12);
+  border-color: var(--c-accent);
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
 }
 
 /* Rank accent bar at top */
@@ -379,7 +379,7 @@
   font-family: var(--font-d);
   font-size: 1.5rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--c-text-bright);
   line-height: 1;
 }
 
@@ -409,20 +409,20 @@
 
 .fit_strong {
   background: rgba(16,185,129,0.12);
-  color: #34d399;
-  border: 1px solid rgba(16,185,129,0.25);
+  color: #047857;
+  border: 1px solid rgba(16,185,129,0.3);
 }
 
 .fit_moderate {
   background: rgba(245,158,11,0.12);
-  color: #fbbf24;
-  border: 1px solid rgba(245,158,11,0.25);
+  color: #b45309;
+  border: 1px solid rgba(245,158,11,0.3);
 }
 
 .fit_weak {
   background: rgba(244,63,94,0.12);
-  color: #fb7185;
-  border: 1px solid rgba(244,63,94,0.25);
+  color: #be123c;
+  border: 1px solid rgba(244,63,94,0.3);
 }
 
 .recNarrative {
@@ -509,7 +509,7 @@
 .eligLegendCount {
   font-family: var(--font-d);
   font-weight: 800;
-  color: #fff;
+  color: var(--c-text-bright);
   font-size: 0.85rem;
   margin-left: auto;
   min-width: 24px;
@@ -552,7 +552,7 @@
 }
 
 .phase:hover {
-  border-color: rgba(255,255,255,0.12);
+  border-color: var(--c-accent);
 }
 
 .phase::before {
@@ -578,7 +578,7 @@
   font-family: var(--font-d);
   font-size: 0.9rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--c-text-bright);
 }
 
 .phaseActions {
@@ -627,7 +627,7 @@
 }
 
 .improvementCard:hover {
-  border-color: rgba(255,255,255,0.12);
+  border-color: var(--c-accent);
 }
 
 .improvementHeader {
@@ -657,21 +657,21 @@
 }
 
 .effort_low {
-  background: rgba(16,185,129,0.1);
-  color: #34d399;
-  border: 1px solid rgba(16,185,129,0.2);
+  background: rgba(5,150,105,0.1);
+  color: #059669;
+  border: 1px solid rgba(5,150,105,0.2);
 }
 
 .effort_medium {
-  background: rgba(245,158,11,0.1);
-  color: #fbbf24;
-  border: 1px solid rgba(245,158,11,0.2);
+  background: rgba(217,119,6,0.1);
+  color: #d97706;
+  border: 1px solid rgba(217,119,6,0.2);
 }
 
 .effort_high {
-  background: rgba(244,63,94,0.1);
-  color: #fb7185;
-  border: 1px solid rgba(244,63,94,0.2);
+  background: rgba(225,29,72,0.1);
+  color: #e11d48;
+  border: 1px solid rgba(225,29,72,0.2);
 }
 
 .improvementRec {
@@ -748,9 +748,8 @@
 .matrixHeader th {
   position: sticky;
   top: 0;
-  background: rgba(6,16,28,0.95);
-  backdrop-filter: blur(8px);
-  color: var(--c-text-dim);
+  background: #f1f5f9;
+  color: #475569;
   font-weight: 700;
   font-size: 0.65rem;
   text-transform: uppercase;
@@ -760,13 +759,13 @@
 }
 
 .matrixRow td {
-  color: var(--c-text-dim);
-  border-bottom: 1px solid rgba(255,255,255,0.025);
+  color: var(--c-text);
+  border-bottom: 1px solid #f1f5f9;
   transition: background 0.15s ease;
 }
 
 .matrixRow:hover td {
-  background: rgba(255,255,255,0.025);
+  background: #f8fafc;
 }
 
 .eligible td {
@@ -799,7 +798,7 @@
 .scoreBarTrack {
   flex: 1;
   height: 6px;
-  background: rgba(255,255,255,0.06);
+  background: #e2e8f0;
   border-radius: 3px;
   overflow: hidden;
   min-width: 60px;
@@ -829,7 +828,7 @@
 .probBarTrack {
   flex: 1;
   height: 6px;
-  background: rgba(255,255,255,0.06);
+  background: #e2e8f0;
   border-radius: 3px;
   overflow: hidden;
   min-width: 50px;
@@ -890,38 +889,38 @@
 }
 
 .tier_strong {
-  background: rgba(16,185,129,0.12);
-  color: #34d399;
+  background: rgba(5,150,105,0.1);
+  color: #059669;
 }
 
 .tier_competitive {
-  background: rgba(0,180,216,0.12);
-  color: #22d3ee;
+  background: rgba(2,132,199,0.1);
+  color: #0284c7;
 }
 
 .tier_moderate {
-  background: rgba(245,158,11,0.12);
-  color: #fbbf24;
+  background: rgba(217,119,6,0.1);
+  color: #d97706;
 }
 
 .tier_low {
-  background: rgba(244,63,94,0.1);
-  color: #fb7185;
+  background: rgba(225,29,72,0.1);
+  color: #e11d48;
 }
 
 .tier_unlikely {
-  background: rgba(100,116,139,0.1);
+  background: rgba(100,116,139,0.08);
   color: #64748b;
 }
 
 .tier_ineligible {
   background: rgba(100,116,139,0.06);
-  color: #3a4a5a;
+  color: #94a3b8;
 }
 
-.statusActive { color: #34d399; font-weight: 600; }
-.statusPaused { color: #fbbf24; font-weight: 600; }
-.statusClosed { color: #fb7185; font-weight: 600; }
+.statusActive { color: #059669; font-weight: 600; }
+.statusPaused { color: #d97706; font-weight: 600; }
+.statusClosed { color: #e11d48; font-weight: 600; }
 .statusRedesigning { color: #64748b; font-weight: 600; }
 
 /* ===================== Disclaimer ===================== */
@@ -950,7 +949,7 @@
 .spinner {
   width: 36px;
   height: 36px;
-  border: 3px solid rgba(255,255,255,0.08);
+  border: 3px solid #e2e8f0;
   border-top-color: var(--c-accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -962,7 +961,7 @@
   font-family: var(--font-d);
   font-size: 1rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--c-text-bright);
   margin: 0;
 }
 
@@ -1079,4 +1078,79 @@
   .statsBanner {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* ===================== Consultation CTA ===================== */
+.ctaCard {
+  background: linear-gradient(135deg, rgba(0,180,216,0.12) 0%, rgba(139,92,246,0.12) 100%);
+  border: 1px solid rgba(0,180,216,0.25);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.ctaTitle {
+  font-family: var(--font-d);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--c-text-bright);
+  margin: 0 0 0.75rem;
+}
+
+.ctaText {
+  font-size: 0.95rem;
+  color: var(--c-text);
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 0.85rem 2.5rem;
+  background: linear-gradient(135deg, var(--c-accent) 0%, var(--c-violet) 100%);
+  color: #fff;
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,180,216,0.3);
+}
+
+/* ===================== Last Draw Column ===================== */
+.lastDrawCol {
+  font-size: 0.72rem;
+  white-space: nowrap;
+  color: var(--c-text-dim);
+}
+
+.lastDrawScore {
+  font-size: 0.65rem;
+  color: var(--c-text-dim);
+  opacity: 0.75;
+}
+
+/* ===================== Program Link ===================== */
+.programLink {
+  color: var(--c-accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.programLink:hover {
+  color: var(--c-sky);
+  text-decoration: underline;
 }

@@ -21,7 +21,7 @@ test.describe('Assessment Landing Page', () => {
     await page.goto('/assessment')
 
     await expect(page.getByText('5-Minute Questionnaire')).toBeVisible()
-    await expect(page.getByText('Scored Against 15+ Programs')).toBeVisible()
+    await expect(page.getByText('Scored Against 21 Programs')).toBeVisible()
     await expect(page.getByText('Personalized Gap Analysis')).toBeVisible()
   })
 })
