@@ -1,0 +1,276 @@
+.card {
+  background-color: var(--color-white, #ffffff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-lg, 1.5rem);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 1rem);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
+}
+
+/* Featured card — used for top recommendations */
+.featured {
+  border: 2px solid #0099cc;
+  box-shadow: 0 4px 16px rgba(0, 153, 204, 0.12);
+}
+
+.featured:hover {
+  box-shadow: 0 8px 24px rgba(0, 153, 204, 0.18);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm, 0.5rem);
+}
+
+.programInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.province {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-gray, #93a0a9);
+}
+
+.stream {
+  margin: 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+  line-height: 1.3;
+}
+
+.eligibilityBadge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.eligible {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.ineligible {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Score section with cutoff comparison */
+.scoreSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs, 0.25rem);
+}
+
+.scoreHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scoreLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.scoreValue {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+}
+
+.scoreTrack {
+  position: relative;
+  height: 10px;
+  background-color: #e5e7eb;
+  border-radius: 5px;
+  overflow: visible;
+}
+
+.scoreFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-cyan, #0099cc), #00c2ff);
+  border-radius: 5px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cutoff marker — the vertical line showing last draw minimum */
+.cutoffMarker {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 0;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.cutoffLine {
+  width: 2px;
+  height: 18px;
+  background-color: #ef4444;
+  border-radius: 1px;
+}
+
+/* Score legend below the bar */
+.scoreLegend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-xs, 0.25rem);
+  flex-wrap: wrap;
+}
+
+.cutoffLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.cutoffAbove {
+  color: #059669;
+}
+
+.cutoffBelow {
+  color: #dc2626;
+}
+
+.dataPointsLabel {
+  font-size: 0.6875rem;
+  color: #9ca3af;
+  text-transform: capitalize;
+}
+
+/* Probability */
+.probabilitySection {
+  padding-top: var(--space-xs, 0.25rem);
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-xs, 0.25rem);
+  border-top: 1px solid #f3f4f6;
+}
+
+.improvements {
+  font-size: 0.8125rem;
+  color: var(--color-competitive, #0099cc);
+  font-weight: 600;
+}
+
+.detailsButton {
+  padding: var(--space-sm, 0.5rem) var(--space-lg, 1.5rem);
+  background-color: var(--color-navy, #000000);
+  color: var(--color-white, #ffffff);
+  border: none;
+  border-radius: var(--radius-md, 6px);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.detailsButton:hover {
+  background-color: #1a1a1a;
+}
+
+.detailsButton:focus-visible {
+  outline: 2px solid var(--color-cyan, #0099cc);
+  outline-offset: 2px;
+}
+
+/* Status banner */
+.statusBanner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.statusClosed {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.statusPaused {
+  background-color: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.statusRedesigning {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.statusIcon {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+}
+
+/* Draw info */
+.drawInfo {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  padding-top: 2px;
+}
+
+/* Mobile */
+@media (max-width: 639px) {
+  .card {
+    padding: var(--space-md, 1rem);
+  }
+
+  .header {
+    flex-direction: column;
+    gap: var(--space-sm, 0.5rem);
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: var(--space-sm, 0.5rem);
+    align-items: stretch;
+  }
+
+  .detailsButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .scoreLegend {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+}

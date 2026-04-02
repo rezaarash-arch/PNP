@@ -1,0 +1,42 @@
+export type EducationLevel = "high_school" | "2yr_diploma" | "3yr_degree" | "bachelors" | "masters" | "phd";
+export type LocationPreference = "metro" | "regional" | "rural" | "flexible";
+
+export interface UserProfile {
+  age: number;
+  citizenshipCountry: string;
+  currentResidence: string;
+  clbEnglish: number | null;
+  clbFrench: number | null;
+  highestEducation: EducationLevel;
+  educationCountry: string;
+  hasCanadianDegree: boolean;
+  canadianDegreeProvince: string | null;
+  canadianDegreeLength: number | null;
+  hasECA: boolean;
+  businessOwnershipYears: number;
+  ownershipPercentage: number;
+  seniorManagementYears: number;
+  employeesManaged: number;
+  businessSector: string;
+  annualRevenue: number | null;
+  personalNetWorth: number;
+  liquidAssets: number;
+  investmentCapacity: number;
+  hasExploratoryVisit: boolean;
+  exploratoryVisitProvince: string | null;
+  exploratoryVisitDays: number | null;
+  hasCommunityReferral: boolean;
+  communityReferralProvince: string | null;
+  hasCanadianWorkExperience: boolean;
+  canadianWorkProvince: string | null;
+  hasFamilyInCanada: boolean;
+  familyProvince: string | null;
+  intendedProvince: string[];
+  intendedLocation: LocationPreference;
+  intendedJobCreation: number;
+  hasPGWP: boolean;
+  isRecentGraduate: boolean;
+  hasOperatingBusiness: boolean;
+  operatingBusinessProvince: string | null;
+  operatingBusinessMonths: number | null;
+}

@@ -1,0 +1,190 @@
+{
+  "programId": "ab-rural-entrepreneur",
+  "version": 2,
+  "eligibility": [
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $300,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $300,000 minimum required"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 4 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 requirement"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 3 years owner-manager or 4 years senior manager experience (in past 10 years)",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Business experience does not meet the 3-year owner-manager or 4-year senior manager minimum"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $100,000 CAD personal investment in a rural Alberta community",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 100000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $100,000 minimum for rural stream"
+    },
+    {
+      "id": "min-education",
+      "label": "Minimum high school equivalent education via ECA",
+      "condition": {
+        "in": [
+          { "var": "highestEducation" },
+          ["high_school", "1yr_certificate", "2yr_diploma", "3yr_degree", "bachelors", "masters", "phd"]
+        ]
+      },
+      "disqualifyMessage": "Minimum high school equivalent education (assessed via ECA) is required"
+    },
+    {
+      "id": "min-ownership",
+      "label": "Must hold 51% ownership of new business or 100% for business succession",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "ownershipPercentage" }, 51] },
+          {
+            "and": [
+              { "==": [{ "var": "isBusinessSuccession" }, true] },
+              { ">=": [{ "var": "ownershipPercentage" }, 100] }
+            ]
+          }
+        ]
+      },
+      "disqualifyMessage": "Ownership must be at least 51% for a new business or 100% for business succession"
+    },
+    {
+      "id": "min-job-creation",
+      "label": "Must create at least 1 full-time job for a Canadian citizen or permanent resident",
+      "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] },
+      "disqualifyMessage": "Must commit to creating at least 1 full-time job for a Canadian citizen or PR"
+    },
+    {
+      "id": "community-support-letter",
+      "label": "Community Support Letter required (exploratory visit to rural Alberta community)",
+      "condition": { "==": [{ "var": "hasCommunityReferral" }, true] },
+      "disqualifyMessage": "A Community Support Letter from a rural Alberta community is required"
+    }
+  ],
+  "scoring": {
+    "maxScore": 115,
+    "minScoreRequired": null,
+    "categories": [
+      {
+        "name": "Business Experience",
+        "maxPoints": 20,
+        "factors": [
+          {
+            "name": "Owner-Manager experience",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 20, "label": "Owner-Manager 5+ years" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 6] }, "points": 20, "label": "Senior Manager 6+ years" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 4] }, "points": 16, "label": "Owner-Manager 4 to <5 years" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 5] }, "points": 16, "label": "Senior Manager 5 to <6 years" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 12, "label": "Owner-Manager 3 to <4 years" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 4] }, "points": 12, "label": "Senior Manager 4 to <5 years" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Net Worth",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Personal net worth level",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] }, "points": 10, "label": "$500K+ net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 400000] }, "points": 8, "label": "$400K-$499K net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 300000] }, "points": 6, "label": "$300K-$399K net worth" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Investment",
+        "maxPoints": 20,
+        "factors": [
+          {
+            "name": "Investment amount",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 800000] }, "points": 20, "label": "$800K+ investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 600000] }, "points": 15, "label": "$600K-$799K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 400000] }, "points": 10, "label": "$400K-$599K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 100000] }, "points": 5, "label": "$100K-$399K investment" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Job Creation",
+        "maxPoints": 20,
+        "factors": [
+          {
+            "name": "Intended full-time jobs for Canadian citizens/PRs",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 5] }, "points": 20, "label": "5+ jobs created" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] }, "points": 4, "label": "1 job (minimum)" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Education",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Highest education level (ECA required)",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "in": [{ "var": "highestEducation" }, ["bachelors", "masters", "phd"]] }, "points": 10, "label": "Bachelor's degree or higher" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 4, "label": "High school equivalent" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Language Proficiency",
+        "maxPoints": 25,
+        "factors": [
+          {
+            "name": "CLB level (highest of English/French)",
+            "maxPoints": 25,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 6] }, { ">=": [{ "var": "clbFrench" }, 6] }] }, "points": 25, "label": "CLB 6+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 15, "label": "CLB 4" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Type",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Business succession (acquisition) bonus",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "==": [{ "var": "isBusinessSuccession" }, true] }, "points": 10, "label": "Business Succession (acquisition)" },
+              { "condition": { "==": [{ "var": "isBusinessSuccession" }, false] }, "points": 0, "label": "New business establishment" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

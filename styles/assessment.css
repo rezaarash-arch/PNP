@@ -1,0 +1,36 @@
+/* styles/assessment.css — GenesisLink PNP Assessment Design Tokens */
+:root {
+  /* Typography — matches existing site */
+  --font-display: 'Urbanist', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+
+  /* Colors — extracted from genesislink.ca */
+  --color-navy: #000000;
+  --color-cyan: #0099cc;
+  --color-gray: #93a0a9;
+  --color-white: #ffffff;
+  --color-bg-light: #f8f9fa;
+  --color-bg-dark: #0a0a0a;
+
+  /* Scoring tiers */
+  --color-strong: #10b981;      /* green */
+  --color-competitive: #0099cc; /* brand cyan */
+  --color-moderate: #f59e0b;    /* amber */
+  --color-low: #ef4444;         /* red */
+  --color-unlikely: #6b7280;    /* gray */
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Components */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-card-hover: 0 4px 12px rgba(0,0,0,0.15);
+}

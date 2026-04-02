@@ -1,0 +1,30 @@
+{
+  "programId": "ab-farm",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $500,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $500,000 minimum required"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $500,000 CAD investment in an Alberta farm operation",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 500000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $500,000 minimum for farm stream"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 3 years of farm management experience",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 3] }
+        ]
+      },
+      "disqualifyMessage": "Farm management experience does not meet the 3-year minimum"
+    }
+  ],
+  "scoring": null
+}

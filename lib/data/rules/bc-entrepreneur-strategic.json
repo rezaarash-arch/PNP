@@ -1,0 +1,25 @@
+{
+  "programId": "bc-entrepreneur-strategic",
+  "version": 2,
+  "eligibility": [
+    {
+      "id": "min-net-worth",
+      "label": "Corporation must have minimum equity of $500,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] },
+      "disqualifyMessage": "Corporation equity is below the $500,000 minimum required for strategic projects"
+    },
+    {
+      "id": "min-jobs-per-key-staff",
+      "label": "Minimum 3 jobs must be created per key staff member",
+      "condition": { ">=": [{ "var": "intendedJobCreation" }, 3] },
+      "disqualifyMessage": "Must create at least 3 jobs per key staff member"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Must be an established international corporation with senior management experience",
+      "condition": { ">=": [{ "var": "seniorManagementYears" }, 3] },
+      "disqualifyMessage": "Must have at least 3 years of senior management experience with an established international corporation"
+    }
+  ],
+  "scoring": null
+}

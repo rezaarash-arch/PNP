@@ -1,0 +1,52 @@
+{
+  "programId": "sk-graduate-entrepreneur",
+  "version": 2,
+  "eligibility": [
+    {
+      "id": "program-closed",
+      "label": "Program permanently CLOSED as of March 27, 2025 - all SK entrepreneur pathways discontinued",
+      "condition": { "==": [true, false] },
+      "disqualifyMessage": "The Saskatchewan International Graduate Entrepreneur stream has been permanently closed since March 2025 and is no longer accepting applications"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 7 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 7] },
+          { ">=": [{ "var": "clbFrench" }, 7] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 7 requirement"
+    },
+    {
+      "id": "canadian-degree",
+      "label": "Must have a post-secondary degree from a Saskatchewan institution",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasCanadianDegree" }, true] },
+          { "==": [{ "var": "canadianDegreeProvince" }, "SK"] }
+        ]
+      },
+      "disqualifyMessage": "Must have completed a post-secondary degree at a Saskatchewan institution"
+    },
+    {
+      "id": "operating-business",
+      "label": "Must have an operating business in Saskatchewan",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasOperatingBusiness" }, true] },
+          { "==": [{ "var": "operatingBusinessProvince" }, "SK"] }
+        ]
+      },
+      "disqualifyMessage": "Must have an operating business in Saskatchewan"
+    },
+    {
+      "id": "min-ownership",
+      "label": "Must own at least 33.3% of the Saskatchewan business",
+      "condition": { ">=": [{ "var": "ownershipPercentage" }, 33] },
+      "disqualifyMessage": "Must hold at least one-third (33.3%) ownership in the business"
+    }
+  ],
+  "scoring": null
+}

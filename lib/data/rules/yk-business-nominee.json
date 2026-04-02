@@ -1,0 +1,235 @@
+{
+  "programId": "yk-business-nominee",
+  "version": 3,
+  "eligibility": [
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $500,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $500,000 minimum required"
+    },
+    {
+      "id": "min-liquid-assets",
+      "label": "Minimum $300,000 CAD in liquid assets",
+      "condition": { ">=": [{ "var": "liquidAssets" }, 300000] },
+      "disqualifyMessage": "Liquid assets ($${liquidAssets}) are below the $300,000 minimum required (separate from net worth)"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $300,000 CAD personal investment in a Yukon business within first 2 years",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 300000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $300,000 minimum"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 3 years entrepreneurial experience and 5 years industry experience",
+      "condition": {
+        "and": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 5] }
+        ]
+      },
+      "disqualifyMessage": "Requires both 3 years entrepreneurial experience and 5 years industry experience"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 4 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 requirement"
+    },
+    {
+      "id": "noc-teer",
+      "label": "Must hold NOC TEER 0 or 1 position in the proposed business",
+      "condition": {
+        "or": [
+          { "==": [{ "var": "nocTeer" }, 0] },
+          { "==": [{ "var": "nocTeer" }, 1] }
+        ]
+      },
+      "disqualifyMessage": "Applicant must hold a NOC TEER 0 or TEER 1 position in the proposed business"
+    },
+    {
+      "id": "strategic-sector",
+      "label": "Business must be in an eligible strategic sector (IT, manufacturing, forestry, tourism, energy, mining, agriculture, cultural industries, film/video)",
+      "condition": {
+        "in": [
+          { "var": "industrySector" },
+          ["it", "manufacturing", "forestry", "tourism", "energy", "mining", "agriculture", "cultural_industries", "film_video"]
+        ]
+      },
+      "disqualifyMessage": "Business sector is not on the Yukon Strategic Sector List. Retail, wholesale, restaurants, financial services, real estate, holding companies, and gas stations are not eligible."
+    },
+    {
+      "id": "exploratory-visit",
+      "label": "Must have completed at least one exploratory visit to the Yukon",
+      "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] },
+      "disqualifyMessage": "At least one exploratory visit to the Yukon is required before applying"
+    }
+  ],
+  "scoring": {
+    "maxScore": 103,
+    "minScoreRequired": 65,
+    "categories": [
+      {
+        "name": "Investment Value",
+        "maxPoints": 12,
+        "factors": [
+          {
+            "name": "Proposed investment amount",
+            "maxPoints": 12,
+            "rules": [
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 751000] }, "points": 12, "label": "$751K+ investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 501000] }, "points": 10, "label": "$501K-$750K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 401000] }, "points": 8, "label": "$401K-$500K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 300000] }, "points": 6, "label": "$300K-$400K investment" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Liquid Assets",
+        "maxPoints": 8,
+        "factors": [
+          {
+            "name": "Available liquid assets",
+            "maxPoints": 8,
+            "rules": [
+              { "condition": { ">=": [{ "var": "liquidAssets" }, 751000] }, "points": 8, "label": "$751K+ liquid assets" },
+              { "condition": { ">=": [{ "var": "liquidAssets" }, 501000] }, "points": 6, "label": "$501K-$750K liquid assets" },
+              { "condition": { ">=": [{ "var": "liquidAssets" }, 301000] }, "points": 4, "label": "$301K-$500K liquid assets" },
+              { "condition": { ">=": [{ "var": "liquidAssets" }, 100000] }, "points": 2, "label": "$100K-$300K liquid assets" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Net Worth",
+        "maxPoints": 8,
+        "factors": [
+          {
+            "name": "Total personal net worth",
+            "maxPoints": 8,
+            "rules": [
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 751000] }, "points": 8, "label": "$751K+ net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 501000] }, "points": 6, "label": "$501K-$750K net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 301000] }, "points": 4, "label": "$301K-$500K net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 100000] }, "points": 2, "label": "$100K-$300K net worth" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Age",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Age range",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 21] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 10, "label": "Age 21-49" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 8, "label": "Age 50-54" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 55] }, { "<=": [{ "var": "age" }, 59] }] }, "points": 6, "label": "Age 55-59" },
+              { "condition": { ">=": [{ "var": "age" }, 60] }, "points": 4, "label": "Age 60+" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Prior Visit to Yukon",
+        "maxPoints": 8,
+        "factors": [
+          {
+            "name": "Number of visits to the Yukon",
+            "maxPoints": 8,
+            "rules": [
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 10] }] }, "points": 8, "label": "2+ visits to the Yukon" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 4, "label": "1 visit to the Yukon" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Education",
+        "maxPoints": 20,
+        "factors": [
+          {
+            "name": "Highest education level",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { "==": [{ "var": "highestEducation" }, "phd"] }, "points": 20, "label": "Doctorate / PhD" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "masters"] }, "points": 17, "label": "Master's degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 14, "label": "Bachelor's degree" },
+              { "condition": { "in": [{ "var": "highestEducation" }, ["2yr_diploma", "3yr_degree", "2yr_diploma"]] }, "points": 10, "label": "Diploma or trade certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }, "points": 7, "label": "1-year certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 5, "label": "High school diploma" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Experience",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Years of business ownership experience",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 10, "label": "5+ years business ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 7, "label": "3-5 years business ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 1] }, "points": 4, "label": "1-3 years business ownership" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Work Experience",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Years of relevant work experience",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 5] }, "points": 10, "label": "5+ years relevant work experience" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 3] }, "points": 7, "label": "3-5 years relevant work experience" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 1] }, "points": 4, "label": "1-3 years relevant work experience" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Language Proficiency",
+        "maxPoints": 12,
+        "factors": [
+          {
+            "name": "English or French language proficiency",
+            "maxPoints": 12,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 12, "label": "CLB 7+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 8, "label": "CLB 5-6" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 4, "label": "CLB 4" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Location",
+        "maxPoints": 5,
+        "factors": [
+          {
+            "name": "Location of proposed business",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "!=": [{ "var": "intendedLocation" }, "metro"] }, "points": 5, "label": "Outside Whitehorse" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "In Whitehorse" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

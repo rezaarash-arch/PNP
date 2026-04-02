@@ -1,0 +1,31 @@
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm, 0.5rem);
+  padding: var(--space-md, 1rem) var(--space-lg, 1.5rem);
+  background-color: var(--color-bg-light, #f8f9fa);
+  border-radius: var(--radius-md, 6px);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.bannerIcon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-gray, #93a0a9);
+}
+
+.bannerText {
+  margin: 0;
+}
+
+.inline {
+  display: inline;
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #6b7280;
+}

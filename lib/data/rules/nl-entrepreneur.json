@@ -1,0 +1,220 @@
+{
+  "programId": "nl-entrepreneur",
+  "version": 2,
+  "eligibility": [
+    {
+      "id": "min-age",
+      "label": "Must be between 21 and 59 years of age",
+      "condition": { "and": [{ ">=": [{ "var": "age" }, 21] }, { "<=": [{ "var": "age" }, 59] }] },
+      "disqualifyMessage": "Applicants must be between 21 and 59 years of age"
+    },
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $600,000 CAD in unencumbered assets",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 600000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $600,000 minimum required"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 5 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 5] },
+          { ">=": [{ "var": "clbFrench" }, 5] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 5 requirement"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 2 years business ownership (25%+ stake) in last 5 years, or 5 years senior management in last 10 years",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 2] },
+          { ">=": [{ "var": "seniorManagementYears" }, 5] }
+        ]
+      },
+      "disqualifyMessage": "Must have at least 2 years business ownership (25%+ stake) or 5 years senior management experience"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $200,000 CAD personal investment (33.3% ownership) or $1,000,000 pure equity",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the $200,000 minimum"
+    },
+    {
+      "id": "exploratory-visit",
+      "label": "Must complete an exploratory visit to Newfoundland and Labrador (if applying from outside the province)",
+      "condition": {
+        "or": [
+          { "==": [{ "var": "hasExploratoryVisit" }, true] },
+          { "==": [{ "var": "hasCanadianWorkExperience" }, true] }
+        ]
+      },
+      "disqualifyMessage": "An exploratory visit to Newfoundland and Labrador is required for applicants outside the province"
+    },
+    {
+      "id": "min-job-creation",
+      "label": "Must create at least 1 full-time job for a Canadian citizen or permanent resident",
+      "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] },
+      "disqualifyMessage": "Must intend to create at least 1 full-time job for a Canadian citizen or permanent resident"
+    }
+  ],
+  "scoring": {
+    "maxScore": 120,
+    "minScoreRequired": 72,
+    "categories": [
+      {
+        "name": "Business Experience",
+        "maxPoints": 30,
+        "factors": [
+          {
+            "name": "Years of business ownership",
+            "maxPoints": 18,
+            "rules": [
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 10] }, "points": 18, "label": "10+ years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 8] }, "points": 14, "label": "8-9 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 5] }, "points": 10, "label": "5-7 years ownership" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 6, "label": "3-4 years ownership" }
+            ]
+          },
+          {
+            "name": "Number of employees managed",
+            "maxPoints": 12,
+            "rules": [
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 20] }, "points": 12, "label": "20+ employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 10] }, "points": 9, "label": "10-19 employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 5] }, "points": 5, "label": "5-9 employees" },
+              { "condition": { ">=": [{ "var": "employeesManaged" }, 1] }, "points": 2, "label": "1-4 employees" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Personal Net Worth",
+        "maxPoints": 12,
+        "factors": [
+          {
+            "name": "Net worth level",
+            "maxPoints": 12,
+            "rules": [
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 2000000] }, "points": 12, "label": "$2M+ net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 1000000] }, "points": 8, "label": "$1M-$2M net worth" },
+              { "condition": { ">=": [{ "var": "personalNetWorth" }, 600000] }, "points": 4, "label": "$600K-$1M net worth" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Language Proficiency",
+        "maxPoints": 18,
+        "factors": [
+          {
+            "name": "CLB level (highest of English/French)",
+            "maxPoints": 18,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 18, "label": "CLB 9+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 12, "label": "CLB 7-8" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 6, "label": "CLB 5-6" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Age",
+        "maxPoints": 12,
+        "factors": [
+          {
+            "name": "Age range",
+            "maxPoints": 12,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 25] }, { "<=": [{ "var": "age" }, 39] }] }, "points": 12, "label": "Age 25-39" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 40] }, { "<=": [{ "var": "age" }, 44] }] }, "points": 10, "label": "Age 40-44" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 45] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 7, "label": "Age 45-49" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 4, "label": "Age 50-54" },
+              { "condition": { "or": [{ "<": [{ "var": "age" }, 25] }, { ">": [{ "var": "age" }, 54] }] }, "points": 2, "label": "Under 25 or over 54" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Location",
+        "maxPoints": 15,
+        "factors": [
+          {
+            "name": "Intended business location",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 15, "label": "Rural Newfoundland" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 10, "label": "Regional/outside St. John's" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 5, "label": "Flexible location" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "St. John's metro" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Adaptability",
+        "maxPoints": 18,
+        "factors": [
+          {
+            "name": "Exploratory visit",
+            "maxPoints": 8,
+            "rules": [
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 8, "label": "Exploratory visit 5+ days" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 5, "label": "Exploratory visit (short)" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, false] }, "points": 0, "label": "No exploratory visit" }
+            ]
+          },
+          {
+            "name": "Community referral",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "==": [{ "var": "hasCommunityReferral" }, true] }, "points": 5, "label": "Has community referral" },
+              { "condition": { "==": [{ "var": "hasCommunityReferral" }, false] }, "points": 0, "label": "No community referral" }
+            ]
+          },
+          {
+            "name": "Canadian connection",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { "or": [{ "==": [{ "var": "hasCanadianWorkExperience" }, true] }, { "==": [{ "var": "hasFamilyInCanada" }, true] }] }, "points": 5, "label": "Has Canadian work experience or family" },
+              { "condition": { "and": [{ "==": [{ "var": "hasCanadianWorkExperience" }, false] }, { "==": [{ "var": "hasFamilyInCanada" }, false] }] }, "points": 0, "label": "No Canadian connection" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Education",
+        "maxPoints": 8,
+        "factors": [
+          {
+            "name": "Highest education level",
+            "maxPoints": 8,
+            "rules": [
+              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "phd"] }, { "==": [{ "var": "highestEducation" }, "masters"] }] }, "points": 8, "label": "Masters or PhD" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 6, "label": "Bachelors degree" },
+              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "3yr_degree"] }, { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }] }, "points": 3, "label": "Diploma or 3-year degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 1, "label": "High school" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Job Creation",
+        "maxPoints": 7,
+        "factors": [
+          {
+            "name": "Intended jobs to create",
+            "maxPoints": 7,
+            "rules": [
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 5] }, "points": 7, "label": "5+ jobs created" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 3] }, "points": 5, "label": "3-4 jobs created" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] }, "points": 3, "label": "1-2 jobs created" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

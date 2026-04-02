@@ -1,0 +1,15 @@
+{
+  "crons": [
+    { "path": "/api/pipeline/scrape/bc", "schedule": "0 2 * * *" },
+    { "path": "/api/pipeline/scrape/ab", "schedule": "0 2 * * *" },
+    { "path": "/api/pipeline/scrape/mb", "schedule": "0 2 * * *" },
+    { "path": "/api/pipeline/scrape/nb", "schedule": "0 2 * * *" },
+    { "path": "/api/pipeline/scrape/ns", "schedule": "0 2 * * *" },
+    { "path": "/api/pipeline/scrape/nl", "schedule": "0 2 * * *" },
+    { "path": "/api/pipeline/scrape/pe", "schedule": "0 2 * * *" },
+    { "path": "/api/pipeline/scrape/nt", "schedule": "0 2 * * *" },
+    { "path": "/api/pipeline/scrape/yt", "schedule": "0 2 * * *" },
+    { "path": "/api/cleanup", "schedule": "0 3 * * *" },
+    { "path": "/api/pipeline/research", "schedule": "0 4 1,15 * *" }
+  ]
+}

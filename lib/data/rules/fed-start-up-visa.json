@@ -1,0 +1,40 @@
+{
+  "programId": "fed-start-up-visa",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 5 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 5] },
+          { ">=": [{ "var": "clbFrench" }, 5] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 5 requirement for the Start-Up Visa"
+    },
+    {
+      "id": "min-education",
+      "label": "Minimum one-year post-secondary credential",
+      "condition": {
+        "in": [
+          { "var": "educationLevel" },
+          ["one-year-diploma", "two-year-diploma", "bachelors", "masters", "phd"]
+        ]
+      },
+      "disqualifyMessage": "Education level does not meet the minimum post-secondary credential requirement"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Demonstrated entrepreneurial experience or business concept",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 1] },
+          { ">=": [{ "var": "seniorManagementYears" }, 2] }
+        ]
+      },
+      "disqualifyMessage": "Business experience is below the recommended threshold for securing a letter of support"
+    }
+  ],
+  "scoring": null
+}

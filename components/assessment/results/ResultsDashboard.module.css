@@ -1,0 +1,305 @@
+.dashboard {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-xl, 2rem) var(--space-md, 1rem);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg, 1.5rem);
+}
+
+/* Header */
+.header {
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--color-navy, #000000);
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: var(--space-xs, 0.25rem) 0 0;
+  font-size: 0.9375rem;
+  color: var(--color-gray, #93a0a9);
+}
+
+/* Filter tabs */
+.filterBar {
+  display: flex;
+  gap: 4px;
+  background-color: #f3f4f6;
+  border-radius: var(--radius-md, 6px);
+  padding: 3px;
+}
+
+.filterTab {
+  flex: 1;
+  padding: var(--space-sm, 0.5rem) var(--space-md, 1rem);
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  background: transparent;
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.filterTab:hover {
+  color: var(--color-navy, #000000);
+}
+
+.filterActive {
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-navy, #000000);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   TOP RECOMMENDATIONS SECTION
+   ========================================================= */
+.topSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 1rem);
+}
+
+.topSectionHeader {
+  text-align: center;
+}
+
+.topSectionTitle {
+  margin: 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--color-navy, #000000);
+  line-height: 1.3;
+}
+
+.topIcon {
+  color: #f59e0b;
+}
+
+.topSectionSubtitle {
+  margin: var(--space-xs, 0.25rem) 0 0;
+  font-size: 0.875rem;
+  color: var(--color-gray, #93a0a9);
+}
+
+/* Top picks grid — single row, equal columns */
+.topGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md, 1rem);
+}
+
+.topCardWrapper {
+  position: relative;
+}
+
+.rankBadge {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0099cc, #00c2ff);
+  color: #ffffff;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(0, 153, 204, 0.35);
+}
+
+/* =========================================================
+   OTHER PROGRAMS SECTION
+   ========================================================= */
+.otherSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 1rem);
+  padding-top: var(--space-lg, 1.5rem);
+  border-top: 1px solid #e5e7eb;
+}
+
+.otherSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.otherSectionTitle {
+  margin: 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+}
+
+.otherEligibleNote {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #059669;
+}
+
+/* Card grid — 2 columns on desktop */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md, 1rem);
+}
+
+/* Show more button */
+.showMoreButton {
+  display: block;
+  margin: 0 auto;
+  padding: var(--space-sm, 0.5rem) var(--space-xl, 2rem);
+  border: 1.5px solid #d1d5db;
+  border-radius: var(--radius-md, 6px);
+  background: transparent;
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-navy, #000000);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.showMoreButton:hover {
+  border-color: var(--color-cyan, #0099cc);
+  background-color: #f0f9ff;
+}
+
+/* Empty state */
+.empty {
+  text-align: center;
+  padding: var(--space-2xl, 3rem) var(--space-md, 1rem);
+  color: var(--color-gray, #93a0a9);
+  font-size: 0.9375rem;
+  grid-column: 1 / -1;
+}
+
+/* Bottom actions */
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md, 1rem);
+  padding-top: var(--space-lg, 1.5rem);
+  border-top: 1px solid #f3f4f6;
+  flex-wrap: wrap;
+}
+
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm, 0.5rem) var(--space-xl, 2rem);
+  background-color: var(--color-cyan, #0099cc);
+  color: var(--color-white, #ffffff);
+  border: none;
+  border-radius: var(--radius-md, 6px);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  text-decoration: none;
+}
+
+.primaryAction:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.primaryAction:hover {
+  background-color: #007aa3;
+}
+
+.primaryAction:focus-visible {
+  outline: 2px solid var(--color-cyan, #0099cc);
+  outline-offset: 2px;
+}
+
+.secondaryAction {
+  padding: var(--space-sm, 0.5rem) var(--space-xl, 2rem);
+  background: none;
+  border: 1.5px solid #d1d5db;
+  border-radius: var(--radius-md, 6px);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-gray, #93a0a9);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.secondaryAction:hover {
+  border-color: var(--color-navy, #000000);
+  color: var(--color-navy, #000000);
+}
+
+.secondaryAction:focus-visible {
+  outline: 2px solid var(--color-cyan, #0099cc);
+  outline-offset: 2px;
+}
+
+/* Tablet — top picks 2-col when only 2 picks */
+@media (max-width: 959px) {
+  .topGrid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+/* Mobile — single column */
+@media (max-width: 767px) {
+  .dashboard {
+    padding: var(--space-lg, 1.5rem) var(--space-sm, 0.5rem);
+  }
+
+  .title {
+    font-size: 1.375rem;
+  }
+
+  .topGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .filterBar {
+    overflow-x: auto;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: var(--space-sm, 0.5rem);
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    width: 100%;
+    text-align: center;
+    padding: var(--space-md, 1rem);
+  }
+
+  .otherSectionHeader {
+    flex-direction: column;
+    gap: var(--space-xs, 0.25rem);
+  }
+}

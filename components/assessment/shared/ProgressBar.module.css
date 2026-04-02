@@ -1,0 +1,149 @@
+.container {
+  width: 100%;
+  font-family: var(--font-body, 'Nunito', sans-serif);
+}
+
+/* Mobile: "Step X of 7" indicator */
+.mobileIndicator {
+  display: none;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-navy, #000000);
+  padding: var(--space-sm, 0.5rem) 0;
+}
+
+.mobileBar {
+  height: 4px;
+  background-color: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: var(--space-xs, 0.25rem);
+}
+
+.mobileBarFill {
+  height: 100%;
+  background-color: var(--color-cyan, #0099cc);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Desktop: horizontal stepper with dots and labels */
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Connector line between steps */
+.step::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: calc(-50% + 14px);
+  right: calc(50% + 14px);
+  height: 2px;
+  background-color: #e5e7eb;
+}
+
+.step:first-child::before {
+  display: none;
+}
+
+.stepCompleted::before {
+  background-color: var(--color-cyan, #0099cc);
+}
+
+.stepCurrent::before {
+  background-color: var(--color-cyan, #0099cc);
+}
+
+/* Step dot/circle */
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 2px solid #e5e7eb;
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-gray, #93a0a9);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dotCurrent {
+  border-color: var(--color-cyan, #0099cc);
+  background-color: var(--color-cyan, #0099cc);
+  color: var(--color-white, #ffffff);
+  box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.2);
+}
+
+.dotCompleted {
+  border-color: var(--color-cyan, #0099cc);
+  background-color: var(--color-cyan, #0099cc);
+  color: var(--color-white, #ffffff);
+}
+
+.dotFuture {
+  border-color: #e5e7eb;
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-gray, #93a0a9);
+}
+
+/* Check icon for completed steps */
+.checkIcon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Label below each dot */
+.label {
+  margin-top: var(--space-xs, 0.25rem);
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--color-gray, #93a0a9);
+  max-width: 80px;
+  word-wrap: break-word;
+}
+
+.labelCurrent {
+  color: var(--color-cyan, #0099cc);
+  font-weight: 700;
+}
+
+.labelCompleted {
+  color: var(--color-navy, #000000);
+  font-weight: 600;
+}
+
+/* Responsive: show mobile indicator, hide stepper on small screens */
+@media (max-width: 639px) {
+  .stepper {
+    display: none;
+  }
+
+  .mobileIndicator {
+    display: block;
+  }
+}
+
+@media (min-width: 640px) {
+  .mobileIndicator {
+    display: none;
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "programId": "ab-graduate-entrepreneur",
+  "version": 1,
+  "eligibility": [
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 7 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 7] },
+          { ">=": [{ "var": "clbFrench" }, 7] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 7 requirement"
+    },
+    {
+      "id": "canadian-degree",
+      "label": "Must have a Canadian post-secondary degree from an Alberta institution",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasCanadianDegree" }, true] },
+          { "==": [{ "var": "canadianDegreeProvince" }, "AB"] }
+        ]
+      },
+      "disqualifyMessage": "Must have completed a post-secondary degree at an Alberta institution"
+    },
+    {
+      "id": "operating-business",
+      "label": "Must have an operating business in Alberta for at least 6 months",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasOperatingBusiness" }, true] },
+          { "==": [{ "var": "operatingBusinessProvince" }, "AB"] },
+          { ">=": [{ "var": "operatingBusinessMonths" }, 6] }
+        ]
+      },
+      "disqualifyMessage": "Must have an operating business in Alberta for at least 6 months"
+    },
+    {
+      "id": "recent-graduate",
+      "label": "Must be a recent graduate",
+      "condition": { "==": [{ "var": "isRecentGraduate" }, true] },
+      "disqualifyMessage": "Must be a recent graduate from an Alberta post-secondary institution"
+    }
+  ],
+  "scoring": null
+}

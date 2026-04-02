@@ -1,0 +1,165 @@
+{
+  "programId": "sk-entrepreneur",
+  "version": 2,
+  "eligibility": [
+    {
+      "id": "program-closed",
+      "label": "Program CLOSED as of March 2025 - no longer accepting applications",
+      "condition": { "==": [true, false] },
+      "disqualifyMessage": "The Saskatchewan Entrepreneur stream has been closed since March 2025 and is no longer accepting applications"
+    },
+    {
+      "id": "min-net-worth",
+      "label": "Minimum personal net worth of $500,000 CAD",
+      "condition": { ">=": [{ "var": "personalNetWorth" }, 500000] },
+      "disqualifyMessage": "Personal net worth ($${personalNetWorth}) is below the $500,000 minimum required"
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 4 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 4] },
+          { ">=": [{ "var": "clbFrench" }, 4] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 4 requirement"
+    },
+    {
+      "id": "min-business-exp",
+      "label": "Minimum 3 years of business ownership or senior management experience",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "businessOwnershipYears" }, 3] },
+          { ">=": [{ "var": "seniorManagementYears" }, 3] }
+        ]
+      },
+      "disqualifyMessage": "Business ownership/management experience does not meet the 3-year minimum"
+    },
+    {
+      "id": "min-investment",
+      "label": "Minimum $200,000 CAD personal investment ($300,000 in Regina/Saskatoon)",
+      "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] },
+      "disqualifyMessage": "Investment capacity ($${investmentCapacity}) is below the minimum required"
+    },
+    {
+      "id": "exploratory-visit",
+      "label": "Must have completed an exploratory visit to Saskatchewan",
+      "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] },
+      "disqualifyMessage": "An exploratory visit to Saskatchewan is required before applying"
+    }
+  ],
+  "scoring": {
+    "maxScore": 135,
+    "minScoreRequired": null,
+    "categories": [
+      {
+        "name": "Human Capital",
+        "maxPoints": 60,
+        "factors": [
+          {
+            "name": "Age",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 25] }, { "<=": [{ "var": "age" }, 39] }] }, "points": 15, "label": "Age 25-39" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 40] }, { "<=": [{ "var": "age" }, 44] }] }, "points": 12, "label": "Age 40-44" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 45] }, { "<=": [{ "var": "age" }, 49] }] }, "points": 8, "label": "Age 45-49" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 50] }, { "<=": [{ "var": "age" }, 54] }] }, "points": 4, "label": "Age 50-54" },
+              { "condition": { "or": [{ "<": [{ "var": "age" }, 25] }, { ">": [{ "var": "age" }, 54] }] }, "points": 0, "label": "Under 25 or over 54" }
+            ]
+          },
+          {
+            "name": "Exploratory visit to Saskatchewan",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 5] }] }, "points": 15, "label": "Exploratory visit 5+ days" },
+              { "condition": { "and": [{ "==": [{ "var": "hasExploratoryVisit" }, true] }, { ">=": [{ "var": "exploratoryVisitDays" }, 3] }] }, "points": 10, "label": "Exploratory visit 3-4 days" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, true] }, "points": 5, "label": "Exploratory visit (short)" },
+              { "condition": { "==": [{ "var": "hasExploratoryVisit" }, false] }, "points": 0, "label": "No exploratory visit" }
+            ]
+          },
+          {
+            "name": "Language proficiency (English or French)",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 8] }, { ">=": [{ "var": "clbFrench" }, 8] }] }, "points": 15, "label": "CLB 8+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 12, "label": "CLB 7" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 6] }, { ">=": [{ "var": "clbFrench" }, 6] }] }, "points": 9, "label": "CLB 6" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 5] }, { ">=": [{ "var": "clbFrench" }, 5] }] }, "points": 6, "label": "CLB 5" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 4] }, { ">=": [{ "var": "clbFrench" }, 4] }] }, "points": 3, "label": "CLB 4" }
+            ]
+          },
+          {
+            "name": "Education level",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "==": [{ "var": "highestEducation" }, "phd"] }, "points": 15, "label": "Doctorate / PhD" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "masters"] }, "points": 13, "label": "Master's degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 11, "label": "Bachelor's degree" },
+              { "condition": { "in": [{ "var": "highestEducation" }, ["3yr_degree", "2yr_diploma"]] }, "points": 8, "label": "3-year diploma or trade certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }, "points": 5, "label": "2-year diploma" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }, "points": 3, "label": "1-year certificate" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "high_school"] }, "points": 0, "label": "High school or less" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Experience",
+        "maxPoints": 40,
+        "factors": [
+          {
+            "name": "Entrepreneurial experience",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 8] }, "points": 20, "label": "8+ years entrepreneurial experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 6] }, "points": 16, "label": "6-7 years entrepreneurial experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 4] }, "points": 12, "label": "4-5 years entrepreneurial experience" },
+              { "condition": { ">=": [{ "var": "businessOwnershipYears" }, 3] }, "points": 8, "label": "3 years entrepreneurial experience" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 5] }, "points": 6, "label": "5+ years senior management (no ownership)" },
+              { "condition": { ">=": [{ "var": "seniorManagementYears" }, 3] }, "points": 4, "label": "3-4 years senior management (no ownership)" }
+            ]
+          },
+          {
+            "name": "Annual revenue of business",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 2000000] }, "points": 20, "label": "$2M+ annual revenue" },
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 1000000] }, "points": 16, "label": "$1M-$2M annual revenue" },
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 500000] }, "points": 12, "label": "$500K-$1M annual revenue" },
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 250000] }, "points": 8, "label": "$250K-$500K annual revenue" },
+              { "condition": { ">=": [{ "var": "annualRevenue" }, 100000] }, "points": 4, "label": "$100K-$250K annual revenue" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Establishment Plan",
+        "maxPoints": 35,
+        "factors": [
+          {
+            "name": "Investment amount",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 1000000] }, "points": 20, "label": "$1M+ investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 750000] }, "points": 16, "label": "$750K-$1M investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 500000] }, "points": 12, "label": "$500K-$750K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 300000] }, "points": 8, "label": "$300K-$500K investment" },
+              { "condition": { ">=": [{ "var": "investmentCapacity" }, 200000] }, "points": 4, "label": "$200K-$300K investment" }
+            ]
+          },
+          {
+            "name": "Key economic sectors and location",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 15, "label": "Business in rural Saskatchewan" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 10, "label": "Business in regional centre" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 6, "label": "Flexible location" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 3, "label": "Metro area" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,172 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm, 0.5rem);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+}
+
+/* Desktop table */
+.tableWrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.th {
+  padding: var(--space-sm, 0.5rem) var(--space-md, 1rem);
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-gray, #93a0a9);
+  border-bottom: 2px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.thRight {
+  text-align: right;
+}
+
+.row {
+  transition: background-color 0.1s ease;
+}
+
+.row:hover {
+  background-color: var(--color-bg-light, #f8f9fa);
+}
+
+.td {
+  padding: var(--space-sm, 0.5rem) var(--space-md, 1rem);
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: top;
+}
+
+.tdRight {
+  text-align: right;
+}
+
+.factorName {
+  display: block;
+  font-weight: 700;
+  color: var(--color-navy, #000000);
+  font-size: 0.875rem;
+}
+
+.factorDescription {
+  display: block;
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+/* Transition display */
+.transition {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs, 0.25rem);
+  font-size: 0.8125rem;
+}
+
+.currentValue {
+  color: #6b7280;
+}
+
+.transitionArrow {
+  color: #9ca3af;
+}
+
+.improvedValue {
+  color: var(--color-strong, #10b981);
+  font-weight: 600;
+}
+
+.scoreChange {
+  font-weight: 700;
+  color: var(--color-strong, #10b981);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+/* Effort badges */
+.effortBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.effortBadge.low {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.effortBadge.medium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.effortBadge.high {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Mobile cards (hidden on desktop) */
+.mobileCards {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .tableWrapper {
+    display: none;
+  }
+
+  .mobileCards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm, 0.5rem);
+  }
+
+  .mobileCard {
+    padding: var(--space-sm, 0.5rem) var(--space-md, 1rem);
+    background-color: var(--color-bg-light, #f8f9fa);
+    border-radius: var(--radius-md, 6px);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobileHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm, 0.5rem);
+  }
+
+  .mobileDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm, 0.5rem);
+    padding-top: 4px;
+    border-top: 1px solid #e5e7eb;
+  }
+}

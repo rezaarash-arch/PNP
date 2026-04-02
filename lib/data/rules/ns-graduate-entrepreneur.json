@@ -1,0 +1,159 @@
+{
+  "programId": "ns-graduate-entrepreneur",
+  "version": 2,
+  "eligibility": [
+    {
+      "id": "program-closed",
+      "label": "Stream absorbed into unified NS Entrepreneur Stream as of Feb 18, 2026",
+      "condition": { "==": [true, false] },
+      "disqualifyMessage": "The Nova Scotia International Graduate Entrepreneur stream was absorbed into the unified Entrepreneur Stream on February 18, 2026. Apply through the consolidated NS Entrepreneur Stream instead."
+    },
+    {
+      "id": "min-clb",
+      "label": "Minimum CLB 7 in English or French",
+      "condition": {
+        "or": [
+          { ">=": [{ "var": "clbEnglish" }, 7] },
+          { ">=": [{ "var": "clbFrench" }, 7] }
+        ]
+      },
+      "disqualifyMessage": "Language proficiency does not meet the minimum CLB 7 requirement"
+    },
+    {
+      "id": "canadian-degree",
+      "label": "Must have a post-secondary degree from a Nova Scotia institution",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasCanadianDegree" }, true] },
+          { "==": [{ "var": "canadianDegreeProvince" }, "NS"] }
+        ]
+      },
+      "disqualifyMessage": "Must have completed a post-secondary degree at a Nova Scotia institution"
+    },
+    {
+      "id": "operating-business",
+      "label": "Must have an operating business in Nova Scotia",
+      "condition": {
+        "and": [
+          { "==": [{ "var": "hasOperatingBusiness" }, true] },
+          { "==": [{ "var": "operatingBusinessProvince" }, "NS"] }
+        ]
+      },
+      "disqualifyMessage": "Must have an operating business in Nova Scotia"
+    }
+  ],
+  "scoring": {
+    "maxScore": 100,
+    "minScoreRequired": 67,
+    "categories": [
+      {
+        "name": "Language Proficiency",
+        "maxPoints": 25,
+        "factors": [
+          {
+            "name": "CLB level (highest of English/French)",
+            "maxPoints": 20,
+            "rules": [
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 10] }, { ">=": [{ "var": "clbFrench" }, 10] }] }, "points": 20, "label": "CLB 10+" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 9] }, { ">=": [{ "var": "clbFrench" }, 9] }] }, "points": 16, "label": "CLB 9" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 8] }, { ">=": [{ "var": "clbFrench" }, 8] }] }, "points": 12, "label": "CLB 8" },
+              { "condition": { "or": [{ ">=": [{ "var": "clbEnglish" }, 7] }, { ">=": [{ "var": "clbFrench" }, 7] }] }, "points": 8, "label": "CLB 7" }
+            ]
+          },
+          {
+            "name": "French proficiency bonus",
+            "maxPoints": 5,
+            "rules": [
+              { "condition": { ">=": [{ "var": "clbFrench" }, 7] }, "points": 5, "label": "French CLB 7+" },
+              { "condition": { ">=": [{ "var": "clbFrench" }, 5] }, "points": 3, "label": "French CLB 5-6" },
+              { "condition": { ">=": [{ "var": "clbFrench" }, 1] }, "points": 1, "label": "Some French ability" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Education",
+        "maxPoints": 25,
+        "factors": [
+          {
+            "name": "Level of Nova Scotia credential",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { "==": [{ "var": "highestEducation" }, "phd"] }, "points": 15, "label": "PhD" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "masters"] }, "points": 12, "label": "Masters degree" },
+              { "condition": { "==": [{ "var": "highestEducation" }, "bachelors"] }, "points": 9, "label": "Bachelors degree" },
+              { "condition": { "or": [{ "==": [{ "var": "highestEducation" }, "3yr_degree"] }, { "==": [{ "var": "highestEducation" }, "2yr_diploma"] }] }, "points": 6, "label": "Diploma" }
+            ]
+          },
+          {
+            "name": "Program length",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { ">=": [{ "var": "canadianDegreeLength" }, 4] }, "points": 10, "label": "4+ year program" },
+              { "condition": { ">=": [{ "var": "canadianDegreeLength" }, 3] }, "points": 7, "label": "3-year program" },
+              { "condition": { ">=": [{ "var": "canadianDegreeLength" }, 2] }, "points": 5, "label": "2-year program" },
+              { "condition": { ">=": [{ "var": "canadianDegreeLength" }, 1] }, "points": 3, "label": "1-year program" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Business Performance",
+        "maxPoints": 30,
+        "factors": [
+          {
+            "name": "Operating business duration",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { ">=": [{ "var": "operatingBusinessMonths" }, 24] }, "points": 15, "label": "24+ months operating" },
+              { "condition": { ">=": [{ "var": "operatingBusinessMonths" }, 18] }, "points": 12, "label": "18-23 months operating" },
+              { "condition": { ">=": [{ "var": "operatingBusinessMonths" }, 12] }, "points": 8, "label": "12-17 months operating" },
+              { "condition": { ">=": [{ "var": "operatingBusinessMonths" }, 6] }, "points": 4, "label": "6-11 months operating" }
+            ]
+          },
+          {
+            "name": "Jobs created",
+            "maxPoints": 15,
+            "rules": [
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 5] }, "points": 15, "label": "5+ jobs created" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 3] }, "points": 10, "label": "3-4 jobs created" },
+              { "condition": { ">=": [{ "var": "intendedJobCreation" }, 1] }, "points": 5, "label": "1-2 jobs created" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Age",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Age range",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 22] }, { "<=": [{ "var": "age" }, 35] }] }, "points": 10, "label": "Age 22-35" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 36] }, { "<=": [{ "var": "age" }, 40] }] }, "points": 7, "label": "Age 36-40" },
+              { "condition": { "and": [{ ">=": [{ "var": "age" }, 41] }, { "<=": [{ "var": "age" }, 45] }] }, "points": 4, "label": "Age 41-45" },
+              { "condition": { "or": [{ "<": [{ "var": "age" }, 22] }, { ">": [{ "var": "age" }, 45] }] }, "points": 2, "label": "Under 22 or over 45" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Location",
+        "maxPoints": 10,
+        "factors": [
+          {
+            "name": "Intended business location in Nova Scotia",
+            "maxPoints": 10,
+            "rules": [
+              { "condition": { "==": [{ "var": "intendedLocation" }, "rural"] }, "points": 10, "label": "Rural Nova Scotia" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "regional"] }, "points": 7, "label": "Regional/outside Halifax" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "flexible"] }, "points": 4, "label": "Flexible location" },
+              { "condition": { "==": [{ "var": "intendedLocation" }, "metro"] }, "points": 0, "label": "Halifax metro" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
