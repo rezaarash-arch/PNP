@@ -1,10 +1,12 @@
-import { supabase, supabaseAdmin } from './client'
+import { supabase, supabaseAdmin, isSupabaseConfigured } from './client'
 import type { Draw, DrawInsert } from './types'
 
 /**
  * Fetch all draws for a specific program, sorted by draw_date descending.
  */
 export async function getDrawsByProgram(programId: string): Promise<Draw[]> {
+  if (!isSupabaseConfigured) return []
+
   const { data, error } = await supabase
     .from('draws')
     .select('*')
@@ -23,6 +25,8 @@ export async function getDrawsByProgram(programId: string): Promise<Draw[]> {
  * Returns a map of programId to its draws sorted by date descending.
  */
 export async function getDrawsForAllPrograms(): Promise<Map<string, Draw[]>> {
+  if (!isSupabaseConfigured) return new Map()
+
   const { data, error } = await supabase
     .from('draws')
     .select('*')
