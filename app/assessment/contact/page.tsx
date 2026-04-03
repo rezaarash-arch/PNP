@@ -63,6 +63,7 @@ export default function ContactPage() {
 
       // Run the compute engine
       const profile = transformAnswersToProfile(answers)
+      console.log('Profile sent to compute:', JSON.stringify(profile))
       const response = await fetch('/api/assessment/compute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

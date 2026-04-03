@@ -19,21 +19,21 @@ export const LocationPreferenceSchema = z.enum([
 
 export const UserProfileSchema = z.object({
   age: z.number().int().min(18).max(75),
-  citizenshipCountry: z.string().length(2),
-  currentResidence: z.string().length(2),
+  citizenshipCountry: z.string().min(2).max(3),
+  currentResidence: z.string().min(2).max(3),
 
   clbEnglish: z.number().int().min(1).max(12).nullable(),
   clbFrench: z.number().int().min(1).max(12).nullable(),
 
   highestEducation: EducationLevelSchema,
-  educationCountry: z.string().length(2),
+  educationCountry: z.string().min(2).max(3),
   hasCanadianDegree: z.boolean(),
   canadianDegreeProvince: ProvinceCodeSchema.nullable(),
   canadianDegreeLength: z.number().int().min(1).max(10).nullable(),
   hasECA: z.boolean(),
 
   businessOwnershipYears: z.number().int().min(0).max(50),
-  ownershipPercentage: z.number().int().min(0).max(100),
+  ownershipPercentage: z.number().min(0).max(100),
   seniorManagementYears: z.number().int().min(0).max(50),
   employeesManaged: z.number().int().min(0),
   businessSector: z.string().min(1),
