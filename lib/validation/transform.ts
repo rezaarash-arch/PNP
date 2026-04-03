@@ -76,13 +76,14 @@ export function transformAnswersToProfile(raw: RawAnswers): UserProfile {
   // Determine CLB levels
   let clbEnglish: number | null = null
   if (raw.clbEnglish != null && raw.languageTest !== 'none') {
-    clbEnglish = Number(raw.clbEnglish)
+    const val = Number(raw.clbEnglish)
+    clbEnglish = val >= 1 ? val : null
   } else if (raw.selfAssessedEnglish) {
     clbEnglish = SELF_ASSESSED_CLB[raw.selfAssessedEnglish] ?? null
   }
 
   const clbFrench: number | null =
-    raw.clbFrench != null ? Number(raw.clbFrench) : null
+    raw.clbFrench != null && Number(raw.clbFrench) >= 1 ? Number(raw.clbFrench) : null
 
   // Determine province for intended province (single → array)
   const intendedProvince: string[] = []
@@ -106,7 +107,7 @@ export function transformAnswersToProfile(raw: RawAnswers): UserProfile {
       ? normalizeProvince(raw.canadianDegreeProvince)
       : null,
     canadianDegreeLength: hasCanadianDegree
-      ? Number(raw.canadianDegreeYears ?? 2)
+      ? Math.max(1, Number(raw.canadianDegreeYears ?? 2))
       : null,
     hasECA: yesNo(raw.hasECA),
 
