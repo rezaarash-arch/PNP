@@ -86,10 +86,11 @@ export function transformAnswersToProfile(raw: RawAnswers): UserProfile {
     raw.clbFrench != null && Number(raw.clbFrench) >= 1 ? Number(raw.clbFrench) : null
 
   // Determine province for intended province (single → array)
+  const VALID_PROVINCES = new Set(['BC','AB','SK','MB','ON','NB','NS','PE','NL','NT','YT'])
   const intendedProvince: string[] = []
-  if (raw.interestedProvince) {
+  if (raw.interestedProvince && raw.interestedProvince !== 'no-preference') {
     const normalized = normalizeProvince(raw.interestedProvince)
-    if (normalized) intendedProvince.push(normalized)
+    if (normalized && VALID_PROVINCES.has(normalized)) intendedProvince.push(normalized)
   }
 
   return {
