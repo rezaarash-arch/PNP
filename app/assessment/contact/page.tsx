@@ -79,7 +79,8 @@ export default function ContactPage() {
       }
       if (!response.ok || !Array.isArray(data.results)) {
         console.error('Compute API error:', response.status, data)
-        alert(`Something went wrong (${response.status}). Please try again.`)
+        const details = data.details ? JSON.stringify((data.details as Record<string, unknown>).fieldErrors ?? data.details) : ''
+        alert(`Something went wrong (${response.status}). ${details}`)
         return
       }
 
