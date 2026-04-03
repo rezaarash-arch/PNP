@@ -68,10 +68,18 @@ export default function ContactPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile),
       })
-      const data = await response.json()
+      const text = await response.text()
+      let data: Record<string, unknown>
+      try {
+        data = JSON.parse(text) as Record<string, unknown>
+      } catch {
+        console.error('Compute API returned non-JSON:', text.slice(0, 500))
+        alert('Something went wrong (non-JSON response). Please try again.')
+        return
+      }
       if (!response.ok || !Array.isArray(data.results)) {
-        console.error('Compute API error:', data)
-        alert('Something went wrong. Please try again.')
+        console.error('Compute API error:', response.status, data)
+        alert(`Something went wrong (${response.status}). Please try again.`)
         return
       }
 
