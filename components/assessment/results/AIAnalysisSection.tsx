@@ -56,9 +56,10 @@ export default function AIAnalysisSection({ profile, results }: AIAnalysisSectio
         signal,
       })
       if (!response.ok) throw new Error('API error')
-      const data: AIAnalysis = await response.json()
+      const data = await response.json() as { analysis: AIAnalysis } | AIAnalysis
+      const resolved = 'analysis' in data ? data.analysis : data
       if (!signal?.aborted) {
-        setAnalysis(data)
+        setAnalysis(resolved)
       }
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return
