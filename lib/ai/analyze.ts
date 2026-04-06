@@ -3,7 +3,7 @@ import type { AIAnalysis } from './types'
 import type { UserProfile } from '@/lib/types/assessment'
 import type { ProgramResult } from '@/lib/types/results'
 
-const MODEL = 'claude-sonnet-4-6'
+const MODEL = 'claude-sonnet-4-20250514'
 const MAX_TOKENS = 6000
 
 function buildSystemPrompt(): string {
@@ -168,7 +168,8 @@ export async function analyzeProfile(
 
     return analysis
   } catch (err) {
-    console.error('[analyzeProfile] AI analysis failed:', err instanceof Error ? `${err.message}\n${err.stack}` : err)
-    return null
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[analyzeProfile] AI analysis failed:', msg)
+    throw new Error(msg)
   }
 }

@@ -72,9 +72,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ analysis })
   } catch (err) {
-    console.error('Analyze endpoint error:', err)
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('Analyze endpoint error:', msg)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: `AI analysis error: ${msg}` },
       { status: 500 }
     )
   }
