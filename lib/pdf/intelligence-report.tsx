@@ -445,6 +445,33 @@ export function IntelligenceReport({
         <Footer />
       </Page>
 
+      {/* Ineligibility Insights */}
+      {analysis.ineligibilityInsights && analysis.ineligibilityInsights.length > 0 && (
+        <Page size="LETTER" style={styles.page} wrap>
+          <Text style={styles.sectionHeading}>Why You Don&apos;t Qualify (Yet)</Text>
+          {analysis.ineligibilityInsights.map((insight) => (
+            <View key={insight.programId} style={styles.programBlock} wrap={false}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                <Text style={styles.programTitle}>{formatProgramName(insight.programId)}</Text>
+                <Text style={[styles.fitBadge, { marginLeft: 8 }]}>
+                  {insight.feasibility.charAt(0).toUpperCase() + insight.feasibility.slice(1)}
+                </Text>
+              </View>
+              {insight.barriers.map((barrier, i) => (
+                <View key={i} style={styles.listItem}>
+                  <Text style={[styles.bullet, { color: '#cc0000' }]}>{'\u2717'}</Text>
+                  <Text style={styles.listText}>{barrier}</Text>
+                </View>
+              ))}
+              <Text style={[styles.programNarrative, { marginTop: 4, color: ACCENT }]}>
+                {insight.suggestion}
+              </Text>
+            </View>
+          ))}
+          <Footer />
+        </Page>
+      )}
+
       {/* Strategic Roadmap */}
       {analysis.strategicRoadmap.length > 0 && (
         <Page size="LETTER" style={styles.page} wrap>

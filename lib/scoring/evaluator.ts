@@ -27,8 +27,9 @@ import nlEntrepreneur from '@/lib/data/rules/nl-entrepreneur.json'
 import nlGraduate from '@/lib/data/rules/nl-graduate-entrepreneur.json'
 import nwtBusiness from '@/lib/data/rules/nwt-business.json'
 import ykBusiness from '@/lib/data/rules/yk-business-nominee.json'
-import fedStartUpVisa from '@/lib/data/rules/fed-start-up-visa.json'
-import fedSelfEmployed from '@/lib/data/rules/fed-self-employed.json'
+// Federal programs excluded — this tool assesses PNP streams only
+// import fedStartUpVisa from '@/lib/data/rules/fed-start-up-visa.json'
+// import fedSelfEmployed from '@/lib/data/rules/fed-self-employed.json'
 
 export interface ProgramRuleSet {
   programId: string
@@ -210,8 +211,6 @@ const PROGRAM_RULES: ProgramRuleSet[] = [
   nlGraduate as ProgramRuleSet,
   nwtBusiness as ProgramRuleSet,
   ykBusiness as ProgramRuleSet,
-  fedStartUpVisa as ProgramRuleSet,
-  fedSelfEmployed as ProgramRuleSet,
 ]
 
 // ---------------------------------------------------------------------------
