@@ -196,6 +196,89 @@
   font-style: italic;
 }
 
+/* Ineligibility Insights */
+.ineligibilityCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-lg, 1.5rem);
+  margin-bottom: var(--space-md, 1rem);
+}
+
+.ineligibilityHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.5rem);
+  margin-bottom: var(--space-sm, 0.5rem);
+}
+
+.ineligibilityName {
+  font-family: var(--font-display, 'Urbanist', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.feasibilityBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.feasibility_achievable {
+  background-color: rgba(5, 150, 105, 0.15);
+  color: #059669;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.feasibility_difficult {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.feasibility_impractical {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.barriersList {
+  list-style: none;
+  margin: 0 0 var(--space-sm, 0.5rem);
+  padding: 0;
+}
+
+.barriersList li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+  line-height: 1.5;
+}
+
+.barriersList li::before {
+  content: '\2717';
+  position: absolute;
+  left: 0;
+  color: #dc2626;
+  font-size: 0.75rem;
+}
+
+.suggestionText {
+  font-size: 0.875rem;
+  color: #0099cc;
+  margin: 0;
+  line-height: 1.5;
+  font-style: italic;
+}
+
 /* Strategic Roadmap */
 .roadmap {
   display: flex;

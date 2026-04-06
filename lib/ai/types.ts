@@ -18,9 +18,17 @@ export interface ImprovementPriority {
   impact: string
 }
 
+export interface IneligibilityInsight {
+  programId: string
+  barriers: string[]
+  feasibility: 'achievable' | 'difficult' | 'impractical'
+  suggestion: string
+}
+
 export interface AIAnalysis {
   executiveSummary: string
   programAnalyses: ProgramAnalysis[]
+  ineligibilityInsights: IneligibilityInsight[]
   strategicRoadmap: RoadmapPhase[]
   improvementPriorities: ImprovementPriority[]
   riskFactors: string[]
