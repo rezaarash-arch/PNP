@@ -811,6 +811,43 @@ export default function ResultsPage() {
         </section>
       )}
 
+      {/* ===== WHY YOU DON'T QUALIFY (YET) ===== */}
+      {analysis && analysis.ineligibilityInsights && analysis.ineligibilityInsights.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Why You Don&apos;t Qualify (Yet)</h2>
+          <div className={styles.improvementsGrid}>
+            {analysis.ineligibilityInsights.map((insight) => {
+              const d = displayName(insight.programId)
+              return (
+                <div key={insight.programId} className={styles.improvementCard}>
+                  <div className={styles.improvementHeader}>
+                    <span className={styles.improvementField}>{d.province} — {d.stream}</span>
+                    <span className={`${styles.effortBadge} ${
+                      insight.feasibility === 'achievable' ? styles.effort_low
+                        : insight.feasibility === 'difficult' ? styles.effort_medium
+                          : styles.effort_high
+                    }`}>
+                      {insight.feasibility}
+                    </span>
+                  </div>
+                  <ul style={{ margin: '0.25rem 0 0.5rem', paddingLeft: '1.25rem', listStyle: 'none' }}>
+                    {insight.barriers.map((barrier, i) => (
+                      <li key={i} style={{ position: 'relative', paddingLeft: '1rem', fontSize: '0.8125rem', color: '#94a3b8', marginBottom: '0.25rem', lineHeight: 1.5 }}>
+                        <span style={{ position: 'absolute', left: 0, color: '#dc2626', fontSize: '0.75rem' }}>{'\u2717'}</span>
+                        {barrier}
+                      </li>
+                    ))}
+                  </ul>
+                  <p style={{ fontSize: '0.875rem', color: '#0099cc', margin: 0, fontStyle: 'italic', lineHeight: 1.5 }}>
+                    {insight.suggestion}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
       {/* ===== STRATEGIC ROADMAP ===== */}
       {analysis && analysis.strategicRoadmap.length > 0 && (
         <section className={styles.section}>
