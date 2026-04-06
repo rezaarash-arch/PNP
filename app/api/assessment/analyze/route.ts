@@ -62,8 +62,10 @@ export async function POST(request: NextRequest) {
     const analysis = await analyzeProfile(profile, results)
 
     if (analysis === null) {
+      const hasKey = Boolean(process.env.ANTHROPIC_API_KEY)
+      const keyPrefix = process.env.ANTHROPIC_API_KEY?.slice(0, 10) ?? 'NOT_SET'
       return NextResponse.json(
-        { error: 'AI analysis service is temporarily unavailable' },
+        { error: `AI analysis failed. Key present: ${hasKey}, prefix: ${keyPrefix}` },
         { status: 503 }
       )
     }
