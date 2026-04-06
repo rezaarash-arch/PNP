@@ -27,6 +27,8 @@ const PROGRAM_NAMES: Record<string, string> = {
   'nl-graduate-entrepreneur': 'Newfoundland Graduate Entrepreneur',
   'nwt-business': 'Northwest Territories Business',
   'yk-business-nominee': 'Yukon Business Nominee',
+  'fed-start-up-visa': 'Federal Start-Up Visa',
+  'fed-self-employed': 'Federal Self-Employed',
 }
 
 function getProgramName(id: string): string {
@@ -147,6 +149,39 @@ export default function AIAnalysisSection({ profile, results }: AIAnalysisSectio
                 </ul>
               )}
               <span className={styles.timeline}>{pa.timeline}</span>
+            </div>
+          ))}
+        </>
+      )}
+
+      {/* Ineligibility Insights */}
+      {analysis.ineligibilityInsights && analysis.ineligibilityInsights.length > 0 && (
+        <>
+          <h3 className={styles.subSectionTitle}>Why You Don&apos;t Qualify (Yet)</h3>
+          {analysis.ineligibilityInsights.map((insight) => (
+            <div key={insight.programId} className={styles.ineligibilityCard}>
+              <div className={styles.ineligibilityHeader}>
+                <span className={styles.ineligibilityName}>
+                  {getProgramName(insight.programId)}
+                </span>
+                <span
+                  className={`${styles.feasibilityBadge} ${
+                    insight.feasibility === 'achievable'
+                      ? styles.feasibility_achievable
+                      : insight.feasibility === 'difficult'
+                        ? styles.feasibility_difficult
+                        : styles.feasibility_impractical
+                  }`}
+                >
+                  {insight.feasibility}
+                </span>
+              </div>
+              <ul className={styles.barriersList}>
+                {insight.barriers.map((barrier, i) => (
+                  <li key={i}>{barrier}</li>
+                ))}
+              </ul>
+              <p className={styles.suggestionText}>{insight.suggestion}</p>
             </div>
           ))}
         </>

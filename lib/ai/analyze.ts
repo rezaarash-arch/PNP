@@ -4,7 +4,7 @@ import type { UserProfile } from '@/lib/types/assessment'
 import type { ProgramResult } from '@/lib/types/results'
 
 const MODEL = 'claude-sonnet-4-20250514'
-const MAX_TOKENS = 4096
+const MAX_TOKENS = 6000
 
 function buildSystemPrompt(): string {
   return `You are a Canadian immigration consultant AI specializing in business and entrepreneur immigration pathways. Your role is to analyze applicant profiles and program eligibility results, then provide strategic guidance.
@@ -38,12 +38,21 @@ The JSON must conform to this exact structure:
       "impact": "string — expected impact on eligibility or scores"
     }
   ],
+  "ineligibilityInsights": [
+    {
+      "programId": "string — the program ID",
+      "barriers": ["string — specific requirement the applicant fails to meet, with actual numbers"],
+      "feasibility": "achievable | difficult | impractical",
+      "suggestion": "string — what the applicant would need to change to qualify"
+    }
+  ],
   "riskFactors": ["string — overall risk factors the applicant should be aware of"]
 }
 
 Guidelines:
 - Be specific and actionable. Reference actual scores, thresholds, and program requirements.
 - For programAnalyses, only include the top eligible programs (up to 5).
+- For ineligibilityInsights, include up to 8 ineligible programs that are ACTIVE (not closed or redesigning). Focus on near-miss programs where the applicant is closest to qualifying. For each, list the specific barriers (e.g. "Requires $600,000 net worth, you have $300,000") and rate feasibility: "achievable" if 1-2 small gaps, "difficult" if major gaps but possible, "impractical" if fundamentally mismatched. Skip programs where the applicant has no realistic path.
 - Provide realistic timelines based on current processing times.
 - Identify concrete steps the applicant can take to improve their chances.
 - NEVER provide legal advice. Always recommend consulting a licensed immigration consultant or lawyer for formal applications.`
