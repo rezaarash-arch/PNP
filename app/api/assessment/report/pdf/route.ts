@@ -49,16 +49,23 @@ export async function POST(request: NextRequest) {
   try {
     const generatedAt = new Date().toISOString().split('T')[0]
 
+    // Build absolute URLs for letterhead images
+    const origin = request.nextUrl.origin
+    const headerImage = `${origin}/letterhead-header.png`
+    const footerImage = `${origin}/letterhead-footer.png`
+
     const element = React.createElement(IntelligenceReport, {
       analysis,
       results,
       generatedAt,
+      headerImage,
+      footerImage,
     })
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const buffer = await renderToBuffer(element as any)
 
-    const filename = `genesislink-intelligence-report-${generatedAt}.pdf`
+    const filename = `genesislink-business-immigration-report-${generatedAt}.pdf`
 
     return new NextResponse(buffer as unknown as BodyInit, {
       status: 200,
