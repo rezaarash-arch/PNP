@@ -458,6 +458,13 @@ function ProgramMatrix({ results }: { results: ProgramResult[] }) {
   )
 }
 
+const BUSINESS_PLAN_FOOTNOTE =
+  '* Business Plan Score Estimate: Scores marked with an asterisk (*) include an estimated ' +
+  '80% of the Business Plan / Business Concept category points. This estimate assumes the ' +
+  'candidate engages GenesisLink\'s business development and advisory services for business ' +
+  'plan preparation, market research, and application strategy. Actual scores are determined ' +
+  'by provincial assessors and may vary.'
+
 const DISCLAIMER_TEXT =
   'This report provides estimates only and does not constitute legal immigration advice. ' +
   'The information is based on publicly available program requirements as of the report ' +
@@ -579,6 +586,13 @@ export function IntelligenceReport({
       <Page size="LETTER" style={styles.page} wrap>
         <Text style={styles.sectionHeading}>Full Program Matrix</Text>
         <ProgramMatrix results={results} />
+
+        {/* Business Plan Estimate footnote if applicable */}
+        {results.some((r) => r.eligibility.eligible && r.eligibility.includesBusinessPlanEstimate) && (
+          <View style={{ marginTop: 16, padding: 8, borderWidth: 1, borderColor: '#0099cc', borderRadius: 3 }}>
+            <Text style={{ fontSize: 8, lineHeight: 1.5, color: ACCENT }}>{BUSINESS_PLAN_FOOTNOTE}</Text>
+          </View>
+        )}
 
         <View style={styles.disclaimerPage}>
           <Text style={styles.disclaimerHeading}>Important Disclaimer</Text>
