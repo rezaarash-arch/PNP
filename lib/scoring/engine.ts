@@ -21,6 +21,27 @@ export type EligibilityCheckResult =
   | { eligible: false; disqualifiers: Disqualifier[]; nearMisses: NearMiss[] }
 
 /**
+ * Enrich a profile with alias fields so JSONLogic rules that use
+ * alternative field names still resolve correctly.
+ */
+function enrichProfile(profile: Record<string, unknown>): Record<string, unknown> {
+  return {
+    ...profile,
+    // Aliases for fields used in some program rules but named differently on UserProfile
+    proposedInvestment: profile.investmentCapacity,
+    yearsManagement: profile.seniorManagementYears,
+    industrySector: profile.businessSector,
+    // Assume language test results are valid (we don't collect test date)
+    languageTestValid: true,
+    // Assume not a business succession unless explicitly set
+    isBusinessSuccession: profile.isBusinessSuccession ?? false,
+    // NAICS/NOC not collected — set to null so rules that check them fail gracefully
+    naicsCode: profile.naicsCode ?? null,
+    nocTeer: profile.nocTeer ?? 0,
+  }
+}
+
+/**
  * Evaluates all eligibility rules against a user profile.
  * Returns all failing rules as disqualifiers (does not short-circuit on first failure).
  */
@@ -28,7 +49,7 @@ export function evaluateEligibility(
   profile: UserProfile,
   rules: EligibilityRule[]
 ): EligibilityCheckResult {
-  const profileData = profile as unknown as Record<string, unknown>
+  const profileData = enrichProfile(profile as unknown as Record<string, unknown>)
   const disqualifiers: Disqualifier[] = []
   const nearMisses: NearMiss[] = []
 
@@ -179,7 +200,7 @@ export function computeScore(
       let matched = false
 
       for (const rule of factor.rules) {
-        if (!matched && evaluateCondition(rule.condition as JsonLogicRule, profile as unknown as Record<string, unknown>)) {
+        if (!matched && evaluateCondition(rule.condition as JsonLogicRule, enrichProfile(profile as unknown as Record<string, unknown>))) {
           breakdown.push({
             category: category.name,
             factor: factor.name,

@@ -278,22 +278,24 @@ const styles = StyleSheet.create({
     color: MEDIUM_GRAY,
   },
 
-  /* Letterhead header image */
+  /* Letterhead header image — full width, proportional height */
   letterheadHeader: {
     position: 'absolute',
     top: 0,
     left: 0,
-    right: 0,
-    height: 60,
+    width: '100%',
+    height: 'auto',
+    maxHeight: 70,
   },
 
-  /* Letterhead footer image */
+  /* Letterhead footer image — full width, proportional height */
   letterheadFooter: {
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0,
-    height: 40,
+    width: '100%',
+    height: 'auto',
+    maxHeight: 45,
   },
 
   /* Background watermark */
