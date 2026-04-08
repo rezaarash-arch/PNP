@@ -256,6 +256,7 @@ export function evaluateAllPrograms(
         maxScore: scoreResult?.maxPossible ?? null,
         breakdown: scoreResult?.breakdown ?? [],
         meetsMinScore: scoreResult?.meetsMinimum ?? true,
+        includesBusinessPlanEstimate: scoreResult?.includesBusinessPlanEstimate ?? false,
       }
     } else {
       // eligibilityResult is the ineligible variant here

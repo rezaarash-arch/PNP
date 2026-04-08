@@ -28,6 +28,7 @@ export type EligibilityResult = {
   maxScore: number | null;
   breakdown: ScoreBreakdown[];
   meetsMinScore: boolean;
+  includesBusinessPlanEstimate?: boolean;
 } | {
   eligible: false;
   disqualifiers: Disqualifier[];

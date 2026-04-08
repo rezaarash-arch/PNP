@@ -116,12 +116,31 @@ export interface ScoreResult {
   maxPossible: number
   meetsMinimum: boolean
   breakdown: ScoreBreakdown[]
+  includesBusinessPlanEstimate?: boolean
+}
+
+/**
+ * Category names that represent business plan / concept scores
+ * assessed by the province. For these, we estimate 80% of max points
+ * assuming the candidate uses GenesisLink business development services.
+ */
+const BUSINESS_PLAN_CATEGORIES = new Set([
+  'business concept (assessed by bc pnp)',
+  'business concept',
+  'business establishment plan',
+])
+
+function isBusinessPlanCategory(name: string): boolean {
+  return BUSINESS_PLAN_CATEGORIES.has(name.toLowerCase())
 }
 
 /**
  * Computes a candidate's score against a program's scoring grid.
  * Iterates categories -> factors -> rules (ordered highest-to-lowest).
  * First matching rule wins for each factor.
+ *
+ * Business Plan / Business Concept categories are estimated at 80% of
+ * maximum points (assumes GenesisLink business development services).
  *
  * Returns null if no scoring grid is provided.
  */
@@ -134,8 +153,27 @@ export function computeScore(
   const breakdown: ScoreBreakdown[] = []
   let totalScore = 0
   let maxPossible = 0
+  let includesBusinessPlanEstimate = false
 
   for (const category of scoring.categories) {
+    // Business plan/concept categories: award 80% of max as GenesisLink estimate
+    if (isBusinessPlanCategory(category.name)) {
+      const categoryMax = category.factors.reduce((sum, f) => sum + f.maxPoints, 0)
+      const estimated = Math.round(categoryMax * 0.8)
+      maxPossible += categoryMax
+      totalScore += estimated
+      includesBusinessPlanEstimate = true
+
+      breakdown.push({
+        category: category.name,
+        factor: 'GenesisLink Business Plan Estimate',
+        points: estimated,
+        maxPoints: categoryMax,
+        explanation: `Estimated ${estimated}/${categoryMax} points (80%) with GenesisLink business development services*`,
+      })
+      continue
+    }
+
     for (const factor of category.factors) {
       maxPossible += factor.maxPoints
       let matched = false
@@ -171,6 +209,7 @@ export function computeScore(
     maxPossible,
     meetsMinimum: scoring.minScoreRequired === null || totalScore >= scoring.minScoreRequired,
     breakdown,
+    includesBusinessPlanEstimate,
   }
 }
 

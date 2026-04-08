@@ -975,6 +975,26 @@ export default function ResultsPage() {
         </div>
       </section>
 
+      {/* ===== BUSINESS PLAN ESTIMATE FOOTNOTE ===== */}
+      {results.some((r) => r.eligibility.eligible && r.eligibility.includesBusinessPlanEstimate) && (
+        <div style={{
+          margin: '0 0 1rem',
+          padding: '0.75rem 1rem',
+          background: 'rgba(0, 153, 204, 0.06)',
+          border: '1px solid rgba(0, 153, 204, 0.2)',
+          borderRadius: '8px',
+          fontSize: '0.8125rem',
+          lineHeight: 1.6,
+          color: '#64748b',
+        }}>
+          <strong style={{ color: '#0099cc' }}>* Business Plan Score Estimate:</strong>{' '}
+          Scores marked with an asterisk (*) include an estimated 80% of the Business Plan / Business Concept
+          category points. This estimate assumes the candidate engages GenesisLink&apos;s business development
+          and advisory services for business plan preparation, market research, and application strategy.
+          Actual scores are determined by provincial assessors and may vary.
+        </div>
+      )}
+
       {/* ===== DISCLAIMER ===== */}
       <footer className={styles.disclaimer}>
         This analysis does not constitute legal immigration advice. All information is based on
