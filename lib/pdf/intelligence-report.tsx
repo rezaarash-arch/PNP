@@ -1,5 +1,5 @@
 import React from 'react'
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
+import { Document, Page, Text, View, Image, StyleSheet } from '@react-pdf/renderer'
 import type { AIAnalysis } from '@/lib/ai/types'
 import type { ProgramResult } from '@/lib/types/results'
 
@@ -11,6 +11,8 @@ export interface IntelligenceReportProps {
   analysis: AIAnalysis
   results: ProgramResult[]
   generatedAt: string
+  headerImage?: string
+  footerImage?: string
 }
 
 /* ------------------------------------------------------------------ */
@@ -74,7 +76,10 @@ const BLACK = '#111111'
 const styles = StyleSheet.create({
   /* Page */
   page: {
-    padding: 40,
+    paddingTop: 75,
+    paddingBottom: 60,
+    paddingLeft: 40,
+    paddingRight: 40,
     fontFamily: 'Helvetica',
     fontSize: 10,
     color: BLACK,
@@ -272,18 +277,72 @@ const styles = StyleSheet.create({
     fontSize: 8,
     color: MEDIUM_GRAY,
   },
+
+  /* Letterhead header image */
+  letterheadHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+  },
+
+  /* Letterhead footer image */
+  letterheadFooter: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 40,
+  },
+
+  /* Background watermark */
+  watermark: {
+    position: 'absolute',
+    top: '35%',
+    left: '-5%',
+    width: '110%',
+    textAlign: 'center',
+    fontSize: 72,
+    fontFamily: 'Helvetica-Bold',
+    color: '#e8eff5',
+    opacity: 0.3,
+    transform: 'rotate(-35deg)',
+  },
 })
 
 /* ------------------------------------------------------------------ */
 /*  Sub-components                                                     */
 /* ------------------------------------------------------------------ */
 
-function Footer() {
+function Watermark() {
   return (
-    <View style={styles.footer} fixed>
-      <Text>GenesisLink - Confidential</Text>
-      <Text>Business Immigration Report</Text>
-    </View>
+    <Text style={styles.watermark} fixed>
+      GenesisLink
+    </Text>
+  )
+}
+
+function LetterheadHeader({ src }: { src?: string }) {
+  if (!src) return null
+  return <Image style={styles.letterheadHeader} src={src} fixed />
+}
+
+function LetterheadFooter({ src }: { src?: string }) {
+  if (!src) return null
+  return <Image style={styles.letterheadFooter} src={src} fixed />
+}
+
+function Footer({ headerImage, footerImage }: { headerImage?: string; footerImage?: string }) {
+  return (
+    <>
+      <LetterheadHeader src={headerImage} />
+      <LetterheadFooter src={footerImage} />
+      <View style={styles.footer} fixed>
+        <Text>GenesisLink - Confidential</Text>
+        <Text>Business Immigration Report</Text>
+      </View>
+    </>
   )
 }
 
@@ -417,6 +476,8 @@ export function IntelligenceReport({
   analysis,
   results,
   generatedAt,
+  headerImage,
+  footerImage,
 }: IntelligenceReportProps) {
   return (
     <Document
@@ -433,7 +494,7 @@ export function IntelligenceReport({
         <Text style={styles.sectionHeading}>Executive Summary</Text>
         <Text style={styles.bodyText}>{analysis.executiveSummary}</Text>
 
-        <Footer />
+        <Watermark /><Footer headerImage={headerImage} footerImage={footerImage} />
       </Page>
 
       {/* Page 2+: Program Analyses */}
@@ -442,7 +503,7 @@ export function IntelligenceReport({
         {analysis.programAnalyses.map((pa) => (
           <ProgramAnalysisBlock key={pa.programId} pa={pa} />
         ))}
-        <Footer />
+        <Watermark /><Footer headerImage={headerImage} footerImage={footerImage} />
       </Page>
 
       {/* Ineligibility Insights */}
@@ -468,7 +529,7 @@ export function IntelligenceReport({
               </Text>
             </View>
           ))}
-          <Footer />
+          <Watermark /><Footer headerImage={headerImage} footerImage={footerImage} />
         </Page>
       )}
 
@@ -487,7 +548,7 @@ export function IntelligenceReport({
               ))}
             </View>
           ))}
-          <Footer />
+          <Watermark /><Footer headerImage={headerImage} footerImage={footerImage} />
         </Page>
       )}
 
@@ -511,7 +572,7 @@ export function IntelligenceReport({
             ))}
           </>
         )}
-        <Footer />
+        <Watermark /><Footer headerImage={headerImage} footerImage={footerImage} />
       </Page>
 
       {/* Last Page: Full Program Matrix + Disclaimer */}
@@ -523,7 +584,7 @@ export function IntelligenceReport({
           <Text style={styles.disclaimerHeading}>Important Disclaimer</Text>
           <Text style={styles.disclaimerText}>{DISCLAIMER_TEXT}</Text>
         </View>
-        <Footer />
+        <Watermark /><Footer headerImage={headerImage} footerImage={footerImage} />
       </Page>
     </Document>
   )
