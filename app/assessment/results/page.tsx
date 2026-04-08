@@ -103,6 +103,10 @@ export default function ResultsPage() {
   // PDF
   const [pdfLoading, setPdfLoading] = useState(false)
 
+  // Email report
+  const [emailSent, setEmailSent] = useState(false)
+  const [emailSending, setEmailSending] = useState(false)
+
   // Matrix sort
   const [sortKey, setSortKey] = useState<SortKey>('probability')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
@@ -167,6 +171,44 @@ export default function ResultsPage() {
     fetchAnalysis(controller.signal)
     return () => controller.abort()
   }, [fetchAnalysis, results, profile])
+
+  /* ---- Auto-send report email when analysis completes ---- */
+  useEffect(() => {
+    if (!analysis || !results || !contactInfo || emailSent || emailSending) return
+    // Check sessionStorage guard to prevent double-send on refresh
+    if (sessionStorage.getItem('emailSent') === 'true') {
+      setEmailSent(true)
+      return
+    }
+
+    setEmailSending(true)
+    const answers = JSON.parse(sessionStorage.getItem('assessmentAnswers') ?? '{}')
+
+    fetch('/api/assessment/send-report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contactInfo: {
+          fullName: contactInfo.fullName,
+          email: contactInfo.email,
+          phone: contactInfo.phone,
+          marketingConsent: (contactInfo as Record<string, unknown>).marketingConsent ?? false,
+        },
+        analysis,
+        results,
+        answers,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setEmailSent(true)
+          sessionStorage.setItem('emailSent', 'true')
+        }
+      })
+      .catch(() => { /* silent — user can still download PDF manually */ })
+      .finally(() => setEmailSending(false))
+  }, [analysis, results, contactInfo, emailSent, emailSending])
 
   /* ---- Animated progress bar ---- */
   useEffect(() => {
@@ -631,6 +673,16 @@ export default function ResultsPage() {
           >
             {pdfLoading ? 'Generating...' : '📄 Download PDF'}
           </button>
+          {emailSending && (
+            <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.25rem', display: 'block' }}>
+              Sending report to your email...
+            </span>
+          )}
+          {emailSent && (
+            <span style={{ fontSize: '0.75rem', color: '#10b981', marginTop: '0.25rem', display: 'block' }}>
+              ✓ Report sent to {contactInfo?.email}
+            </span>
+          )}
         </div>
       </header>
 
